@@ -3,8 +3,8 @@
 docs:
     kcl doc generate
 
-test:
-  kcl vet test/contract/contract.yaml odcs.k --format yaml --schema DataContract
+example:
+    kcl test/contract/contract.k
 
-sample:
-  kcl test/contract/contract.k
+test:
+    kcl vet test/contract/contract.yaml odcs.k --format yaml --schema DataContract

@@ -1,0 +1,33 @@
+import ...common.authoritative
+import ...common.property
+import ...odcs
+
+odcs.DataContract {
+    id = "53581432-6c55-4ba2-a65f-72344a91553a"
+    name = "seller_payments_v1"
+    version = "1.1.0"
+    status = "active"
+    domain = "seller"
+    tenant = "ClimateQuantumInc"
+
+    authoritativeDefinitions = [
+        authoritative.AuthoritativeDefinition {
+            url = "https://github.com/bitol-io/open-data-contract-standard/blob/main/docs/examples/all/full-example.odcs.yaml"
+            $type = "canonicalUrl"
+            description = "Data contract's latest version."
+        }
+    ]
+
+    description = odcs.Description {
+        purpose = "Views built on top of the seller tables."
+        limitations = "Cannot be used in conjunction with days with full moons."
+        usage = "Twice a day, preferable before meals."
+        customProperties = [
+            property.CustomProperty {
+                property = "materialize"
+                value = True
+            }
+        ]
+    }
+    tags = ["finance"]
+}

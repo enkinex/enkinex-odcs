@@ -1,0 +1,15 @@
+# MacOS general
+.DS_Store
+.localized
+__MACOSX/
+.AppleDouble
+.LSOverride
+Icon[
+]
+
+# MacOS Resource forks
+._*
+
+# IDEs
+.idea
+.vscode

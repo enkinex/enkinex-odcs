@@ -24,7 +24,7 @@ schema Description:
         usage = "Twice a day, preferable before meals."
         customProperties = [
             CustomProperty = {
-                property = "materialize"
+                property = "publish"
                 value = True
             }
         ]

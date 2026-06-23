@@ -24,7 +24,7 @@ odcs.DataContract {
         usage = "Twice a day, preferable before meals."
         customProperties = [
             property.CustomProperty {
-                property = "materialize"
+                property = "publish"
                 value = True
             }
         ]

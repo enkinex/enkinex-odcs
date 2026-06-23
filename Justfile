@@ -5,3 +5,6 @@ docs:
 
 test:
   kcl vet test/contract/contract.yaml odcs.k --format yaml --schema DataContract
+
+sample:
+  kcl test/contract/contract.k

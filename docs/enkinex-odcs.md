@@ -3,7 +3,6 @@
 ## Index
 
 - [DataContract](#datacontract)
-- [Description](#description)
 - catalog
   - [ArrayOptions](#arrayoptions)
   - [DatetimeOptions](#datetimeoptions)
@@ -22,6 +21,15 @@
 - common
   - [AuthoritativeDefinition](#authoritativedefinition)
   - [CustomProperty](#customproperty)
+- contract
+  - [Description](#description)
+  - [Pricing](#pricing)
+  - [ServiceLevelAgreement](#servicelevelagreement)
+  - [Support](#support)
+- iam
+  - [Role](#role)
+  - [Team](#team)
+  - [TeamMember](#teammember)
 - quality
   - [DataQuality](#dataquality)
   - [MustBeBetweenMixin](#mustbebetweenmixin)
@@ -52,9 +60,14 @@ A data contract defines the agreement between a data producer and consumers. Thi
 |**id** `required`|str|A unique identifier used to reduce the risk of dataset name collisions, such as a UUID.||
 |**kind** `required`|str|The kind of file this is.|"DataContract"|
 |**name**|str|Name of the data contract.||
+|**price**|[[Pricing](#pricing)]|Pricing when you bill your customer for using this data product.||
+|**roles**|[[Role](#role)]|A list of roles that will provide user access to the dataset.||
 |**schema**|[[SchemaObject](#schemaobject)]|A list of objects within the schema to be cataloged.||
+|**slaProperties**|[[ServiceLevelAgreement](#servicelevelagreement)]|A list of key/value pairs for SLA specific properties. There is no limit on the type of properties.||
 |**status** `required`|str|Current status of the data contract. Examples are "proposed", "draft", "active", "deprecated", "retired".||
+|**support**|[[Support](#support)]|Top level for support channels.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**team**|[[Team](#team)]|Team information object with members array.||
 |**tenant**|str|Indicates the property the data is primarily associated with. Value is case insensitive.||
 |**version** `required`|str|Current version of the data contract.||
 #### Examples
@@ -83,34 +96,6 @@ contract = DataContract {
     }
 
     tags = ["finance"]
-}
-```
-
-### Description
-
-Object containing the data contract description.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**limitations**|str|Technical, compliance, and legal limitations for data use.||
-|**purpose**|str|Intended purpose for the provided data.||
-|**usage**|str|Recommended usage of the data.||
-#### Examples
-
-```
-description = Description {
-    purpose = "Views built on top of the seller tables."
-    limitations = "Cannot be used in conjunction with days with full moons."
-    usage = "Twice a day, preferable before meals."
-    customProperties = [
-        CustomProperty = {
-            property = "publish"
-            value = True
-        }
-    ]
 }
 ```
 
@@ -538,6 +523,257 @@ dnsOptions = Property {
 }
 ```
 
+### Description
+
+Object containing the data contract description.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**limitations**|str|Technical, compliance, and legal limitations for data use.||
+|**purpose**|str|Intended purpose for the provided data.||
+|**usage**|str|Recommended usage of the data.||
+#### Examples
+
+```
+description = Description {
+    purpose = "Views built on top of the seller tables."
+    limitations = "Cannot be used in conjunction with days with full moons."
+    usage = "Twice a day, preferable before meals."
+    customProperties = [
+        CustomProperty = {
+            property = "publish"
+            value = True
+        }
+    ]
+}
+```
+
+### Pricing
+
+This section covers pricing when you bill your customer for using this data product.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**priceAmount**|str|||
+|**priceCurrency**|str|Currency of the subscription price in `price.priceAmount`.||
+|**priceUnit**|str|The unit of measure for calculating cost. Examples megabyte, gigabyte.||
+#### Examples
+
+```
+price = Pricing {
+    priceAmount = "9.95"
+    priceCurrency = "USD"
+    priceUnit = "megabyte"
+}
+```
+
+### ServiceLevelAgreement
+
+This section describes the service-level agreements (SLA).
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**description**|str|Description of the SLA for humans.||
+|**driver**|str|Describes the importance of the SLA from the list of: `regulatory`, `analytics`, or `operational`.||
+|**element**|str|Element(s) to check on. Multiple elements should be extremely rare and, if so, separated by commas.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**property** `required`|str|Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1). May requires units.||
+|**schedule**|str|Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.||
+|**scheduler**|str|Name of the scheduler, can be cron or any tool your organization support.||
+|**unit**|str|Units use the ISO standard. For example: **d**, day, days for days; **y**, yr, years for years, etc.||
+|**value** `required`|any|Agreement value. The label will change based on the property itself.||
+|**valueExt**|str|Extended agreement value. The label will change based on the property itself.||
+#### Examples
+
+```
+latency = ServiceLevelAgreement {
+    id = "latency_4_days"
+    property = "latency"
+    value = 4
+    unit = "d # d, day, days for days; y, yr, years for years"
+    element = "tab1.txn_ref_dt"
+    scheduler = "cron"
+    schedule = "0 30 * * *"
+}
+
+availability = ServiceLevelAgreement {
+    id = "main_ga"
+    property = "generalAvailability"
+    value = "2022-05-12T09:30:10-08:00"
+    description = "GA at 12.5.22"
+}
+
+regulatory = ServiceLevelAgreement {
+    id = "reg_toa"
+    property = "timeOfAvailability"
+    value = "09:00-08:00"
+    element = "tab1.txn_ref_dt"
+    driver = "regulatory"
+}
+
+analytics = = ServiceLevelAgreement {
+    id = "analytics_toa"
+    property = "timeOfAvailability"
+    value = "08:00-08:00"
+    element = "tab1.txn_ref_dt"
+    driver = "analytics"
+}
+```
+
+### Support
+
+Support and communication channels help consumers find help regarding their use of the data contract.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**channel** `required`|str|Channel name or identifier.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the channel, free text.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**invitationUrl**|str|Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).||
+|**scope**|str|Scope can be: `interactive`, `announcements`, `issues`, `notifications`.||
+|**tool**|str|Name of the tool, value can be `email`, `slack`, `teams`, `discord`, `ticket`, `googlechat`, or `other`.||
+|**url**|str|Access URL using normal [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax) (https, mailto, etc.).||
+#### Examples
+
+```
+announcements = Support {
+    id = "all_announcements"
+    channel = "channel-name-or-identifier-for-all-announcement"
+    description = "All announcement for all data contracts"
+    tool = "teams"
+    scope = "announcements"
+    url = "https://bitol.io/teams/channel/all-announcements"
+}
+
+email = Support {
+    id = "email_announcements"
+    channel = "channel-name-or-identifier"
+    tool = "email"
+    scope = "announcements"
+    url = "mailto:datacontract-ann@bitol.io"
+}
+
+ticket = Support {
+    id = "ticket_support"
+    channel = "channel-name-or-identifier"
+    tool = "ticket"
+    url = "https://bitol.io/ticket/my-product"
+}
+```
+
+### Role
+
+Role that a consumer may need to access the dataset, depending on the type of access they require.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**access**|str|The type of access provided by the IAM role.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the IAM role and its permissions.||
+|**firstLevelApprovers**|str|The name(s) of the first-level approver(s) of the role.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**role** `required`|str|Name of the IAM role that provides access to the dataset.||
+|**secondLevelApprovers**|str|The name(s) of the second-level approver(s) of the role.||
+#### Examples
+
+```
+reader = Role {
+    id = "bq_queryman_user_opr"
+    role = "bq_queryman_user_opr"
+    access = "read"
+    firstLevelApprovers = "Reporting Manager"
+    secondLevelApprovers = "na"
+}
+
+writer = Role {
+    id = "bq_unica_user_opr"
+    role = "bq_unica_user_opr"
+    access = "write"
+    firstLevelApprovers = "Reporting Manager"
+    secondLevelApprovers = "mickey"
+}
+```
+
+### Team
+
+Team information.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Team description.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**members**|[[TeamMember](#teammember)]|List of members.||
+|**name**|str|Team name.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+#### Examples
+
+```
+team = Team {
+    id = "sc_team"
+    name = "TSC"
+    description = "The greatest team ever."
+    members = [
+        TeamMember {
+            username = "ceastwood"
+            role = "Data Scientist"
+            dateIn = "2022-08-02"
+            dateOut = "2022-10-01"
+            replacedByUsername = "mhopper"
+        },
+        TeamMember {
+            id = "mhopper_member"
+            username = "mhopper"
+            role = "Data Scientist"
+            dateIn = "2022-10-01"
+        },
+        TeamMember {
+            id = "daustin"
+            username = "daustin"
+            role = "Owner"
+            description = "Keeper of the grail"
+            name = "David Austin"
+            dateIn = "2022-10-01"
+        }
+    ]
+}
+```
+
+### TeamMember
+
+Team member.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**dateIn**|str|The date when the user joined the team.||
+|**dateOut**|str|The date when the user ceased to be part of the team.||
+|**description**|str|The user&#39;s description.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**name**|str|The user&#39;s name.||
+|**replacedByUsername**|str|The username of the user who replaced the previous user.||
+|**role**|str|The user&#39;s job role; Examples might be owner, data steward. There is no limit on the role.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**username** `required`|str|The user&#39;s username or email.||
 ### DataQuality
 
 Data quality rule with all the relevant information for setup and execution.

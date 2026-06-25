@@ -1,40 +1,12 @@
 import .catalog.object as so
+import .contract.description as desc
+import .contract.pricing as pr
+import .contract.sla as sla
+import .contract.support as su
 import .common.authoritative as ad
 import .common.property as prop
-
-schema Description:
-    """
-    Object containing the data contract description.
-
-    Attributes
-    ----------
-    purpose: str, default is Undefined, optional.
-        Intended purpose for the provided data.
-    limitations: str, default is Undefined, optional.
-        Technical, compliance, and legal limitations for data use.
-    usage: str, default is Undefined, optional.
-        Recommended usage of the data.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
-
-    Examples
-    --------
-    description = Description {
-        purpose = "Views built on top of the seller tables."
-        limitations = "Cannot be used in conjunction with days with full moons."
-        usage = "Twice a day, preferable before meals."
-        customProperties = [
-            CustomProperty = {
-                property = "publish"
-                value = True
-            }
-        ]
-    }
-    """
-    purpose?: str
-    limitations?: str
-    usage?: str
-    customProperties?: [prop.CustomProperty]
+import .iam.role as ir
+import .iam.team as it
 
 schema DataContract:
     """
@@ -63,7 +35,7 @@ schema DataContract:
         Name of the logical data domain.
     authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
         List of links to sources that provide more details on the data contract.
-    description: Description, default is Undefined, optional.
+    description: desc.Description, default is Undefined, optional.
         Object containing the descriptions.
     customProperties: [prop.CustomProperty], default is Undefined, optional.
         A list of key/value pairs for custom properties.
@@ -71,6 +43,16 @@ schema DataContract:
         Timestamp in UTC of when the data contract was created, using ISO 8601.
     schema: [so.SchemaObject], default is Undefined, optional.
         A list of objects within the schema to be cataloged.
+    support: [su.Support], default is Undefined, optional.
+        Top level for support channels.
+    price: [pr.Pricing], default is Undefined, optional.
+        Pricing when you bill your customer for using this data product.
+    team: [it.Team], default is Undefined, optional.
+        Team information object with members array.
+    roles: [ir.Role], default is Undefined, optional.
+        A list of roles that will provide user access to the dataset.
+    slaProperties: [sla.ServiceLevelAgreement], default is Undefined, optional.
+        A list of key/value pairs for SLA specific properties. There is no limit on the type of properties.
 
     Examples:
     ---------
@@ -110,7 +92,13 @@ schema DataContract:
     tags?: [str]
     domain?: str
     authoritativeDefinitions?: [ad.AuthoritativeDefinition]
-    description?: Description
+    description?: desc.Description
     customProperties?: [prop.CustomProperty]
     contractCreatedTs?: str
     $schema?: [so.SchemaObject]
+    support?: [su.Support]
+    price?: [pr.Pricing]
+    team?: [it.Team]
+    roles?: [ir.Role]
+    slaProperties?: [sla.ServiceLevelAgreement]
+

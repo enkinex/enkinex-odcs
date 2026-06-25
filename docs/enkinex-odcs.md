@@ -24,6 +24,14 @@
   - [CustomProperty](#customproperty)
 - quality
   - [DataQuality](#dataquality)
+  - [MustBeBetweenMixin](#mustbebetweenmixin)
+  - [MustBeGreaterOrEqualToMixin](#mustbegreaterorequaltomixin)
+  - [MustBeGreaterThanMixin](#mustbegreaterthanmixin)
+  - [MustBeLessOrEqualToMixin](#mustbelessorequaltomixin)
+  - [MustBeLessThanMixin](#mustbelessthanmixin)
+  - [MustBeMixin](#mustbemixin)
+  - [MustBeNotBetweenMixin](#mustbenotbetweenmixin)
+  - [MustNotBeMixin](#mustnotbemixin)
 
 ## Schemas
 
@@ -38,7 +46,7 @@ A data contract defines the agreement between a data producer and consumers. Thi
 |**apiVersion** `required`|str|Version of the standard used to build data contract.|"v3.1.0"|
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
 |**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.||
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|[Description](#description)|Object containing the descriptions.||
 |**domain**|str|Name of the logical data domain.||
 |**id** `required`|str|A unique identifier used to reduce the risk of dataset name collisions, such as a UUID.||
@@ -86,7 +94,7 @@ Object containing the data contract description.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**limitations**|str|Technical, compliance, and legal limitations for data use.||
 |**purpose**|str|Intended purpose for the provided data.||
 |**usage**|str|Recommended usage of the data.||
@@ -217,7 +225,7 @@ Base definition for relationships between elements, typically for foreign key co
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
 |**type**|str|The type of relationship.|"foreignKey"|
 ### RelationshipPropertyLevel
@@ -228,7 +236,7 @@ Relationship definition at property level, where &#39;from&#39; is implicitly th
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
 |**type**|str|The type of relationship.|"foreignKey"|
 ### RelationshipSchemaLevel
@@ -239,7 +247,7 @@ Relationship definition at schema level, requiring both &#39;from&#39; and &#39;
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**from** `required`|str \| [str]|Source object reference using fully qualified or shorthand notation; Or an array of source objects for composite keys.||
 |**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
 |**type**|str|The type of relationship.|"foreignKey"|
@@ -253,7 +261,7 @@ Schema element to be cataloged. Applicable to either Objects or Properties
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element; examples would be a link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**name** `required`|str|Name of the element.||
@@ -271,7 +279,7 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element; examples would be a link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dataGranularityDescription**|str|Granular level of the data in the object. Example would be "Aggregation by country."||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
@@ -311,7 +319,7 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**businessName**|str|The business name of the element.||
 |**classification**|str|Can be anything, like confidential, restricted, and public to more advanced categorization.||
 |**criticalDataElement**|bool|If element is considered a critical data element (CDE) then true else false.|False|
-|**customProperties**|[[CustomProperty](#customproperty)]|Custom properties that are not part of the standard.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value. For example, unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
@@ -532,8 +540,128 @@ dnsOptions = Property {
 
 ### DataQuality
 
+Data quality rule with all the relevant information for setup and execution.
+
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**arguments**|str|Additional arguments for the metric, if needed.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
+|**businessImpact**|str|Consequences of the rule failure.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Describe the quality check to be completed.||
+|**dimension**|str|The key performance indicator (KPI) or dimension for data quality. Valid values are listed after the table.||
+|**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks. For example, `soda`, `great-expectations`, `monte-carlo`, `dbt`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**implementation**|str|A text (non-parsed) block of code required for the third-party DQ engine to run.||
+|**method**|str|Values are open and include `reconciliation`.||
+|**metric**|str|Define a data quality check based on the predefined metrics as per ODCS. For example, `nullValues`, `missingValues`, `invalidValues`, `duplicateValues`, `rowCount`.||
+|**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
+|**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
+|**mustBeGreaterOrEqualTo**|int \| float|Must be greater than or equal to the value to be valid. It is equivalent to &#39;&gt;=&#39;.||
+|**mustBeGreaterThan**|int \| float|Must be greater than the value to be valid. It is equivalent to &#39;&gt;&#39;.||
+|**mustBeLessOrEqualTo**|int \| float|Must be less than or equal to the value to be valid. It is equivalent to &#39;&lt;=&#39;.||
+|**mustBeLessThan**|int \| float|Must be less than the value to be valid. It is equivalent to &#39;&lt;&#39;.||
+|**mustBeNotBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
+|**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
+|**name**|str|Name of the data quality check.||
+|**query**|str|Required for `sql` DQ rules: the SQL query to be executed. Note that it should match the target SQL engine/database, no transalation service are provided here.||
+|**schedule**|str|Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.||
+|**scheduler**|str|Name of the scheduler, can be `cron` or any tool your organization support.||
+|**severity**|str|The severity of the DQ rule.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**type**|"library" \| "sql" \| "text" \| "custom"|The type of quality check. `text` is human-readable text that describes the quality of the data. `library` is a set of maintained predefined quality attributes such as row count or unique. `sql` is an individual SQL query that returns a value that can be compared. `custom` is quality attributes that are vendor-specific, such as Soda or Great Expectations.|"library"|
+|**unit**|str|Unit the rule is using, popular values are `rows` or `percent`, but any value is allowed.||
+#### Examples
+
+```
+noNullID = DataQuality {
+    id = "order_id_no_nulls"
+    metric = "nullValues"
+    mustBe = 0
+    description = "There must be no null values in the column."
+}
+
+percentNullStatus = DataQuality {
+    id = "order_status_null_percent"
+    metric = "nullValues"
+    mustBeLessThan = 1
+    unit = "percent"
+    description = "There must be less than 1% null values in the column."
+}
+```
+
+### MustBeBetweenMixin
+
+Data quality operator mixin `mustBeBetween`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
+### MustBeGreaterOrEqualToMixin
+
+Data quality operator mixin `mustBeGreaterOrEqualTo`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBeGreaterOrEqualTo**|int \| float|Must be greater than or equal to the value to be valid. It is equivalent to &#39;&gt;=&#39;.||
+### MustBeGreaterThanMixin
+
+Data quality operator mixin `mustBeGreaterThan`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBeGreaterThan**|int \| float|Must be greater than the value to be valid. It is equivalent to &#39;&gt;&#39;.||
+### MustBeLessOrEqualToMixin
+
+Data quality operator mixin `mustBeLessOrEqualTo`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBeLessOrEqualTo**|int \| float|Must be less than or equal to the value to be valid. It is equivalent to &#39;&lt;=&#39;.||
+### MustBeLessThanMixin
+
+Data quality operator mixin `mustBeLessThan`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBeLessThan**|int \| float|Must be less than the value to be valid. It is equivalent to &#39;&lt;&#39;.||
+### MustBeMixin
+
+Data quality operator mixin `mustBe`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
+### MustBeNotBetweenMixin
+
+Data quality operator mixin `mustBeNotBetween`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBeNotBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
+### MustNotBeMixin
+
+Data quality operator mixin `mustNotBe`
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
 <!-- Auto generated by kcl-doc tool, please do not edit. -->

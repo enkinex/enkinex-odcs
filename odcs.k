@@ -15,7 +15,7 @@ schema Description:
     usage: str, default is Undefined, optional.
         Recommended usage of the data.
     customProperties: [prop.CustomProperty], default is Undefined, optional.
-        Custom properties that are not part of the standard.
+        A list of key/value pairs for custom properties.
 
     Examples
     --------
@@ -66,7 +66,7 @@ schema DataContract:
     description: Description, default is Undefined, optional.
         Object containing the descriptions.
     customProperties: [prop.CustomProperty], default is Undefined, optional.
-        Custom properties that are not part of the standard.
+        A list of key/value pairs for custom properties.
     contractCreatedTs: str, default is Undefined, optional.
         Timestamp in UTC of when the data contract was created, using ISO 8601.
     schema: [so.SchemaObject], default is Undefined, optional.

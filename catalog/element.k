@@ -1,6 +1,6 @@
 import ..common.authoritative as ad
 import ..common.property as prop
-import ..quality.data as dq
+import ..quality.rule as qr
 
 schema SchemaElement:
     """
@@ -25,10 +25,10 @@ schema SchemaElement:
         List of links to sources that provide more details on the element; examples would be a link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.
     tags: [str], default is Undefined, optional.
         A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
-    quality: [qa.DataQuality], default is Undefined, optional.
+    quality: [qr.DataQualityRule], default is Undefined, optional.
         Data quality rules with all the relevant information for rule setup and execution.
     customProperties: [prop.CustomProperty], default is Undefined, optional.
-        Custom properties that are not part of the standard.
+        A list of key/value pairs for custom properties.
     """
     id?: str
     name: str
@@ -38,6 +38,6 @@ schema SchemaElement:
     businessName?: str
     authoritativeDefinitions?: [ad.AuthoritativeDefinition]
     tags?: [str]
-    quality?: [dq.DataQuality]
+    quality?: [qr.DataQuality]
     customProperties?: [prop.CustomProperty]
 

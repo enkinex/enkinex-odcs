@@ -11,7 +11,7 @@ schema RelationshipBase:
     to: str | [str], default is Undefined, required.
         Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.
     customProperties: [prop.CustomProperty], default is Undefined, optional.
-        Custom properties that are not part of the standard.
+        A list of key/value pairs for custom properties.
     """
     $type?: str = "foreignKey"
     to: str | [str]

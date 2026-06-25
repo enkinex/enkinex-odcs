@@ -27,6 +27,7 @@ schema CustomProperty:
         property = "clusterDnsOptions"
         value = [ "1.1.1.1", "8.8.8.8" ]
         description = "Cluster DNS options"
+    }
     """
     id?: str
     property?: str

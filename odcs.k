@@ -1,9 +1,10 @@
-import .common.authoritative
-import .common.property
+import .catalog.object as so
+import .common.authoritative as ad
+import .common.property as prop
 
 schema Description:
     """
-    Object containing the descriptions.
+    Object containing the data contract description.
 
     Attributes
     ----------
@@ -13,7 +14,7 @@ schema Description:
         Technical, compliance, and legal limitations for data use.
     usage: str, default is Undefined, optional.
         Recommended usage of the data.
-    customProperties: [property.CustomProperty], default is Undefined, optional.
+    customProperties: [prop.CustomProperty], default is Undefined, optional.
         Custom properties that are not part of the standard.
 
     Examples
@@ -33,7 +34,7 @@ schema Description:
     purpose?: str
     limitations?: str
     usage?: str
-    customProperties?: [property.CustomProperty]
+    customProperties?: [prop.CustomProperty]
 
 schema DataContract:
     """
@@ -57,15 +58,19 @@ schema DataContract:
     tenant: str, default is Undefined, optional.
         Indicates the property the data is primarily associated with. Value is case insensitive.
     tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. Tags may be used to better categorize an element. For example, finance, sensitive, employee_record.
+        A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
     domain: str, default is Undefined, optional.
         Name of the logical data domain.
-    authoritativeDefinitions: [authoritative.AuthoritativeDefinition], default is Undefined, optional.
+    authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
         List of links to sources that provide more details on the data contract.
     description: Description, default is Undefined, optional.
         Object containing the descriptions.
+    customProperties: [prop.CustomProperty], default is Undefined, optional.
+        Custom properties that are not part of the standard.
     contractCreatedTs: str, default is Undefined, optional.
         Timestamp in UTC of when the data contract was created, using ISO 8601.
+    schema: [so.SchemaObject], default is Undefined, optional.
+        A list of objects within the schema to be cataloged.
 
     Examples:
     ---------
@@ -104,6 +109,8 @@ schema DataContract:
     tenant?: str
     tags?: [str]
     domain?: str
-    authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
+    authoritativeDefinitions?: [ad.AuthoritativeDefinition]
     description?: Description
+    customProperties?: [prop.CustomProperty]
     contractCreatedTs?: str
+    $schema?: [so.SchemaObject]

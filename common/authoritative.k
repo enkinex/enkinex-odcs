@@ -1,4 +1,4 @@
-import .minixs as mix
+import .id as id
 
 schema AuthoritativeDefinition:
     """
@@ -35,7 +35,7 @@ schema AuthoritativeDefinition:
         description = "Data contract's latest version."
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     $type: str
     url: str

@@ -1,4 +1,4 @@
-import .minixs as mix
+import .id as id
 
 schema CustomProperty:
     """
@@ -30,7 +30,7 @@ schema CustomProperty:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     property?: str
     value?: any

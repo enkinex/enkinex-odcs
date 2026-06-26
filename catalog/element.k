@@ -1,5 +1,5 @@
 import ..common.authoritative as ad
-import ..common.minixs as mix
+import ..common.id as id
 import ..common.property as prop
 import ..quality.rule as qr
 
@@ -30,7 +30,7 @@ schema SchemaElement:
         A list of key/value pairs for custom properties.
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     name: str
     physicalName?: str

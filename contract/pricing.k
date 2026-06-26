@@ -1,4 +1,4 @@
-import ..common.minixs as mix
+import ..common.id as id
 
 schema Pricing:
     """
@@ -22,7 +22,7 @@ schema Pricing:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     priceAmount?: str
     priceCurrency?: str

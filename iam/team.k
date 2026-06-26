@@ -1,5 +1,5 @@
 import ..common.authoritative as ad
-import ..common.minixs as mix
+import ..common.id as id
 import ..common.property as prop
 
 schema TeamMember:
@@ -30,7 +30,7 @@ schema TeamMember:
         A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     username: str
     name?: str
@@ -94,7 +94,7 @@ schema Team:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     name?: str
     description?: str

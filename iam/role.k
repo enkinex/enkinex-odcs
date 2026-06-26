@@ -1,4 +1,4 @@
-import ..common.minixs as mix
+import ..common.id as id
 import ..common.property as prop
 
 schema Role:
@@ -41,7 +41,7 @@ schema Role:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     role: str
     description?: str

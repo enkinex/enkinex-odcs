@@ -1,4 +1,4 @@
-import ..common.minixs as mix
+import ..common.id as id
 import ..common.property as prop
 
 schema Support:
@@ -49,7 +49,7 @@ schema Support:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     channel: str
     url?: str

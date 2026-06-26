@@ -22,7 +22,6 @@
   - [AuthoritativeDefinition](#authoritativedefinition)
   - [CustomProperty](#customproperty)
   - [OptionalStableIdMixin](#optionalstableidmixin)
-  - [RequiredFromReferenceMixin](#requiredfromreferencemixin)
 - contract
   - [Description](#description)
   - [Pricing](#pricing)
@@ -571,15 +570,6 @@ Optional `id` property reference mixin.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-### RequiredFromReferenceMixin
-
-Required `from` property reference mixin.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**from** `required`|str|Source property reference using fully qualified or shorthand notation.||
 ### Description
 
 Object containing the data contract description.

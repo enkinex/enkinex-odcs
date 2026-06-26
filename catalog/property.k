@@ -1,5 +1,5 @@
 import .element as el
-import .relashionship as rel
+import .relationship as rel
 import .type_options as to
 
 schema SchemaProperty(el.SchemaElement):

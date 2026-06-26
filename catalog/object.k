@@ -1,6 +1,6 @@
 import .element as el
 import .property as sp
-import .relashionship as rel
+import .relationship as rel
 
 schema SchemaObject(el.SchemaElement):
     """

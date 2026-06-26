@@ -1,4 +1,4 @@
-import ..common.minixs as mix
+import ..common.id as id
 
 schema ServiceLevelAgreement:
     """
@@ -63,7 +63,7 @@ schema ServiceLevelAgreement:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     property: str
     value: any

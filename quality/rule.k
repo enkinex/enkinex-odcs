@@ -1,7 +1,7 @@
 import .operator
 
 import ..common.authoritative as ad
-import ..common.minixs as mix
+import ..common.id as id
 import ..common.property as prop
 
 schema DataQuality:
@@ -65,7 +65,7 @@ schema DataQuality:
     }
     """
     mixin [
-        mix.OptionalStableIdMixin,
+        id.OptionalStableIdMixin,
         operator.MustBeMixin,
         operator.MustNotBeMixin,
         operator.MustBeGreaterThanMixin,

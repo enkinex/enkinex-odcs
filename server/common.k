@@ -1,6 +1,6 @@
 import .custom
 
-import ..common.minixs as mix
+import ..common.id as id
 import ..common.property as prop
 import ..iam.role as ir
 
@@ -20,7 +20,7 @@ mixin ServerMixin:
         A list of key/value pairs for custom properties.
     """
     mixin [
-        mix.OptionalStableIdMixin
+        id.OptionalStableIdMixin
     ]
     server: str
     description?: str

@@ -40,6 +40,42 @@
   - [MustBeMixin](#mustbemixin)
   - [MustBeNotBetweenMixin](#mustbenotbetweenmixin)
   - [MustNotBeMixin](#mustnotbemixin)
+- server
+  - [ApiServer](#apiserver)
+  - [AthenaServer](#athenaserver)
+  - [AzureServer](#azureserver)
+  - [BigQueryServer](#bigqueryserver)
+  - [ClickHouseServer](#clickhouseserver)
+  - [CustomServer](#customserver)
+  - [DatabricksServer](#databricksserver)
+  - [DenodoServer](#denodoserver)
+  - [DremioServer](#dremioserver)
+  - [DuckdbServer](#duckdbserver)
+  - [GlueServer](#glueserver)
+  - [GoogleCloudSqlServer](#googlecloudsqlserver)
+  - [HiveServer](#hiveserver)
+  - [IBMDB2Server](#ibmdb2server)
+  - [ImpalaServer](#impalaserver)
+  - [InformixServer](#informixserver)
+  - [KafkaServer](#kafkaserver)
+  - [KinesisServer](#kinesisserver)
+  - [LocalServer](#localserver)
+  - [MySqlServer](#mysqlserver)
+  - [OracleServer](#oracleserver)
+  - [PostgresServer](#postgresserver)
+  - [PrestoServer](#prestoserver)
+  - [PubSubServer](#pubsubserver)
+  - [RedshiftServer](#redshiftserver)
+  - [S3Server](#s3server)
+  - [Server](#server)
+  - [ServerMixin](#servermixin)
+  - [SftpServer](#sftpserver)
+  - [SnowflakeServer](#snowflakeserver)
+  - [SqlserverServer](#sqlserverserver)
+  - [SynapseServer](#synapseserver)
+  - [TrinoServer](#trinoserver)
+  - [VerticaServer](#verticaserver)
+  - [ZenServer](#zenserver)
 
 ## Schemas
 
@@ -63,6 +99,7 @@ A data contract defines the agreement between a data producer and consumers. Thi
 |**price**|[[Pricing](#pricing)]|Pricing when you bill your customer for using this data product.||
 |**roles**|[[Role](#role)]|A list of roles that will provide user access to the dataset.||
 |**schema**|[[SchemaObject](#schemaobject)]|A list of objects within the schema to be cataloged.||
+|**servers** `required`|[[Server](#server)]|List of servers where the datasets reside.||
 |**slaProperties**|[[ServiceLevelAgreement](#servicelevelagreement)]|A list of key/value pairs for SLA specific properties. There is no limit on the type of properties.||
 |**status** `required`|str|Current status of the data contract. Examples are "proposed", "draft", "active", "deprecated", "retired".||
 |**support**|[[Support](#support)]|Top level for support channels.||
@@ -900,4 +937,649 @@ Data quality operator mixin `mustNotBe`
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
+### ApiServer
+
+API Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**location** `required`|str|The URL to the API, For example, `https://api.example.com/v1`||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### AthenaServer
+
+AWS Athena Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**catalog**|str|Identify the name of the Data Source, also referred to as a Catalog.|"awsdatacatalog"|
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**regionName**|str|The region your AWS account uses. For example, `eu-west-1`||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|Identify the schema in the data source in which your tables exist.||
+|**server** `required`|str|Identifier of the server.||
+|**stagingDir** `required`|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3. For example, `s3://my_storage_account_name/my_container/path`.||
+### AzureServer
+
+Azure Blob Storage Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format** `required`|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs. For example, `az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet`, `abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### BigQueryServer
+
+Google BigQuery Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**dataset** `required`|str|The GCP dataset name.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**project** `required`|str|The GCP project name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### ClickHouseServer
+
+ClickHouse Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the ClickHouse server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port to the ClickHouse server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### CustomServer
+
+Custom server properties
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**endpointUrl**|str|Server endpoint.||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**schema**|str|Name of the schema.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the cluster or warehouse.||
+|**warehouse**|str|Name of the data stream.||
+### DatabricksServer
+
+Databricks Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**catalog** `required`|str|The name of the Hive or Unity catalog.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host**|str|The Databricks host. For example, `dbc-abcdefgh-1234.cloud.databricks.com`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The schema name in the catalog.||
+|**server** `required`|str|Identifier of the server.||
+### DenodoServer
+
+Denodo Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the Denodo server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the Denodo server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### DremioServer
+
+Dremio Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the Dremio server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the Dremio server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+### DuckdbServer
+
+DuckDB Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|Path to duckdb database file.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+### GlueServer
+
+AWS Glue Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account** `required`|str|The AWS Glue account. For example, `1234-5678-9012`.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The AWS Glue database name. For example, `my_database`.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format**|str|The format of the files. For example, `parquet`, `csv`, `json`, `delta`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**location**|str|The AWS S3 path. Must be in the form of a URL. For example, `s3://datacontract-example-orders-latest/data/{model}`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### GoogleCloudSqlServer
+
+Google Cloud Sql Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the Google Cloud Sql server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the Google Cloud Sql server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+### HiveServer
+
+Apache Hive Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the Hive database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the Hive server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port**|int|The port to the Hive server. Defaults to 10000.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### IBMDB2Server
+
+IBM DB2 Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the IBM DB2 server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the IBM DB2 server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+### ImpalaServer
+
+Apache Impala Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the Impala database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the Impala server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port**|int|The port to the Impala server. Defaults to 21050.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### InformixServer
+
+IBM Informix Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the Informix server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port**|int|The port to the Informix server. Defaults to 9088.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### KafkaServer
+
+Apache Kafka Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format**|str|The format of the messages. For example, `json`, `avro`, `protobuf`, `xml`.|"json"|
+|**host** `required`|str|The bootstrap server of the kafka cluster.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### KinesisServer
+
+AWS Kinesis Data Streams Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format**|str|The format of the record. For example, `json`, `avro`, `protobuf`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**region**|str|AWS region. For example, `eu-west-1`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### LocalServer
+
+Local File Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format** `required`|str|The format of the file(s). For example, `json`, `parquet`, `delta`, `csv`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**path** `required`|str|The relative or absolute path to the data file(s). For example, `./folder/data.parquet`, `./folder/*.parquet`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### MySqlServer
+
+MySQL Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the MySql server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the MySql server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### OracleServer
+
+Oracle Database Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the oracle server. For example, `localhost`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port to the oracle server. For example, `1523`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName** `required`|str|The name of the service. For example, `service`.||
+### PostgresServer
+
+PostgreSQL Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the Postgres server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port to the Postgres server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema in the database.||
+|**server** `required`|str|Identifier of the server.||
+### PrestoServer
+
+Presto Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**catalog**|str|The name of the catalog. For example, `postgres`.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the Presto server. For example, `localhost:8080`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|The name of the schema. For example, `public`.||
+|**server** `required`|str|Identifier of the server.||
+### PubSubServer
+
+Google Cloud Pub/Sub Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**project** `required`|str|The GCP project name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### RedshiftServer
+
+Amazon Redshift Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|The account used by the server.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host**|str|An optional string describing the server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**region**|str|AWS region of Redshift server. For example, `us-east-1`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+### S3Server
+
+Amazon S3 Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.||
+|**description**|str|Description of the server.||
+|**endpointUrl**|str|The server endpoint for S3-compatible servers. For example, `https://minio.example.com`.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**location** `required`|str|S3 URL, starting with `s3://`. For example, `s3://datacontract-example-orders-latest/data/{model}/*.json`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### Server
+
+General Server Structure.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the cluster or warehouse.||
+|**type** `required`|str|Type of the server. Can be one of: api, athena, azure, bigquery, clickhouse, cloudsql, custom, databricks, db2, denodo, dremio, duckdb, glue, hive, impala, informix, kafka, kinesis, local, mysql, oracle, postgres, postgresql, presto, pubsub, redshift, s3, sftp, snowflake, sqlserver, synapse, trino, vertica, zen.|"custom"|
+|**warehouse**|str|Name of the data stream.||
+#### Examples
+
+```
+server = Server {
+    id = "my_awesome_server"
+    server = "my-server-name"
+    type = "<server-type>"
+    description = "<server-description>"
+    environment = "<server-environment>"
+    ...
+    <server-type-specific-fields> # according to the server type, see below
+    ...
+    roles = [
+      <role-details>
+      ...
+    ]
+    customProperties = [
+      <custom-properties>
+      ...
+    ]
+}
+```
+
+### ServerMixin
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### SftpServer
+
+SFTP Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**location** `required`|str|SFTP URL, starting with `sftp://`. For example, `sftp://123.123.12.123/{model}/*.json`.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### SnowflakeServer
+
+Snowflake Data Warehouse Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account** `required`|str|The Snowflake account used by the server.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host**|str|The host to the Snowflake server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port**|int|The port to the Snowflake server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**warehouse**|str|The name of the cluster of resources that is a Snowflake virtual warehouse.||
+### SqlserverServer
+
+Microsoft SQL Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database. For example, `database`.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host to the database server. For example, `localhost`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port**|int|The port to the database server. For example, `1433`.|1433|
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema in the database. For example, `dbo`.||
+|**server** `required`|str|Identifier of the server.||
+### SynapseServer
+
+Azure Synapse Analytics Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the Synapse server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the Synapse server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
+### TrinoServer
+
+Trino Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**catalog** `required`|str|The name of the catalog. For example, `hive`.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The Trino host URL. For example, `localhost`.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The Trino port.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema in the database. For example, `my_schema`.||
+|**server** `required`|str|Identifier of the server.||
+### VerticaServer
+
+Vertica Database Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|The name of the database.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|The host of the Vertica server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port** `required`|int|The port of the Vertica server.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema** `required`|str|The name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+### ZenServer
+
+Zen Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database** `required`|str|Database name to connect to on the Zen server.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**host** `required`|str|Hostname or IP address of the Zen server.||
+|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**port**|int|Zen server SQL connections port. Defaults to 1583.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
 <!-- Auto generated by kcl-doc tool, please do not edit. -->

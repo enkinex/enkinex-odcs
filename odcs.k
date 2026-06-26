@@ -7,6 +7,7 @@ import .common.authoritative as ad
 import .common.property as prop
 import .iam.role as ir
 import .iam.team as it
+import .server.common as srv
 
 schema DataContract:
     """
@@ -33,6 +34,8 @@ schema DataContract:
         A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
     domain: str, default is Undefined, optional.
         Name of the logical data domain.
+    servers: [srv.Server], default is Undefined, optional.
+        List of servers where the datasets reside.
     authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
         List of links to sources that provide more details on the data contract.
     description: desc.Description, default is Undefined, optional.
@@ -91,6 +94,7 @@ schema DataContract:
     tenant?: str
     tags?: [str]
     domain?: str
+    servers: [srv.Server]
     authoritativeDefinitions?: [ad.AuthoritativeDefinition]
     description?: desc.Description
     customProperties?: [prop.CustomProperty]

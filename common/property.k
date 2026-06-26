@@ -1,3 +1,5 @@
+import .minixs as mix
+
 schema CustomProperty:
     """
     This section covers custom properties you can use to add non-standard properties.
@@ -5,8 +7,6 @@ schema CustomProperty:
 
     Attributes
     ----------
-    id : str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     property: str, default is Undefined, optional.
         The name of the key.
     value: any, default is Undefined, optional.
@@ -29,7 +29,10 @@ schema CustomProperty:
         description = "Cluster DNS options"
     }
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     property?: str
     value?: any
     escription?: str
+

@@ -1,4 +1,5 @@
 import ..common.authoritative as ad
+import ..common.minixs as mix
 import ..common.property as prop
 import ..quality.rule as qr
 
@@ -9,8 +10,6 @@ schema SchemaElement:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters ('-', '_' allowed).
     name: str, default is Undefined, required.
         Name of the element.
     physicalName: str, default is Undefined, optional.
@@ -30,7 +29,9 @@ schema SchemaElement:
     customProperties: [prop.CustomProperty], default is Undefined, optional.
         A list of key/value pairs for custom properties.
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     name: str
     physicalName?: str
     physicalType?: str

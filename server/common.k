@@ -1,5 +1,6 @@
 import .custom
 
+import ..common.minixs as mix
 import ..common.property as prop
 import ..iam.role as ir
 
@@ -7,8 +8,6 @@ mixin ServerMixin:
     """
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     server: str, default is Undefined, required.
         Identifier of the server.
     description: str, default is Undefined, optional.
@@ -20,7 +19,9 @@ mixin ServerMixin:
     customProperties: [prop.CustomProperty], default is Undefined, optional.
         A list of key/value pairs for custom properties.
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     server: str
     description?: str
     environment?: str

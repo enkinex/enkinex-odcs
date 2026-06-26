@@ -1,3 +1,4 @@
+import ..common.minixs as mix
 import ..common.property as prop
 
 schema Support:
@@ -6,8 +7,6 @@ schema Support:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     channel: str, default is Undefined, required.
         Channel name or identifier.
     url: str, default is Undefined, optional.
@@ -49,7 +48,9 @@ schema Support:
         url = "https://bitol.io/ticket/my-product"
     }
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     channel: str
     url?: str
     description?: str

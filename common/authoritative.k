@@ -1,3 +1,5 @@
+import .minixs as mix
+
 schema AuthoritativeDefinition:
     """
     Authoritative Definitions are an essential part of the contract.
@@ -6,8 +8,6 @@ schema AuthoritativeDefinition:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     type: str, default is Undefined, required.
         Type of definition for authority. Recommended values are: businessDefinition, transformationImplementation, videoTutorial, tutorial, and implementation. At the root level, a type can also be canonicalUrl to indicate a reference to the data contract's latest version.
     url: str, default is Undefined, required.
@@ -34,7 +34,10 @@ schema AuthoritativeDefinition:
         $type = "canonicalUrl"
         description = "Data contract's latest version."
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     $type: str
     url: str
     description?: str
+

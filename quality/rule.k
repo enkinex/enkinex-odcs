@@ -1,6 +1,7 @@
 import .operator
 
 import ..common.authoritative as ad
+import ..common.minixs as mix
 import ..common.property as prop
 
 schema DataQuality:
@@ -9,8 +10,6 @@ schema DataQuality:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     name: str, default is Undefined, optional.
         Name of the data quality check.
     description: str, default is Undefined, optional.
@@ -66,6 +65,7 @@ schema DataQuality:
     }
     """
     mixin [
+        mix.OptionalStableIdMixin,
         operator.MustBeMixin,
         operator.MustNotBeMixin,
         operator.MustBeGreaterThanMixin,
@@ -75,7 +75,6 @@ schema DataQuality:
         operator.MustBeBetweenMixin,
         operator.MustBeNotBetweenMixin
     ]
-    id?: str
     name?: str
     description?: str
     $type?: "library" | "sql" | "text" | "custom" = "library"

@@ -1,4 +1,5 @@
 import ..common.authoritative as ad
+import ..common.minixs as mix
 import ..common.property as prop
 
 schema TeamMember:
@@ -7,8 +8,6 @@ schema TeamMember:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     username: str, default is Undefined, required.
         The user's username or email.
     name: str, default is Undefined, optional.
@@ -30,7 +29,9 @@ schema TeamMember:
     tags: [str], default is Undefined, optional.
         A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     username: str
     name?: str
     description?: str
@@ -48,8 +49,6 @@ schema Team:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     name: str, default is Undefined, optional.
         Team name.
     description: str, default is Undefined, optional.
@@ -94,7 +93,9 @@ schema Team:
         ]
     }
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     name?: str
     description?: str
     members?: [TeamMember]

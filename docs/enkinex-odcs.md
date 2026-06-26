@@ -21,6 +21,8 @@
 - common
   - [AuthoritativeDefinition](#authoritativedefinition)
   - [CustomProperty](#customproperty)
+  - [OptionalStableIdMixin](#optionalstableidmixin)
+  - [RequiredFromReferenceMixin](#requiredfromreferencemixin)
 - contract
   - [Description](#description)
   - [Pricing](#pricing)
@@ -507,7 +509,7 @@ Authoritative Definitions are an essential part of the contract. They allow to d
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**description**|str|Optional description.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**type** `required`|str|Type of definition for authority. Recommended values are: businessDefinition, transformationImplementation, videoTutorial, tutorial, and implementation. At the root level, a type can also be canonicalUrl to indicate a reference to the data contract&#39;s latest version.||
 |**url** `required`|str|URL to the authority.||
 #### Examples
@@ -540,7 +542,7 @@ This section covers custom properties you can use to add non-standard properties
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**escription**|str|||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**property**|str|The name of the key.||
 |**value**|any|The value of the key. It can be an array.||
 #### Examples
@@ -560,6 +562,24 @@ dnsOptions = Property {
 }
 ```
 
+### OptionalStableIdMixin
+
+Optional `id` property reference mixin.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+### RequiredFromReferenceMixin
+
+Required `from` property reference mixin.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**from** `required`|str|Source property reference using fully qualified or shorthand notation.||
 ### Description
 
 Object containing the data contract description.
@@ -596,7 +616,7 @@ This section covers pricing when you bill your customer for using this data prod
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**priceAmount**|str|||
 |**priceCurrency**|str|Currency of the subscription price in `price.priceAmount`.||
 |**priceUnit**|str|The unit of measure for calculating cost. Examples megabyte, gigabyte.||
@@ -621,7 +641,7 @@ This section describes the service-level agreements (SLA).
 |**description**|str|Description of the SLA for humans.||
 |**driver**|str|Describes the importance of the SLA from the list of: `regulatory`, `analytics`, or `operational`.||
 |**element**|str|Element(s) to check on. Multiple elements should be extremely rare and, if so, separated by commas.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**property** `required`|str|Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1). May requires units.||
 |**schedule**|str|Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.||
 |**scheduler**|str|Name of the scheduler, can be cron or any tool your organization support.||
@@ -676,7 +696,7 @@ Support and communication channels help consumers find help regarding their use 
 |**channel** `required`|str|Channel name or identifier.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the channel, free text.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**invitationUrl**|str|Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).||
 |**scope**|str|Scope can be: `interactive`, `announcements`, `issues`, `notifications`.||
 |**tool**|str|Name of the tool, value can be `email`, `slack`, `teams`, `discord`, `ticket`, `googlechat`, or `other`.||
@@ -721,7 +741,7 @@ Role that a consumer may need to access the dataset, depending on the type of ac
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the IAM role and its permissions.||
 |**firstLevelApprovers**|str|The name(s) of the first-level approver(s) of the role.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**role** `required`|str|Name of the IAM role that provides access to the dataset.||
 |**secondLevelApprovers**|str|The name(s) of the second-level approver(s) of the role.||
 #### Examples
@@ -755,7 +775,7 @@ Team information.
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Team description.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**members**|[[TeamMember](#teammember)]|List of members.||
 |**name**|str|Team name.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
@@ -805,7 +825,7 @@ Team member.
 |**dateIn**|str|The date when the user joined the team.||
 |**dateOut**|str|The date when the user ceased to be part of the team.||
 |**description**|str|The user&#39;s description.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**name**|str|The user&#39;s name.||
 |**replacedByUsername**|str|The username of the user who replaced the previous user.||
 |**role**|str|The user&#39;s job role; Examples might be owner, data steward. There is no limit on the role.||
@@ -826,7 +846,7 @@ Data quality rule with all the relevant information for setup and execution.
 |**description**|str|Describe the quality check to be completed.||
 |**dimension**|str|The key performance indicator (KPI) or dimension for data quality. Valid values are listed after the table.||
 |**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks. For example, `soda`, `great-expectations`, `monte-carlo`, `dbt`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**implementation**|str|A text (non-parsed) block of code required for the third-party DQ engine to run.||
 |**method**|str|Values are open and include `reconciliation`.||
 |**metric**|str|Define a data quality check based on the predefined metrics as per ODCS. For example, `nullValues`, `missingValues`, `invalidValues`, `duplicateValues`, `rowCount`.||
@@ -948,7 +968,7 @@ API Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|The URL to the API, For example, `https://api.example.com/v1`||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -964,7 +984,7 @@ AWS Athena Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**regionName**|str|The region your AWS account uses. For example, `eu-west-1`||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|Identify the schema in the data source in which your tables exist.||
@@ -983,7 +1003,7 @@ Azure Blob Storage Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format** `required`|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs. For example, `az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet`, `abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -999,7 +1019,7 @@ Google BigQuery Server.
 |**dataset** `required`|str|The GCP dataset name.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**project** `required`|str|The GCP project name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1016,7 +1036,7 @@ ClickHouse Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the ClickHouse server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the ClickHouse server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1060,7 +1080,7 @@ Databricks Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host**|str|The Databricks host. For example, `dbc-abcdefgh-1234.cloud.databricks.com`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The schema name in the catalog.||
 |**server** `required`|str|Identifier of the server.||
@@ -1077,7 +1097,7 @@ Denodo Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Denodo server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Denodo server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1093,7 +1113,7 @@ Dremio Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Dremio server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Dremio server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
@@ -1110,7 +1130,7 @@ DuckDB Server.
 |**database** `required`|str|Path to duckdb database file.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
@@ -1128,7 +1148,7 @@ AWS Glue Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|The format of the files. For example, `parquet`, `csv`, `json`, `delta`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location**|str|The AWS S3 path. Must be in the form of a URL. For example, `s3://datacontract-example-orders-latest/data/{model}`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1145,7 +1165,7 @@ Google Cloud Sql Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Google Cloud Sql server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Google Cloud Sql server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1163,7 +1183,7 @@ Apache Hive Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Hive server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Hive server. Defaults to 10000.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1180,7 +1200,7 @@ IBM DB2 Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the IBM DB2 server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the IBM DB2 server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
@@ -1198,7 +1218,7 @@ Apache Impala Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Impala server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Impala server. Defaults to 21050.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1215,7 +1235,7 @@ IBM Informix Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Informix server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Informix server. Defaults to 9088.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1232,7 +1252,7 @@ Apache Kafka Server.
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|The format of the messages. For example, `json`, `avro`, `protobuf`, `xml`.|"json"|
 |**host** `required`|str|The bootstrap server of the kafka cluster.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### KinesisServer
@@ -1247,7 +1267,7 @@ AWS Kinesis Data Streams Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|The format of the record. For example, `json`, `avro`, `protobuf`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**region**|str|AWS region. For example, `eu-west-1`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1263,7 +1283,7 @@ Local File Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format** `required`|str|The format of the file(s). For example, `json`, `parquet`, `delta`, `csv`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**path** `required`|str|The relative or absolute path to the data file(s). For example, `./folder/data.parquet`, `./folder/*.parquet`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1280,7 +1300,7 @@ MySQL Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the MySql server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the MySql server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1296,7 +1316,7 @@ Oracle Database Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the oracle server. For example, `localhost`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the oracle server. For example, `1523`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1314,7 +1334,7 @@ PostgreSQL Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Postgres server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the Postgres server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database.||
@@ -1332,7 +1352,7 @@ Presto Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Presto server. For example, `localhost:8080`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema. For example, `public`.||
 |**server** `required`|str|Identifier of the server.||
@@ -1347,7 +1367,7 @@ Google Cloud Pub/Sub Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**project** `required`|str|The GCP project name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1365,7 +1385,7 @@ Amazon Redshift Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host**|str|An optional string describing the server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**region**|str|AWS region of Redshift server. For example, `us-east-1`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1384,7 +1404,7 @@ Amazon S3 Server.
 |**endpointUrl**|str|The server endpoint for S3-compatible servers. For example, `https://minio.example.com`.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|S3 URL, starting with `s3://`. For example, `s3://datacontract-example-orders-latest/data/{model}/*.json`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1407,7 +1427,7 @@ General Server Structure.
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1454,7 +1474,7 @@ server = Server {
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### SftpServer
@@ -1470,7 +1490,7 @@ SFTP Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|SFTP URL, starting with `sftp://`. For example, `sftp://123.123.12.123/{model}/*.json`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1488,7 +1508,7 @@ Snowflake Data Warehouse Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host**|str|The host to the Snowflake server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Snowflake server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1507,7 +1527,7 @@ Microsoft SQL Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the database server. For example, `localhost`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the database server. For example, `1433`.|1433|
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database. For example, `dbo`.||
@@ -1525,7 +1545,7 @@ Azure Synapse Analytics Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Synapse server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Synapse server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1542,7 +1562,7 @@ Trino Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The Trino host URL. For example, `localhost`.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The Trino port.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database. For example, `my_schema`.||
@@ -1560,7 +1580,7 @@ Vertica Database Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Vertica server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Vertica server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1578,7 +1598,7 @@ Zen Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|Hostname or IP address of the Zen server.||
-|**id**|str|A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|Zen server SQL connections port. Defaults to 1583.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||

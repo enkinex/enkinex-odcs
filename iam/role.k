@@ -1,3 +1,4 @@
+import ..common.minixs as mix
 import ..common.property as prop
 
 schema Role:
@@ -39,7 +40,9 @@ schema Role:
         secondLevelApprovers = "mickey"
     }
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     role: str
     description?: str
     access?: str

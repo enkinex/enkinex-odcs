@@ -1,3 +1,5 @@
+import ..common.minixs as mix
+
 schema ServiceLevelAgreement:
     """
     This section describes the service-level agreements (SLA).
@@ -60,7 +62,9 @@ schema ServiceLevelAgreement:
         driver = "analytics"
     }
     """
-    id?: str
+    mixin [
+        mix.OptionalStableIdMixin
+    ]
     property: str
     value: any
     valueExt?: str

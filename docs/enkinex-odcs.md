@@ -5,9 +5,16 @@
 - [DataContract](#datacontract)
 - catalog
   - [ArrayOptions](#arrayoptions)
+  - [ArrayOptionsMixin](#arrayoptionsmixin)
   - [DatetimeOptions](#datetimeoptions)
+  - [DatetimeOptionsMixin](#datetimeoptionsmixin)
+  - [MinMaxNumberOptionsMixin](#minmaxnumberoptionsmixin)
+  - [MinMaxStringOptionsMixin](#minmaxstringoptionsmixin)
   - [NumberOptions](#numberoptions)
+  - [NumberOptionsMixin](#numberoptionsmixin)
   - [ObjectOptions](#objectoptions)
+  - [ObjectOptionsMixin](#objectoptionsmixin)
+  - [RegexPattternOptionMixin](#regexpattternoptionmixin)
   - [RelationshipBase](#relationshipbase)
   - [RelationshipPropertyLevel](#relationshippropertylevel)
   - [RelationshipSchemaLevel](#relationshipschemalevel)
@@ -16,7 +23,7 @@
   - [SchemaProperty](#schemaproperty)
   - [SchemaPropertyItems](#schemapropertyitems)
   - [StringOptions](#stringoptions)
-  - [TimestampOptions](#timestampoptions)
+  - [StringOptionsMixin](#stringoptionsmixin)
   - [TypeOptions](#typeoptions)
 - common
   - [AuthoritativeDefinition](#authoritativedefinition)
@@ -148,6 +155,17 @@ Additional metadata options to define the array type.
 |**maxItems**|int|Maximum number of items.||
 |**minItems**|int|Minimum number of items.||
 |**uniqueItems**|bool|If set to true, all items in the array are unique.||
+### ArrayOptionsMixin
+
+Array logical type options mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**maxItems**|int|Maximum number of items.||
+|**minItems**|int|Minimum number of items.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
 ### DatetimeOptions
 
 Additional metadata options to define date, timestamp, and time types.
@@ -156,13 +174,13 @@ Additional metadata options to define date, timestamp, and time types.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**defaultTimezone**|str|The default timezone of the timestamp. If timezone is not defined, the default timezone UTC is used.|"Z"|
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone UTC is used.|"Z"|
 |**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
-|**format**|str|Format of the date. Follows the format as prescribed by JDK DateTimeFormatter. Default value is using ISO 8601. For example, format "yyyy-MM-dd".|"YYYY-MM-DDTHH:mm:ss.SSSZ"|
+|**format**|str|Format of the date. Default value is using ISO 8601.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]|"YYYY-MM-DDTHH:mm:ss.SSSZ"|
 |**maximum**|str|All date values are less than or equal to this value (values &lt;= maximum).||
 |**minimum**|str|All date values are greater than or equal to this value (values &gt;= minimum).||
-|**timezone**|bool|Whether the timestamp defines the timezone or not. If true, timezone information is included in the timestamp.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
 #### Examples
 
 ```
@@ -215,6 +233,40 @@ physicalDateAndTimeUTC = SchemaProperty {
 }
 ```
 
+### DatetimeOptionsMixin
+
+Datetime logical type options mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone UTC is used.|"Z"|
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+### MinMaxNumberOptionsMixin
+
+Minimum and maximun number type options mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**exclusiveMaximum**|int \| float|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|int \| float|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**maximum**|int \| float|All values are less than or equal to this value (values &lt;= maximum).||
+|**minimum**|int \| float|All values are greater than or equal to this value (values &gt;= minimum).||
+### MinMaxStringOptionsMixin
+
+Minimum and maximun string logical type options mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**maximum**|str|All date values are less than or equal to this value (values &lt;= maximum).||
+|**minimum**|str|All date values are greater than or equal to this value (values &gt;= minimum).||
 ### NumberOptions
 
 Additional metadata options to define integer and number types.
@@ -225,10 +277,19 @@ Additional metadata options to define integer and number types.
 | --- | --- | --- | --- |
 |**exclusiveMaximum**|int \| float|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|int \| float|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
-|**format**|str|Format of the value in terms of how many bits of space it can use and whether it is signed or unsigned (follows the Rust integer types).||
+|**format**|"i8" \| "i16" \| "i32" \| "i64" \| "i128" \| "u8" \| "u16" \| "u32" \| "u64" \| "u128" \| "f32" \| "f64"|Format of the value in terms of how many bits of space it can use and whether it is signed or unsigned.<br />Follows the Rust integer and float types.||
 |**maximum**|int \| float|All values are less than or equal to this value (values &lt;= maximum).||
 |**minimum**|int \| float|All values are greater than or equal to this value (values &gt;= minimum).||
-|**multipleOf**|int \| float|Values must be multiples of this number. For example, multiple of 5 has valid values 0, 5, 10, -5.||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+### NumberOptionsMixin
+
+Number logical type options mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
 ### ObjectOptions
 
 Additional metadata options to define integer and number types.
@@ -240,6 +301,26 @@ Additional metadata options to define integer and number types.
 |**maxProperties**|int|Maximum number of properties.||
 |**minProperties**|int|Minimum number of properties.||
 |**required**|[str]|Property names that are required to exist in the object.||
+### ObjectOptionsMixin
+
+Object logical type option mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**maxProperties**|int|Maximum number of properties.||
+|**minProperties**|int|Minimum number of properties.||
+|**required**|[str]|Property names that are required to exist in the object.||
+### RegexPattternOptionMixin
+
+Regex pattern logical type option mixix.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 ### RelationshipBase
 
 Base definition for relationships between elements, typically for foreign key constraints."
@@ -408,20 +489,20 @@ Additional metadata options to define the string type.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**format**|str|Provides extra context about what format the string follows. For example, password, byte, binary, email, uuid, uri, hostname, ipv4, ipv6.||
+|**format**|str|Provides extra context about what format the string follows.<br />Examples: ["password", "byte", "binary", "email", "uuid", "uri", "hostname", "ipv4", "ipv6"]||
 |**maxLength**|int|Maximum length of the string.||
 |**minLength**|int|Minimum length of the string.||
-|**pattern**|str|Regular expression pattern to define valid value. Follows regular expression syntax from ECMA-262 (https://262.ecma-international.org/5.1/#sec-15.10.1).||
-### TimestampOptions
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+### StringOptionsMixin
 
-Additional metadata options to define timestamp and time types.
+String logical type options mixix.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**defaultTimezone**|str|The default timezone of the timestamp. If timezone is not defined, the default timezone UTC is used.|"Z"|
-|**timezone**|bool|Whether the timestamp defines the timezone or not. If true, timezone information is included in the timestamp.||
+|**maxLength**|int|Maximum length of the string.||
+|**minLength**|int|Minimum length of the string.||
 ### TypeOptions
 
 Base type for every logical type options.
@@ -430,22 +511,22 @@ Base type for every logical type options.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**defaultTimezone**|str|The default timezone of the timestamp. If timezone is not defined, the default timezone UTC is used.|"Z"|
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone UTC is used.|"Z"|
 |**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
-|**format**|str|Format for date, number or string. For example, ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
-|**maxItems**|int|Maximum number of items for the array type.||
+|**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
+|**maxItems**|int|Maximum number of items.||
 |**maxLength**|int|Maximum length of the string.||
 |**maxProperties**|int|Maximum number of properties.||
 |**maximum**|str \| int \| float|Values are less than or equal to this value (values &lt;= maximum).||
-|**minItems**|int|Minimum number of items for the array type.||
+|**minItems**|int|Minimum number of items.||
 |**minLength**|int|Minimum length of the string.||
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
-|**multipleOf**|int \| float|Values must be multiples of this number. For example, multiple of 5 has valid values 0, 5, 10, -5.||
-|**pattern**|str|Regular expression pattern to define valid value. Follows regular expression syntax from ECMA-262 (https://262.ecma-international.org/5.1/#sec-15.10.1).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
-|**timezone**|bool|Whether the timestamp defines the timezone or not. If true, timezone information is included in the timestamp.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
 |**uniqueItems**|bool|If set to true, all items in the array are unique.||
 #### Examples
 

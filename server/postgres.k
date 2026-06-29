@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema PostgresServer:
     """
@@ -16,7 +16,7 @@ schema PostgresServer:
         The name of the schema in the database.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "postgres"
     host: str

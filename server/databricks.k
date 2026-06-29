@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema DatabricksServer:
     """
@@ -11,10 +11,11 @@ schema DatabricksServer:
     schema: str, default is Undefined, required.
         The schema name in the catalog.
     host: str, default is Undefined, optional.
-        The Databricks host. For example, `dbc-abcdefgh-1234.cloud.databricks.com`.
+        The Databricks host.
+        Examples: "dbc-abcdefgh-1234.cloud.databricks.com"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "databricks"
     catalog: str

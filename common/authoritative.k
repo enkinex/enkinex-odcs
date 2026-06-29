@@ -1,4 +1,4 @@
-import .id as id
+import .mixins
 
 schema AuthoritativeDefinition:
     """
@@ -9,7 +9,9 @@ schema AuthoritativeDefinition:
     Attributes
     ----------
     type: str, default is Undefined, required.
-        Type of definition for authority. Recommended values are: businessDefinition, transformationImplementation, videoTutorial, tutorial, and implementation. At the root level, a type can also be canonicalUrl to indicate a reference to the data contract's latest version.
+        Type of definition for authority.
+        At the root level, a type can also be canonicalUrl to indicate a reference to the data contract's latest version.
+        Examples: "businessDefinition", "transformationImplementation", "videoTutorial", "tutorial", "implementation".
     url: str, default is Undefined, required.
         URL to the authority.
     description: str, default is Undefined, optional.
@@ -35,9 +37,21 @@ schema AuthoritativeDefinition:
         description = "Data contract's latest version."
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin
     ]
     $type: str
     url: str
     description?: str
+
+mixin AuthoritativeDefinitionsMixin:
+    """
+    Optional `authoritativeDefinitions` property mixin.
+
+    Attributes
+    ----------
+    authoritativeDefinitions: [AuthoritativeDefinition], default is Undefined, optional.
+        List of links to sources that provide more details on the element.
+        Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.
+    """
+    authoritativeDefinitions?: [AuthoritativeDefinition]
 

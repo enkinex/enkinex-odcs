@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema InformixServer:
     """
@@ -10,14 +10,14 @@ schema InformixServer:
         The host to the Informix server.
     database: str, default is Undefined, required.
         The name of the database.
-    port: int, default is Undefined, optional.
-        The port to the Informix server. Defaults to 9088.
+    port: int, default is 9088, optional.
+        The port to the Informix server.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "informix"
     host: str
     database: str
-    port?: int
+    port?: 9088
 

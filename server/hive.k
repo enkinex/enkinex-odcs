@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema HiveServer:
     """
@@ -14,7 +14,7 @@ schema HiveServer:
         The port to the Hive server. Defaults to 10000.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "hive"
     host: str

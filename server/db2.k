@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema IBMDB2Server:
     """
@@ -16,7 +16,7 @@ schema IBMDB2Server:
         The name of the schema.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "db2"
     host: str

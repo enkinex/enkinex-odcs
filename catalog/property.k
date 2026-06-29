@@ -1,8 +1,10 @@
-import .element as el
-import .relationship as rel
-import .type_options as to
+import .element
+import .relationship
+import .type_options
 
-schema SchemaProperty(el.SchemaElement):
+type LogicalType = "string" | "date" | "timestamp" | "time" | "number" | "integer" | "object" | "array" | "boolean"
+
+schema SchemaProperty(element.SchemaElement):
     """
     Schema property to be cataloged.
     Properties are attributes of an object: a column in a table, a field in a payload, and so on.
@@ -12,10 +14,12 @@ schema SchemaProperty(el.SchemaElement):
     primaryKey: bool, default is False, optional.
         Boolean value specifying whether the field is primary or not.
     primaryKeyPosition: int, default is -1, optional.
-        If field is a primary key, the position of the primary key element. Starts from 1. Example of account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.
-    logicalType: str, default is Undefined, optional.
-        The logical property data type. One of string, date, timestamp, time, number, integer, object, array or boolean.
-    logicalTypeOptions: to.TypeOptions, default is Undefined, optional.
+        If field is a primary key, the position of the primary key element. Starts from 1.
+        Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.
+    logicalType: LogicalType, default is Undefined, optional.
+        The logical property data type.
+        One of string, date, timestamp, time, number, integer, object, array or boolean.
+    logicalTypeOptions: type_options.TypeOptions, default is Undefined, optional.
         Additional optional metadata to describe the logical type.
     required: bool, default is False, optional.
         Indicates if the element may contain Null values.
@@ -24,11 +28,13 @@ schema SchemaProperty(el.SchemaElement):
     partitioned: bool, default is False, optional.
         Indicates if the element is partitioned.
     partitionKeyPosition: int, default is -1, optional.
-        If element is used for partitioning, the position of the partition element. Starts from 1. Example of country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.
+        If element is used for partitioning, the position of the partition element. Starts from 1.
+        Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.
     classification: str, default is Undefined, optional.
         Can be anything, like confidential, restricted, and public to more advanced categorization.
     encryptedName: str, default is Undefined, optional.
-        The element name within the dataset that contains the encrypted element value. For example, unencrypted element email_address might have an encryptedName of email_address_encrypt.
+        The element name within the dataset that contains the encrypted element value.
+        Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.
     transformSourceObjects: [str], default is Undefined, optional.
         List of objects in the data source used in the transformation.
     transformLogic: str, default is Undefined, optional.
@@ -39,8 +45,9 @@ schema SchemaProperty(el.SchemaElement):
         List of `any` sample element values.
     criticalDataElement: bool, default is False, optional.
         If element is considered a critical data element (CDE) then true else false.
-    relationships: [rel.RelationshipPropertyLevel], default is Undefined, optional.
-        A list of relationships to other properties. When defined at property level, the 'from' field is implicit and should not be specified.
+    relationships: [relationship.RelationshipPropertyLevel], default is Undefined, optional.
+        A list of relationships to other properties.
+        When defined at property level, the 'from' field is implicit and should not be specified.
     items: [SchemaPropertyItems], default is Undefined, optional.
         A list of properties for the property.
 
@@ -70,8 +77,8 @@ schema SchemaProperty(el.SchemaElement):
     """
     primaryKey?: bool = False
     primaryKeyPosition?: int = -1
-    logicalType?: str
-    logicalTypeOptions?: to.TypeOptions
+    logicalType?: LogicalType
+    logicalTypeOptions?: type_options.TypeOptions
     required?: bool = False
     unique?: bool = False
     partitioned?: bool = False
@@ -83,7 +90,7 @@ schema SchemaProperty(el.SchemaElement):
     transformDescription?: str
     examples?: [any]
     criticalDataElement?: bool = False
-    relationships?: [rel.RelationshipPropertyLevel]
+    relationships?: [relationship.RelationshipPropertyLevel]
     items?: SchemaPropertyItems
 
 schema SchemaPropertyItems:

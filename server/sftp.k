@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema SftpServer:
     """
@@ -7,16 +7,21 @@ schema SftpServer:
     Attributes
     ----------
     location: str, default is Undefined, required.
-        SFTP URL, starting with `sftp://`. For example, `sftp://123.123.12.123/{model}/*.json`.
+        SFTP URL, starting with `sftp://`.
+        Examples: "sftp://123.123.12.123/{model}/*.json"
     format: str, default is Undefined, optional.
-        File format. For example, `parquet`, `delta`, `json`, `csv`.
+        File format.
+        Examples: "parquet", "delta", "json", "csv"
     delimiter: str, default is Undefined, optional.
-        Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.
+        Only for format = json.
+        How multiple json documents are delimited within one file.
+        Examples: "new_line", "array"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "sftp"
     location: str
     format?: str
     delimiter?: str
+

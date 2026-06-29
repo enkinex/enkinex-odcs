@@ -1,8 +1,10 @@
 import .custom
 
-import ..common.id as id
-import ..common.property as prop
-import ..iam.role as ir
+import ..common.mixins
+import ..common.property
+import ..iam.role
+
+type ServerType = "api" | "athena" | "azure" | "bigquery" | "clickhouse" | "databricks" | "denodo" | "dremio" | "duckdb" | "glue" | "cloudsql" | "db2" | "hive" | "impala" | "informix" | "kafka" | "kinesis" | "local" | "mysql" | "oracle" | "postgresql" | "postgres" | "presto" | "pubsub" | "redshift" | "s3" | "sftp" | "snowflake" | "sqlserver" | "synapse" | "trino" | "vertica" | "zen" | "custom"
 
 mixin ServerMixin:
     """
@@ -13,20 +15,19 @@ mixin ServerMixin:
     description: str, default is Undefined, optional.
         Description of the server.
     environment: str, default is Undefined, optional.
-        Environment of the server. Examples includes: prod, preprod, dev, uat.
-    roles: [ir.Role], default is Undefined, optional.
+        Environment of the server.
+        Examples: "prod", "preprod", "dev", "uat"
+    roles: [role.Role], default is Undefined, optional.
         List of roles that have access to the server.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin,
+        property.CustomPropertiesMixin
     ]
     server: str
     description?: str
     environment?: str
-    roles?: [ir.Role]
-    customProperties?: [prop.CustomProperty]
+    roles?: [role.Role]
 
 schema Server(custom.CustomServer):
     """
@@ -34,8 +35,8 @@ schema Server(custom.CustomServer):
 
     Attributes
     ----------
-    type: str, default is "custom", required.
-        Type of the server. Can be one of: api, athena, azure, bigquery, clickhouse, cloudsql, custom, databricks, db2, denodo, dremio, duckdb, glue, hive, impala, informix, kafka, kinesis, local, mysql, oracle, postgres, postgresql, presto, pubsub, redshift, s3, sftp, snowflake, sqlserver, synapse, trino, vertica, zen.
+    type: ServerType, default is "custom", required.
+        Type of the server.
 
     Examples
     --------
@@ -61,5 +62,5 @@ schema Server(custom.CustomServer):
     mixin [
         ServerMixin
     ]
-    $type: str = "custom"
+    $type: ServerType = "custom"
 

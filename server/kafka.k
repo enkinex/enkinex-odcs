@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema KafkaServer:
     """
@@ -9,10 +9,11 @@ schema KafkaServer:
     host: str, default is Undefined, required.
         The bootstrap server of the kafka cluster.
     format: str, default is "json", optional.
-        The format of the messages. For example, `json`, `avro`, `protobuf`, `xml`.
+        The format of the messages.
+        Examples: "json", "avro", "protobuf", "xml"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "kafka"
     host: str

@@ -10,6 +10,9 @@ Icon[
 # MacOS Resource forks
 ._*
 
+# Local Context
+.context
+
 # IDEs
 .idea
 .vscode

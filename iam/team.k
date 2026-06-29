@@ -1,6 +1,6 @@
-import ..common.authoritative as ad
-import ..common.id as id
-import ..common.property as prop
+import ..common.authoritative
+import ..common.mixins
+import ..common.property
 
 schema TeamMember:
     """
@@ -22,15 +22,12 @@ schema TeamMember:
         The date when the user ceased to be part of the team.
     replacedByUsername: str, default is Undefined, optional.
         The username of the user who replaced the previous user.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
-    authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
-        List of links to sources that provide more details on the data contract.
-    tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin,
+        mixins.TagsMixin,
+        authoritative.AuthoritativeDefinitionsMixin,
+        property.CustomPropertiesMixin
     ]
     username: str
     name?: str
@@ -39,9 +36,6 @@ schema TeamMember:
     dateIn?: str
     dateOut?: str
     replacedByUsername?: str
-    customProperties?: [prop.CustomProperty]
-    authoritativeDefinitions?: [ad.AuthoritativeDefinition]
-    tags?: [str]
 
 schema Team:
     """
@@ -55,12 +49,6 @@ schema Team:
         Team description.
     members: [TeamMember], default is Undefined, optional.
         List of members.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
-    authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
-        List of links to sources that provide more details on the data contract.
-    tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
 
     Examples
     --------
@@ -94,12 +82,12 @@ schema Team:
     }
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin,
+        mixins.TagsMixin,
+        authoritative.AuthoritativeDefinitionsMixin,
+        property.CustomPropertiesMixin
     ]
     name?: str
     description?: str
     members?: [TeamMember]
-    customProperties?: [prop.CustomProperty]
-    authoritativeDefinitions?: [ad.AuthoritativeDefinition]
-    tags?: [str]
 

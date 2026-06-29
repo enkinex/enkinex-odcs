@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema DenodoServer:
     """
@@ -14,7 +14,7 @@ schema DenodoServer:
         The name of the database.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "denodo"
     host: str

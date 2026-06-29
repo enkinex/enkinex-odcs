@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema DuckdbServer:
     """
@@ -12,7 +12,7 @@ schema DuckdbServer:
         The name of the schema.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "duckdb"
     database: str

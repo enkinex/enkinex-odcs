@@ -1,13 +1,17 @@
-import .catalog.object as so
-import .contract.description as desc
-import .contract.pricing as pr
-import .contract.sla as sla
-import .contract.support as su
-import .common.authoritative as ad
-import .common.property as prop
-import .iam.role as ir
-import .iam.team as it
-import .server.common as srv
+import .catalog.object
+import .contract.description
+import .contract.pricing
+import .contract.sla
+import .contract.support
+import .common.authoritative
+import .common.property
+import .iam.role
+import .iam.team
+import .common.mixins
+import .server.common as server
+
+type KindType = "DataContract"
+type ApiVersionType = "v3.1.0"
 
 schema DataContract:
     """
@@ -16,9 +20,9 @@ schema DataContract:
 
     Attributes
     ----------
-    apiVersion : str, default is "v3.1.0", required.
+    apiVersion : ApiVersionType, default is "v3.1.0", required.
         Version of the standard used to build data contract.
-    kind: str, default is "DataContract", required.
+    kind: KindType, default is "DataContract", required.
         The kind of file this is.
     id: str, default is Undefined, required.
         A unique identifier used to reduce the risk of dataset name collisions, such as a UUID.
@@ -27,35 +31,33 @@ schema DataContract:
     version: str, default is Undefined, required.
         Current version of the data contract.
     status: str, default is Undefined, required.
-        Current status of the data contract. Examples are "proposed", "draft", "active", "deprecated", "retired".
+        Current status of the data contract.
+        Examples: "proposed", "draft", "active", "deprecated", "retired"
     tenant: str, default is Undefined, optional.
-        Indicates the property the data is primarily associated with. Value is case insensitive.
-    tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
+        Indicates the property the data is primarily associated with.
+        Value is case insensitive.
     domain: str, default is Undefined, optional.
         Name of the logical data domain.
-    servers: [srv.Server], default is Undefined, optional.
+        Examples: "imdb_ds_aggregate", "receiver_profile_out", "transaction_profile_out"
+    servers: [server.Server], default is Undefined, optional.
         List of servers where the datasets reside.
-    authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
-        List of links to sources that provide more details on the data contract.
-    description: desc.Description, default is Undefined, optional.
+    description: description.Description, default is Undefined, optional.
         Object containing the descriptions.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
-    contractCreatedTs: str, default is Undefined, optional.
-        Timestamp in UTC of when the data contract was created, using ISO 8601.
-    schema: [so.SchemaObject], default is Undefined, optional.
+    schema: [object.SchemaObject], default is Undefined, optional.
         A list of objects within the schema to be cataloged.
-    support: [su.Support], default is Undefined, optional.
+    support: [support.Support], default is Undefined, optional.
         Top level for support channels.
-    price: [pr.Pricing], default is Undefined, optional.
+    price: [pricing.Pricing], default is Undefined, optional.
         Pricing when you bill your customer for using this data product.
-    team: [it.Team], default is Undefined, optional.
+    team: team.Team, default is Undefined, optional.
         Team information object with members array.
-    roles: [ir.Role], default is Undefined, optional.
+    roles: [role.Role], default is Undefined, optional.
         A list of roles that will provide user access to the dataset.
     slaProperties: [sla.ServiceLevelAgreement], default is Undefined, optional.
-        A list of key/value pairs for SLA specific properties. There is no limit on the type of properties.
+        A list of key/value pairs for SLA specific properties.
+        There is no limit on the type of properties.
+    contractCreatedTs: str, default is Undefined, optional.
+        Timestamp in UTC of when the data contract was created, using ISO 8601.
 
     Examples:
     ---------
@@ -83,26 +85,27 @@ schema DataContract:
 
         tags = ["finance"]
     }
-
     """
-    apiVersion: str = "v3.1.0"
-    kind: str = "DataContract"
+    mixin [
+        mixins.TagsMixin,
+        authoritative.AuthoritativeDefinitionsMixin,
+        property.CustomPropertiesMixin
+    ]
+    apiVersion: ApiVersionType = "v3.1.0"
+    kind: KindType = "DataContract"
     id: str
     name?: str
     version: str
     status: str
     tenant?: str
-    tags?: [str]
     domain?: str
-    servers: [srv.Server]
-    authoritativeDefinitions?: [ad.AuthoritativeDefinition]
-    description?: desc.Description
-    customProperties?: [prop.CustomProperty]
-    contractCreatedTs?: str
-    $schema?: [so.SchemaObject]
-    support?: [su.Support]
-    price?: [pr.Pricing]
-    team?: [it.Team]
-    roles?: [ir.Role]
+    servers: [server.Server]
+    description?: description.Description
+    $schema?: [object.SchemaObject]
+    support?: [support.Support]
+    price?: [pricing.Pricing]
+    team?: team.Team
+    roles?: [role.Role]
     slaProperties?: [sla.ServiceLevelAgreement]
+    contractCreatedTs?: str
 

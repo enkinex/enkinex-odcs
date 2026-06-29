@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema GoogleCloudSqlServer:
     """
@@ -16,7 +16,7 @@ schema GoogleCloudSqlServer:
         The name of the schema.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "cloudsql"
     host: str

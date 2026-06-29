@@ -17,14 +17,6 @@ mixin ArrayOptionsMixin:
     minItems?: int
     uniqueItems?: bool
 
-schema ArrayOptions:
-    """
-    Additional metadata options to define the array type.
-    """
-    mixin [
-        ArrayOptionsMixin
-    ]
-
 mixin DatetimeOptionsMixin:
     """
     Datetime logical type options mixix.
@@ -40,6 +32,142 @@ mixin DatetimeOptionsMixin:
     """
     defaultTimezone?: str = "Z"
     timezone?: bool
+
+mixin MinMaxStringOptionsMixin:
+    """
+    Minimum and maximun string logical type options mixix.
+
+    Attributes
+    ----------
+    exclusiveMaximum: str, default is Undefined, optional.
+        All values must be strictly less than this value (values < exclusiveMaximum).
+    exclusiveMinimum: str, default is Undefined, optional.
+        All values must be strictly greater than this value (values > exclusiveMinimum).
+    maximum: str, default is Undefined, optional.
+        All date values are less than or equal to this value (values <= maximum).
+    minimum: str, default is Undefined, optional.
+        All date values are greater than or equal to this value (values >= minimum).
+    """
+    exclusiveMaximum?: str
+    exclusiveMinimum?: str
+    maximum?: str
+    minimum?: str
+
+mixin MinMaxNumberOptionsMixin:
+    """
+    Minimum and maximun number type options mixix.
+
+    Attributes
+    ----------
+    exclusiveMaximum: int | float, default is Undefined, optional.
+        All values must be strictly less than this value (values < exclusiveMaximum).
+    exclusiveMinimum: int | float, default is Undefined, optional.
+        All values must be strictly greater than this value (values > exclusiveMinimum).
+    maximum: int | float, default is Undefined, optional.
+        All values are less than or equal to this value (values <= maximum).
+    minimum: int | float, default is Undefined, optional.
+        All values are greater than or equal to this value (values >= minimum).
+    """
+    exclusiveMaximum?: int | float
+    exclusiveMinimum?: int | float
+    maximum?: int | float
+    minimum?: int | float
+
+mixin NumberOptionsMixin:
+    """
+    Number logical type options mixix.
+
+    Attributes
+    ----------
+    multipleOf: int | float, default is Undefined, optional.
+        Values must be multiples of this number.
+        Examples: multiple of 5 has valid values 0, 5, 10, -5.
+    """
+    multipleOf?: int | float
+
+mixin ObjectOptionsMixin:
+    """
+    Object logical type option mixix.
+
+    Attributes
+    ----------
+    maxProperties: int, default is Undefined, optional.
+        Maximum number of properties.
+    minProperties: int, default is Undefined, optional.
+        Minimum number of properties.
+    required: [str], default is Undefined, optional.
+        Property names that are required to exist in the object.
+    """
+    maxProperties?: int
+    minProperties?: int
+    required?: [str]
+
+mixin RegexPattternOptionMixin:
+    """
+    Regex pattern logical type option mixix.
+
+    Attributes
+    ----------
+    pattern: str, default is Undefined, optional.
+        Regular expression pattern to define valid value.
+        Follows regular expression syntax from ECMA-262.
+        See also: https://262.ecma-international.org/5.1/#sec-15.10.1.
+    """
+    pattern?: str
+
+mixin StringOptionsMixin:
+    """
+    String logical type options mixix.
+
+    Attributes
+    ----------
+    maxLength: int, default is Undefined, optional.
+        Maximum length of the string.
+    minLength: int, default is Undefined, optional.
+        Minimum length of the string.
+    """
+    maxLength?: int
+    minLength?: int
+
+schema TypeOptions:
+    """
+    Base type for every logical type options.
+
+    Attributes
+    ----------
+    format: str, default is Undefined, optional.
+        Format for date, number or string.
+        Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".
+    exclusiveMaximum: str | int | float, default is Undefined, optional.
+        Values must be strictly less than this value (values < exclusiveMaximum).
+    exclusiveMinimum: str | int | float, default is Undefined, optional.
+        Values must be strictly greater than this value (values > exclusiveMinimum).
+    maximum: str | int | float, default is Undefined, optional.
+        Values are less than or equal to this value (values <= maximum).
+    minimum: str | int | float, default is Undefined, optional.
+        Values are greater than or equal to this value (values >= minimum).
+    """
+    mixin [
+        ArrayOptionsMixin,
+        DatetimeOptionsMixin,
+        NumberOptionsMixin,
+        ObjectOptionsMixin,
+        RegexPattternOptionMixin,
+        StringOptionsMixin
+    ]
+    format?: str
+    exclusiveMaximum?: str | int | float
+    exclusiveMinimum?: str | int | float
+    maximum?: str | int | float
+    minimum?: str | int | float
+
+schema ArrayOptions:
+    """
+    Additional metadata options to define the array type.
+    """
+    mixin [
+        ArrayOptionsMixin
+    ]
 
 schema DatetimeOptions:
     """
@@ -108,58 +236,6 @@ schema DatetimeOptions:
     ]
     format?: str = "YYYY-MM-DDTHH:mm:ss.SSSZ"
 
-mixin MinMaxStringOptionsMixin:
-    """
-    Minimum and maximun string logical type options mixix.
-
-    Attributes
-    ----------
-    exclusiveMaximum: str, default is Undefined, optional.
-        All values must be strictly less than this value (values < exclusiveMaximum).
-    exclusiveMinimum: str, default is Undefined, optional.
-        All values must be strictly greater than this value (values > exclusiveMinimum).
-    maximum: str, default is Undefined, optional.
-        All date values are less than or equal to this value (values <= maximum).
-    minimum: str, default is Undefined, optional.
-        All date values are greater than or equal to this value (values >= minimum).
-    """
-    exclusiveMaximum?: str
-    exclusiveMinimum?: str
-    maximum?: str
-    minimum?: str
-
-mixin MinMaxNumberOptionsMixin:
-    """
-    Minimum and maximun number type options mixix.
-
-    Attributes
-    ----------
-    exclusiveMaximum: int | float, default is Undefined, optional.
-        All values must be strictly less than this value (values < exclusiveMaximum).
-    exclusiveMinimum: int | float, default is Undefined, optional.
-        All values must be strictly greater than this value (values > exclusiveMinimum).
-    maximum: int | float, default is Undefined, optional.
-        All values are less than or equal to this value (values <= maximum).
-    minimum: int | float, default is Undefined, optional.
-        All values are greater than or equal to this value (values >= minimum).
-    """
-    exclusiveMaximum?: int | float
-    exclusiveMinimum?: int | float
-    maximum?: int | float
-    minimum?: int | float
-
-mixin NumberOptionsMixin:
-    """
-    Number logical type options mixix.
-
-    Attributes
-    ----------
-    multipleOf: int | float, default is Undefined, optional.
-        Values must be multiples of this number.
-        Examples: multiple of 5 has valid values 0, 5, 10, -5.
-    """
-    multipleOf?: int | float
-
 schema NumberOptions:
     """
     Additional metadata options to define integer and number types.
@@ -176,23 +252,6 @@ schema NumberOptions:
     ]
     format?: NumberTypeEnum
 
-mixin ObjectOptionsMixin:
-    """
-    Object logical type option mixix.
-
-    Attributes
-    ----------
-    maxProperties: int, default is Undefined, optional.
-        Maximum number of properties.
-    minProperties: int, default is Undefined, optional.
-        Minimum number of properties.
-    required: [str], default is Undefined, optional.
-        Property names that are required to exist in the object.
-    """
-    maxProperties?: int
-    minProperties?: int
-    required?: [str]
-
 schema ObjectOptions:
     """
     Additional metadata options to define integer and number types.
@@ -200,33 +259,6 @@ schema ObjectOptions:
     mixin [
         ObjectOptionsMixin
     ]
-
-mixin RegexPattternOptionMixin:
-    """
-    Regex pattern logical type option mixix.
-
-    Attributes
-    ----------
-    pattern: str, default is Undefined, optional.
-        Regular expression pattern to define valid value.
-        Follows regular expression syntax from ECMA-262.
-        See also: https://262.ecma-international.org/5.1/#sec-15.10.1.
-    """
-    pattern?: str
-
-mixin StringOptionsMixin:
-    """
-    String logical type options mixix.
-
-    Attributes
-    ----------
-    maxLength: int, default is Undefined, optional.
-        Maximum length of the string.
-    minLength: int, default is Undefined, optional.
-        Minimum length of the string.
-    """
-    maxLength?: int
-    minLength?: int
 
 schema StringOptions:
     """
@@ -243,36 +275,4 @@ schema StringOptions:
         StringOptionsMixin
     ]
     format?: str
-
-schema TypeOptions:
-    """
-    Base type for every logical type options.
-
-    Attributes
-    ----------
-    format: str, default is Undefined, optional.
-        Format for date, number or string.
-        Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".
-    exclusiveMaximum: str | int | float, default is Undefined, optional.
-        Values must be strictly less than this value (values < exclusiveMaximum).
-    exclusiveMinimum: str | int | float, default is Undefined, optional.
-        Values must be strictly greater than this value (values > exclusiveMinimum).
-    maximum: str | int | float, default is Undefined, optional.
-        Values are less than or equal to this value (values <= maximum).
-    minimum: str | int | float, default is Undefined, optional.
-        Values are greater than or equal to this value (values >= minimum).
-    """
-    mixin [
-        ArrayOptionsMixin,
-        DatetimeOptionsMixin,
-        NumberOptionsMixin,
-        ObjectOptionsMixin,
-        RegexPattternOptionMixin,
-        StringOptionsMixin
-    ]
-    format?: str
-    exclusiveMaximum?: str | int | float
-    exclusiveMinimum?: str | int | float
-    maximum?: str | int | float
-    minimum?: str | int | float
 

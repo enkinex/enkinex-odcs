@@ -1,4 +1,4 @@
-import .id as id
+import .mixins
 
 schema CustomProperty:
     """
@@ -7,9 +7,9 @@ schema CustomProperty:
 
     Attributes
     ----------
-    property: str, default is Undefined, optional.
+    property: str, default is Undefined, required.
         The name of the key.
-    value: any, default is Undefined, optional.
+    value: any, default is Undefined, required.
         The value of the key. It can be an array.
     description: str, default is Undefined, optional.
         Description for humans.
@@ -30,9 +30,20 @@ schema CustomProperty:
     }
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin
     ]
-    property?: str
-    value?: any
-    escription?: str
+    property: str
+    value: any
+    description?: str
+
+mixin CustomPropertiesMixin:
+    """
+    Optional `customProperties` property mixin.
+
+    Attributes
+    ----------
+    customProperties: [CustomProperty], default is Undefined, optional.
+        A list of key/value pairs for custom properties.
+    """
+    customProperties?: [CustomProperty]
 

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema RedshiftServer:
     """
@@ -13,12 +13,13 @@ schema RedshiftServer:
     host: str, default is Undefined, optional.
         An optional string describing the server.
     region: str, default is Undefined, optional.
-        AWS region of Redshift server. For example, `us-east-1`.
+        AWS region of Redshift server.
+        Examples: "us-east-1"
     account: str, default is Undefined, optional.
         The account used by the server.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "redshift"
     database: str
@@ -26,3 +27,4 @@ schema RedshiftServer:
     host?: str
     region?: str
     account?: str
+

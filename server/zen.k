@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema ZenServer:
     """
@@ -10,13 +10,14 @@ schema ZenServer:
         Hostname or IP address of the Zen server.
     database: str, default is Undefined, required.
         Database name to connect to on the Zen server.
-    port: int, default is Undefined, optional.
-        Zen server SQL connections port. Defaults to 1583.
+    port: int, default is 1583, optional.
+        Zen server SQL connections port.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "zen"
     host: str
     database: str
-    port?: int
+    port?: int = 1583
+

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema OracleServer:
     """
@@ -7,14 +7,17 @@ schema OracleServer:
     Attributes
     ----------
     host: str, default is Undefined, required.
-        The host to the oracle server. For example, `localhost`.
+        The host to the oracle server.
+        Examples: "localhost"
     port: int, default is Undefined, required.
-        The port to the oracle server. For example, `1523`.
+        The port to the oracle server.
+        Examples: "1523"
     serviceName: str, default is Undefined, required.
-        The name of the service. For example, `service`.
+        The name of the service.
+        Examples: "service"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "oracle"
     host: str

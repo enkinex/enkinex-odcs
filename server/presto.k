@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema PrestoServer:
     """
@@ -7,14 +7,17 @@ schema PrestoServer:
     Attributes
     ----------
     host: str, default is Undefined, required.
-        The host to the Presto server. For example, `localhost:8080`.
+        The host to the Presto server.
+        Examples: "localhost:8080"
     catalog: str, default is Undefined, optional.
-        The name of the catalog. For example, `postgres`.
+        The name of the catalog.
+        Examples: "postgres"
     schema: str, default is Undefined, optional.
-        The name of the schema. For example, `public`.
+        The name of the schema.
+        Examples: "public"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "presto"
     host: str

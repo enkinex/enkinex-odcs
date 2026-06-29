@@ -1,5 +1,5 @@
-import ..common.id as id
-import ..common.property as prop
+import ..common.mixins
+import ..common.property
 
 schema Role:
     """
@@ -7,8 +7,6 @@ schema Role:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     role: str, default is Undefined, required.
         Name of the IAM role that provides access to the dataset.
     description: str, default is Undefined, optional.
@@ -19,8 +17,6 @@ schema Role:
         The name(s) of the first-level approver(s) of the role.
     secondLevelApprovers: str, default is Undefined, optional.
         The name(s) of the second-level approver(s) of the role.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
 
     Examples
     --------
@@ -41,12 +37,12 @@ schema Role:
     }
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin,
+        property.CustomPropertiesMixin
     ]
     role: str
     description?: str
     access?: str
     firstLevelApprovers?: str
     secondLevelApprovers?: str
-    customProperties?: [prop.CustomProperty]
 

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema GlueServer:
     """
@@ -7,16 +7,20 @@ schema GlueServer:
     Attributes
     ----------
     account: str, default is Undefined, required.
-        The AWS Glue account. For example, `1234-5678-9012`.
+        The AWS Glue account.
+        Examples: "1234-5678-9012"
     database: str, default is Undefined, required.
-        The AWS Glue database name. For example, `my_database`.
+        The AWS Glue database name.
+        Examples: "my_database"
     location: str, default is Undefined, optional.
-        The AWS S3 path. Must be in the form of a URL. For example, `s3://datacontract-example-orders-latest/data/{model}`.
+        The AWS S3 path. Must be in the form of a URL.
+        Examples: "s3://datacontract-example-orders-latest/data/{model}"
     format: str, default is Undefined, optional.
-        The format of the files. For example, `parquet`, `csv`, `json`, `delta`.
+        The format of the files.
+        Examples: "parquet", "csv", "json", "delta"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "glue"
     account: str

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema ApiServer:
     """
@@ -7,10 +7,11 @@ schema ApiServer:
     Attributes
     ----------
     location: str, default is Undefined, required.
-        The URL to the API, For example, `https://api.example.com/v1`
+        The URL to the API.
+        Examples: "https://api.example.com/v1"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "api"
     location: str

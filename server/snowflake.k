@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema SnowflakeServer:
     """
@@ -20,7 +20,7 @@ schema SnowflakeServer:
         The name of the cluster of resources that is a Snowflake virtual warehouse.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "snowflake"
     account: str
@@ -29,3 +29,4 @@ schema SnowflakeServer:
     host?: str
     port?: int
     warehouse?: str
+

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema PubSubServer:
     """
@@ -10,7 +10,7 @@ schema PubSubServer:
         The GCP project name.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "pubsub"
     project: str

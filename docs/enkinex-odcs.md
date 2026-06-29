@@ -27,8 +27,11 @@
   - [TypeOptions](#typeoptions)
 - common
   - [AuthoritativeDefinition](#authoritativedefinition)
+  - [AuthoritativeDefinitionsMixin](#authoritativedefinitionsmixin)
+  - [CustomPropertiesMixin](#custompropertiesmixin)
   - [CustomProperty](#customproperty)
-  - [OptionalStableIdMixin](#optionalstableidmixin)
+  - [StableIdMixin](#stableidmixin)
+  - [TagsMixin](#tagsmixin)
 - contract
   - [Description](#description)
   - [Pricing](#pricing)
@@ -363,16 +366,16 @@ Schema element to be cataloged. Applicable to either Objects or Properties
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element; examples would be a link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**name** `required`|str|Name of the element.||
 |**physicalName**|str|Physical name.||
-|**physicalType**|str|The physical element data type in the data source. For objects: table, view, topic, file. For properties: VARCHAR(2), DOUBLE, INT, etc.||
+|**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### SchemaObject
 
 Schema object to be cataloged. Objects are a structure of data: a table in a RDBMS system, a document in a NoSQL database, and so on.
@@ -381,20 +384,20 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element; examples would be a link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**dataGranularityDescription**|str|Granular level of the data in the object. Example would be "Aggregation by country."||
+|**dataGranularityDescription**|str|Granular level of the data in the object.<br />Examples: "Aggregation by country"||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**logicalType**|str|The logical object data type.|"object"|
 |**name** `required`|str|Name of the element.||
 |**physicalName**|str|Physical name.||
-|**physicalType**|str|The physical element data type in the data source. For objects: table, view, topic, file. For properties: VARCHAR(2), DOUBLE, INT, etc.||
+|**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties for the object.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
-|**relationships**|[[RelationshipSchemaLevel](#relationshipschemalevel)]|A list of relationships to other objects. Each relationship must have &#39;from&#39;, &#39;to&#39; and optionally &#39;type&#39; field.||
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**relationships**|[[RelationshipSchemaLevel](#relationshipschemalevel)]|A list of relationships to other objects.<br />Each relationship must have &#39;from&#39;, &#39;to&#39; and optionally &#39;type&#39; field.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 #### Examples
 
 ```
@@ -419,29 +422,29 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element; examples would be a link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
 |**classification**|str|Can be anything, like confidential, restricted, and public to more advanced categorization.||
 |**criticalDataElement**|bool|If element is considered a critical data element (CDE) then true else false.|False|
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
-|**encryptedName**|str|The element name within the dataset that contains the encrypted element value. For example, unencrypted element email_address might have an encryptedName of email_address_encrypt.||
+|**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**items**|[SchemaPropertyItems](#schemapropertyitems)|A list of properties for the property.||
-|**logicalType**|str|The logical property data type. One of string, date, timestamp, time, number, integer, object, array or boolean.||
+|**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
 |**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.||
 |**name** `required`|str|Name of the element.||
-|**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1. Example of country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
+|**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1.<br />Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
 |**partitioned**|bool|Indicates if the element is partitioned.|False|
 |**physicalName**|str|Physical name.||
-|**physicalType**|str|The physical element data type in the data source. For objects: table, view, topic, file. For properties: VARCHAR(2), DOUBLE, INT, etc.||
+|**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**primaryKey**|bool|Boolean value specifying whether the field is primary or not.|False|
-|**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1. Example of account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
+|**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1.<br />Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
-|**relationships**|[[RelationshipPropertyLevel](#relationshippropertylevel)]|A list of relationships to other properties. When defined at property level, the &#39;from&#39; field is implicit and should not be specified.||
+|**relationships**|[[RelationshipPropertyLevel](#relationshippropertylevel)]|A list of relationships to other properties.<br />When defined at property level, the &#39;from&#39; field is implicit and should not be specified.||
 |**required**|bool|Indicates if the element may contain Null values.|False|
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 |**transformDescription**|str|Describes the transform logic in very simple terms.||
 |**transformLogic**|str|Logic used in the column transformation.||
 |**transformSourceObjects**|[str]|List of objects in the data source used in the transformation.||
@@ -528,58 +531,6 @@ Base type for every logical type options.
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
 |**uniqueItems**|bool|If set to true, all items in the array are unique.||
-#### Examples
-
-```
-dateOnly = SchemaProperty {
-    name = "event_date"
-    logicalType = "date"
-    logicalTypeOptions = TypeOptions {
-      format = "yyyy-MM-dd"
-    }
-    examples = ["2024-07-10"]
-}
-
-dateAndTimeUTC = SchemaProperty {
-    name = "created_at"
-    logicalType = "timestamp"
-    logicalTypeOptions = TypeOptions {
-        format = "yyyy-MM-ddTHH:mm:ssZ"
-    }
-    examples = ["2024-03-10T14:22:35Z"]
-}
-
-dateAndTimeAustraliaSydney = SchemaProperty {
-    name = "created_at_sydney"
-    logicalType = "timestamp"
-    logicalTypeOptions = TypeOptions {
-        format = "yyyy-MM-ddTHH:mm:ssZ"
-        timezone = True
-        defaultTimezone = "Australia/Sydney"
-    }
-    examples = ["2024-03-10T14:22:35+10:00"]
-}
-
-timeOnly = SchemaProperty {
-    name = "event_start_time"
-    logicalType = "time"
-    logicalTypeOptions = TypeOptions {
-        format = "HH:mm:ss"
-    }
-    examples = ["08:30:00"]
-}
-
-physicalDateAndTimeUTC = SchemaProperty {
-    name = "event_date"
-    logicalType = "timestamp"
-    physicalType = "DATETIME"
-    logicalTypeOptions = TypeOptions {
-        format = "yyyy-MM-ddTHH:mm:ssZ"
-    }
-    examples = ["2024-03-10T14:22:35Z"]
-}
-```
-
 ### AuthoritativeDefinition
 
 Authoritative Definitions are an essential part of the contract. They allow to delegate the definition to a third party system like an enterprise catalog, repository, etc. The structure describing "Authoritative Definitions" is shared between all Bitol standards.
@@ -590,7 +541,7 @@ Authoritative Definitions are an essential part of the contract. They allow to d
 | --- | --- | --- | --- |
 |**description**|str|Optional description.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**type** `required`|str|Type of definition for authority. Recommended values are: businessDefinition, transformationImplementation, videoTutorial, tutorial, and implementation. At the root level, a type can also be canonicalUrl to indicate a reference to the data contract&#39;s latest version.||
+|**type** `required`|str|Type of definition for authority.<br />At the root level, a type can also be canonicalUrl to indicate a reference to the data contract&#39;s latest version.<br />Examples: "businessDefinition", "transformationImplementation", "videoTutorial", "tutorial", "implementation".||
 |**url** `required`|str|URL to the authority.||
 #### Examples
 
@@ -613,6 +564,24 @@ odcsVersion = AuthoritativeDefinition {
     description = "Data contract's latest version."
 ```
 
+### AuthoritativeDefinitionsMixin
+
+Optional `authoritativeDefinitions` property mixin.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+### CustomPropertiesMixin
+
+Optional `customProperties` property mixin.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 ### CustomProperty
 
 This section covers custom properties you can use to add non-standard properties. This block is available in many sections.
@@ -621,10 +590,10 @@ This section covers custom properties you can use to add non-standard properties
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**escription**|str|||
+|**description**|str|Description for humans.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**property**|str|The name of the key.||
-|**value**|any|The value of the key. It can be an array.||
+|**property** `required`|str|The name of the key.||
+|**value** `required`|any|The value of the key. It can be an array.||
 #### Examples
 
 ```
@@ -642,7 +611,7 @@ dnsOptions = Property {
 }
 ```
 
-### OptionalStableIdMixin
+### StableIdMixin
 
 Optional `id` property reference mixin.
 
@@ -651,6 +620,15 @@ Optional `id` property reference mixin.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+### TagsMixin
+
+Optional `tags` property mixin.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### Description
 
 Object containing the data contract description.
@@ -659,6 +637,7 @@ Object containing the data contract description.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**limitations**|str|Technical, compliance, and legal limitations for data use.||
 |**purpose**|str|Intended purpose for the provided data.||
@@ -710,13 +689,13 @@ This section describes the service-level agreements (SLA).
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**description**|str|Description of the SLA for humans.||
-|**driver**|str|Describes the importance of the SLA from the list of: `regulatory`, `analytics`, or `operational`.||
-|**element**|str|Element(s) to check on. Multiple elements should be extremely rare and, if so, separated by commas.||
+|**driver**|str|Describes the importance of the SLA.<br />Examples: "regulatory", "analytics", "operational"||
+|**element**|str|Element(s) to check on.<br />Multiple elements should be extremely rare and, if so, separated by commas.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**property** `required`|str|Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1). May requires units.||
-|**schedule**|str|Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.||
+|**property** `required`|str|Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1).<br />May require units.||
+|**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
 |**scheduler**|str|Name of the scheduler, can be cron or any tool your organization support.||
-|**unit**|str|Units use the ISO standard. For example: **d**, day, days for days; **y**, yr, years for years, etc.||
+|**unit**|str|Units use the ISO standard.<br />Examples: "**d**", "day", "days" for days."**y**", "yr", "years" for years.||
 |**value** `required`|any|Agreement value. The label will change based on the property itself.||
 |**valueExt**|str|Extended agreement value. The label will change based on the property itself.||
 #### Examples
@@ -769,8 +748,8 @@ Support and communication channels help consumers find help regarding their use 
 |**description**|str|Description of the channel, free text.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**invitationUrl**|str|Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).||
-|**scope**|str|Scope can be: `interactive`, `announcements`, `issues`, `notifications`.||
-|**tool**|str|Name of the tool, value can be `email`, `slack`, `teams`, `discord`, `ticket`, `googlechat`, or `other`.||
+|**scope**|str|The channel scope.<br />Examples: "interactive", "announcements", "issues", "notifications"||
+|**tool**|str|Name of the tool.<br />Examples: "email", "slack", "teams", "discord", "ticket", "googlechat", "other"||
 |**url**|str|Access URL using normal [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax) (https, mailto, etc.).||
 #### Examples
 
@@ -843,13 +822,13 @@ Team information.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Team description.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**members**|[[TeamMember](#teammember)]|List of members.||
 |**name**|str|Team name.||
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 #### Examples
 
 ```
@@ -891,7 +870,7 @@ Team member.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dateIn**|str|The date when the user joined the team.||
 |**dateOut**|str|The date when the user ceased to be part of the team.||
@@ -900,7 +879,7 @@ Team member.
 |**name**|str|The user&#39;s name.||
 |**replacedByUsername**|str|The username of the user who replaced the previous user.||
 |**role**|str|The user&#39;s job role; Examples might be owner, data steward. There is no limit on the role.||
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 |**username** `required`|str|The user&#39;s username or email.||
 ### DataQuality
 
@@ -911,16 +890,16 @@ Data quality rule with all the relevant information for setup and execution.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**arguments**|str|Additional arguments for the metric, if needed.||
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
-|**businessImpact**|str|Consequences of the rule failure.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**businessImpact**|str|Consequences of the rule failure.<br />Examples: "operational", "regulatory"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Describe the quality check to be completed.||
-|**dimension**|str|The key performance indicator (KPI) or dimension for data quality. Valid values are listed after the table.||
-|**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks. For example, `soda`, `great-expectations`, `monte-carlo`, `dbt`.||
+|**dimension**|"accuracy" \| "completeness" \| "conformity" \| "consistency" \| "coverage" \| "timeliness" \| "uniqueness"|The key performance indicator (KPI) or dimension for data quality.<br />Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"||
+|**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks.<br />Examples: `soda`, `great-expectations`, `monte-carlo`, `dbt`.||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**implementation**|str|A text (non-parsed) block of code required for the third-party DQ engine to run.||
-|**method**|str|Values are open and include `reconciliation`.||
-|**metric**|str|Define a data quality check based on the predefined metrics as per ODCS. For example, `nullValues`, `missingValues`, `invalidValues`, `duplicateValues`, `rowCount`.||
+|**method**|str|Values are open.<br />Exemples: "reconciliation"||
+|**metric**|"nullValues" \| "missingValues" \| "invalidValues" \| "duplicateValues" \| "rowCount"|Define a data quality check based on the predefined metrics as per ODCS.<br />Examples: "nullValues", "missingValues", "invalidValues", "duplicateValues", "rowCount"||
 |**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
 |**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
 |**mustBeGreaterOrEqualTo**|int \| float|Must be greater than or equal to the value to be valid. It is equivalent to &#39;&gt;=&#39;.||
@@ -930,13 +909,13 @@ Data quality rule with all the relevant information for setup and execution.
 |**mustBeNotBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
 |**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
 |**name**|str|Name of the data quality check.||
-|**query**|str|Required for `sql` DQ rules: the SQL query to be executed. Note that it should match the target SQL engine/database, no transalation service are provided here.||
-|**schedule**|str|Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.||
-|**scheduler**|str|Name of the scheduler, can be `cron` or any tool your organization support.||
-|**severity**|str|The severity of the DQ rule.||
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
-|**type**|"library" \| "sql" \| "text" \| "custom"|The type of quality check. `text` is human-readable text that describes the quality of the data. `library` is a set of maintained predefined quality attributes such as row count or unique. `sql` is an individual SQL query that returns a value that can be compared. `custom` is quality attributes that are vendor-specific, such as Soda or Great Expectations.|"library"|
-|**unit**|str|Unit the rule is using, popular values are `rows` or `percent`, but any value is allowed.||
+|**query**|str|Required for `sql` DQ rules: the SQL query to be executed.<br />Note that it should match the target SQL engine/database, no transalation service are provided here.||
+|**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
+|**scheduler**|str|Name of the scheduler or tool your organization support.<br />Examples: "cron"||
+|**severity**|str|The severity of the DQ rule.<br />Examples: "info", "warning", "error"||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
+|**type**|"library" \| "sql" \| "text" \| "custom"|The type of quality check.<br />`text` is human-readable text that describes the quality of the data.<br />`library` is a set of maintained predefined quality attributes such as row count or unique.<br />`sql` is an individual SQL query that returns a value that can be compared.<br />`custom` is quality attributes that are vendor-specific, such as Soda or Great Expectations.|"library"|
+|**unit**|str|Unit the rule is using.<br />Examples: "rows", "percent"||
 #### Examples
 
 ```
@@ -1039,7 +1018,6 @@ API Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|The URL to the API, For example, `https://api.example.com/v1`||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1055,7 +1033,6 @@ AWS Athena Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**regionName**|str|The region your AWS account uses. For example, `eu-west-1`||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|Identify the schema in the data source in which your tables exist.||
@@ -1074,7 +1051,6 @@ Azure Blob Storage Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format** `required`|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs. For example, `az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet`, `abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1090,7 +1066,6 @@ Google BigQuery Server.
 |**dataset** `required`|str|The GCP dataset name.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**project** `required`|str|The GCP project name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1107,7 +1082,6 @@ ClickHouse Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the ClickHouse server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the ClickHouse server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1151,7 +1125,6 @@ Databricks Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host**|str|The Databricks host. For example, `dbc-abcdefgh-1234.cloud.databricks.com`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The schema name in the catalog.||
 |**server** `required`|str|Identifier of the server.||
@@ -1168,7 +1141,6 @@ Denodo Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Denodo server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Denodo server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1184,7 +1156,6 @@ Dremio Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Dremio server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Dremio server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
@@ -1201,7 +1172,6 @@ DuckDB Server.
 |**database** `required`|str|Path to duckdb database file.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
@@ -1219,7 +1189,6 @@ AWS Glue Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|The format of the files. For example, `parquet`, `csv`, `json`, `delta`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location**|str|The AWS S3 path. Must be in the form of a URL. For example, `s3://datacontract-example-orders-latest/data/{model}`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1236,7 +1205,6 @@ Google Cloud Sql Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Google Cloud Sql server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Google Cloud Sql server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1254,7 +1222,6 @@ Apache Hive Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Hive server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Hive server. Defaults to 10000.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1271,7 +1238,6 @@ IBM DB2 Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the IBM DB2 server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the IBM DB2 server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
@@ -1289,7 +1255,6 @@ Apache Impala Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Impala server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Impala server. Defaults to 21050.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1306,7 +1271,6 @@ IBM Informix Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Informix server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Informix server. Defaults to 9088.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1323,7 +1287,6 @@ Apache Kafka Server.
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|The format of the messages. For example, `json`, `avro`, `protobuf`, `xml`.|"json"|
 |**host** `required`|str|The bootstrap server of the kafka cluster.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### KinesisServer
@@ -1338,7 +1301,6 @@ AWS Kinesis Data Streams Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|The format of the record. For example, `json`, `avro`, `protobuf`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**region**|str|AWS region. For example, `eu-west-1`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1354,7 +1316,6 @@ Local File Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format** `required`|str|The format of the file(s). For example, `json`, `parquet`, `delta`, `csv`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**path** `required`|str|The relative or absolute path to the data file(s). For example, `./folder/data.parquet`, `./folder/*.parquet`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1371,7 +1332,6 @@ MySQL Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the MySql server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the MySql server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1387,7 +1347,6 @@ Oracle Database Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the oracle server. For example, `localhost`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the oracle server. For example, `1523`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1405,7 +1364,6 @@ PostgreSQL Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Postgres server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the Postgres server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database.||
@@ -1423,7 +1381,6 @@ Presto Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the Presto server. For example, `localhost:8080`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema. For example, `public`.||
 |**server** `required`|str|Identifier of the server.||
@@ -1438,7 +1395,6 @@ Google Cloud Pub/Sub Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**project** `required`|str|The GCP project name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1456,7 +1412,6 @@ Amazon Redshift Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host**|str|An optional string describing the server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**region**|str|AWS region of Redshift server. For example, `us-east-1`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1475,7 +1430,6 @@ Amazon S3 Server.
 |**endpointUrl**|str|The server endpoint for S3-compatible servers. For example, `https://minio.example.com`.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|S3 URL, starting with `s3://`. For example, `s3://datacontract-example-orders-latest/data/{model}/*.json`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1498,7 +1452,6 @@ General Server Structure.
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1545,7 +1498,6 @@ server = Server {
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### SftpServer
@@ -1561,7 +1513,6 @@ SFTP Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location** `required`|str|SFTP URL, starting with `sftp://`. For example, `sftp://123.123.12.123/{model}/*.json`.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1579,7 +1530,6 @@ Snowflake Data Warehouse Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host**|str|The host to the Snowflake server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Snowflake server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1598,7 +1548,6 @@ Microsoft SQL Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host to the database server. For example, `localhost`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the database server. For example, `1433`.|1433|
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database. For example, `dbo`.||
@@ -1616,7 +1565,6 @@ Azure Synapse Analytics Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Synapse server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Synapse server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1633,7 +1581,6 @@ Trino Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The Trino host URL. For example, `localhost`.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The Trino port.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database. For example, `my_schema`.||
@@ -1651,7 +1598,6 @@ Vertica Database Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|The host of the Vertica server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Vertica server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1669,7 +1615,6 @@ Zen Server.
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
 |**host** `required`|str|Hostname or IP address of the Zen server.||
-|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|Zen server SQL connections port. Defaults to 1583.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||

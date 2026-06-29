@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema TrinoServer:
     """
@@ -7,19 +7,23 @@ schema TrinoServer:
     Attributes
     ----------
     host: str, default is Undefined, required.
-        The Trino host URL. For example, `localhost`.
+        The Trino host URL.
+        Examples: "localhost"
     port: int, default is Undefined, required.
         The Trino port.
     catalog: str, default is Undefined, required.
-        The name of the catalog. For example, `hive`.
+        The name of the catalog.
+        Examples: "hive"
     schema: str, default is Undefined, required.
-        The name of the schema in the database. For example, `my_schema`.
+        The name of the schema in the database.
+        Examples: "my_schema"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "trino"
     host: str
     port: int
     catalog: str
     $schema: str
+

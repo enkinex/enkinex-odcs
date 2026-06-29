@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema MySqlServer:
     """
@@ -14,7 +14,7 @@ schema MySqlServer:
         The name of the database.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "mysql"
     host: str

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema ClickHouseServer:
     """
@@ -14,7 +14,7 @@ schema ClickHouseServer:
         The name of the database.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "clickhouse"
     host: str

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema KinesisServer:
     """
@@ -7,12 +7,14 @@ schema KinesisServer:
     Attributes
     ----------
     region: str, default is Undefined, optional.
-        AWS region. For example, `eu-west-1`.
+        AWS region.
+        Examples: "eu-west-1"
     format: str, default is Undefined, optional.
-        The format of the record. For example, `json`, `avro`, `protobuf`.
+        The format of the record.
+        Examples: "json", "avro", "protobuf"
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "kinesis"
     region?: str

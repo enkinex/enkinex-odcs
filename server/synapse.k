@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema SynapseServer:
     """
@@ -14,9 +14,10 @@ schema SynapseServer:
         The name of the database.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "synapse"
     host: str
     port: int
     database: str
+

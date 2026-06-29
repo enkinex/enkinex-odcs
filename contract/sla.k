@@ -1,4 +1,4 @@
-import ..common.id as id
+import ..common.mixins
 
 schema ServiceLevelAgreement:
     """
@@ -6,26 +6,29 @@ schema ServiceLevelAgreement:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
     property: str, default is Undefined, required.
-        Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1). May requires units.
+        Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1).
+        May require units.
     value: any, default is Undefined, required.
         Agreement value. The label will change based on the property itself.
     valueExt: str, default is Undefined, optional.
         Extended agreement value. The label will change based on the property itself.
     unit: str, default is Undefined, optional.
-        Units use the ISO standard. For example: **d**, day, days for days; **y**, yr, years for years, etc.
+        Units use the ISO standard.
+        Examples: "**d**", "day", "days" for days."**y**", "yr", "years" for years.
     element: str, default is Undefined, optional.
-        Element(s) to check on. Multiple elements should be extremely rare and, if so, separated by commas.
+        Element(s) to check on.
+        Multiple elements should be extremely rare and, if so, separated by commas.
     driver: str, default is Undefined, optional.
-        Describes the importance of the SLA from the list of: `regulatory`, `analytics`, or `operational`.
+        Describes the importance of the SLA.
+        Examples: "regulatory", "analytics", "operational"
     description: str, default is Undefined, optional.
         Description of the SLA for humans.
     scheduler: str, default is Undefined, optional.
         Name of the scheduler, can be cron or any tool your organization support.
     schedule: str, default is Undefined, optional.
-        Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.
+        Configuration information for the scheduling tool.
+        Examples: "0 20 * * *" for cron.
 
     Examples
     --------
@@ -63,7 +66,7 @@ schema ServiceLevelAgreement:
     }
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin
     ]
     property: str
     value: any

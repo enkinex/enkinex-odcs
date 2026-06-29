@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema BigQueryServer:
     """
@@ -12,7 +12,7 @@ schema BigQueryServer:
         The GCP dataset name.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "bigquery"
     project: str

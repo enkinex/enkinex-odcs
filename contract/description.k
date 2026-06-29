@@ -1,4 +1,5 @@
-import ..common.property as prop
+import ..common.authoritative
+import ..common.property
 
 schema Description:
     """
@@ -12,8 +13,6 @@ schema Description:
         Technical, compliance, and legal limitations for data use.
     usage: str, default is Undefined, optional.
         Recommended usage of the data.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
 
     Examples
     --------
@@ -29,8 +28,11 @@ schema Description:
         ]
     }
     """
+    mixin[
+        authoritative.AuthoritativeDefinitionsMixin,
+        property.CustomPropertiesMixin
+    ]
     purpose?: str
     limitations?: str
     usage?: str
-    customProperties?: [prop.CustomProperty]
 

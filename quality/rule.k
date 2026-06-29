@@ -1,8 +1,12 @@
 import .operator
 
-import ..common.authoritative as ad
-import ..common.id as id
-import ..common.property as prop
+import ..common.authoritative
+import ..common.mixins
+import ..common.property
+
+type QualityRuleType = "library" | "sql" | "text" | "custom"
+type QualityRuleMetric = "nullValues" | "missingValues" | "invalidValues" | "duplicateValues" | "rowCount"
+type QualityRuleDimension = "accuracy" | "completeness" | "conformity" | "consistency" | "coverage" | "timeliness" | "uniqueness"
 
 schema DataQuality:
     """
@@ -14,38 +18,47 @@ schema DataQuality:
         Name of the data quality check.
     description: str, default is Undefined, optional.
         Describe the quality check to be completed.
-    type: "library" | "sql" | "text" | "custom", default is "library", optional.
-        The type of quality check. `text` is human-readable text that describes the quality of the data. `library` is a set of maintained predefined quality attributes such as row count or unique. `sql` is an individual SQL query that returns a value that can be compared. `custom` is quality attributes that are vendor-specific, such as Soda or Great Expectations.
-    metric: str, default is Undefined, otpional.
-        Define a data quality check based on the predefined metrics as per ODCS. For example, `nullValues`, `missingValues`, `invalidValues`, `duplicateValues`, `rowCount`.
+    type: QualityRuleType, default is "library", optional.
+        The type of quality check.
+        `text` is human-readable text that describes the quality of the data.
+        `library` is a set of maintained predefined quality attributes such as row count or unique.
+        `sql` is an individual SQL query that returns a value that can be compared.
+        `custom` is quality attributes that are vendor-specific, such as Soda or Great Expectations.
+    metric: QualityRuleMetric, default is Undefined, otpional.
+        Define a data quality check based on the predefined metrics as per ODCS.
+        Examples: "nullValues", "missingValues", "invalidValues", "duplicateValues", "rowCount"
     arguments: str, default is Undefined, otpional.
         Additional arguments for the metric, if needed.
     unit: str, default is Undefined, optional.
-        Unit the rule is using, popular values are `rows` or `percent`, but any value is allowed.
+        Unit the rule is using.
+        Examples: "rows", "percent"
     query: str, default is Undefined, optional.
-        Required for `sql` DQ rules: the SQL query to be executed. Note that it should match the target SQL engine/database, no transalation service are provided here.
+        Required for `sql` DQ rules: the SQL query to be executed.
+        Note that it should match the target SQL engine/database, no transalation service are provided here.
+        Examples: "SELECT COUNT(*) FROM ${table} WHERE ${column} IS NOT NULL"
     engine: str, default is Undefined, optional.
-        Required for `custom` DQ rule: name of the engine which executes the data quality checks. For example, `soda`, `great-expectations`, `monte-carlo`, `dbt`.
+        Required for `custom` DQ rule: name of the engine which executes the data quality checks.
+        Examples: "soda", "great-expectations", "monte-carlo", "dbt"
     implementation: str, default is Undefined, optional.
         A text (non-parsed) block of code required for the third-party DQ engine to run.
-    dimension: str, default is Undefined, optional.
-        The key performance indicator (KPI) or dimension for data quality. Valid values are listed after the table.
+    dimension: QualityRuleDimension, default is Undefined, optional.
+        The key performance indicator (KPI) or dimension for data quality.
+        Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"
     method: str, default is Undefined, optional.
-        Values are open and include `reconciliation`.
+        Values are open.
+        Exemples: "reconciliation"
     severity: str, default is Undefined, optional.
         The severity of the DQ rule.
+        Examples: "info", "warning", "error"
     businessImpact: str, default is Undefined, optional.
         Consequences of the rule failure.
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
-    tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.
-    authoritativeDefinitions: [ad.AuthoritativeDefinition], default is Undefined, optional.
-        List of links to sources that provide more details on the data contract.
+        Examples: "operational", "regulatory"
     scheduler: str, default is Undefined, optional.
-        Name of the scheduler, can be `cron` or any tool your organization support.
+        Name of the scheduler or tool your organization support.
+        Examples: "cron"
     schedule: str, default is Undefined, optional.
-        Configuration information for the scheduling tool, for cron a possible value is `0 20 * * *`.
+        Configuration information for the scheduling tool.
+        Examples: "0 20 * * *" for cron.
 
     Examples
     --------
@@ -65,7 +78,10 @@ schema DataQuality:
     }
     """
     mixin [
-        id.OptionalStableIdMixin,
+        mixins.StableIdMixin,
+        mixins.TagsMixin,
+        authoritative.AuthoritativeDefinitionsMixin,
+        property.CustomPropertiesMixin,
         operator.MustBeMixin,
         operator.MustNotBeMixin,
         operator.MustBeGreaterThanMixin,
@@ -77,20 +93,17 @@ schema DataQuality:
     ]
     name?: str
     description?: str
-    $type?: "library" | "sql" | "text" | "custom" = "library"
-    metric?: str
+    $type?: QualityRuleType = "library"
+    metric?: QualityRuleMetric
     arguments?: str
     unit?: str
     query?: str
     engine?: str
     implementation?: str
-    dimension?: str
+    dimension?: QualityRuleDimension
     method?: str
     severity?: str
     businessImpact?: str
-    customProperties?: [prop.CustomProperty]
-    tags?: [str]
-    authoritativeDefinitions?: [ad.AuthoritativeDefinition]
     scheduler?: str
     schedule?: str
 

@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema ImpalaServer:
     """
@@ -10,14 +10,14 @@ schema ImpalaServer:
         The host to the Impala server.
     database: str, default is Undefined, required.
         The name of the Impala database.
-    port: int, default is Undefined, optional.
-        The port to the Impala server. Defaults to 21050.
+    port: int, default is 21050, optional.
+        The port to the Impala server.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "impala"
     host: str
     database: str
-    port?: int
+    port?: 21050
 

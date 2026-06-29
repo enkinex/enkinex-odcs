@@ -1,5 +1,5 @@
-import ..common.id as id
-import ..common.property as prop
+import ..common.mixins
+import ..common.property
 
 schema Support:
     """
@@ -14,13 +14,13 @@ schema Support:
     description: str, default is Undefined, optional.
         Description of the channel, free text.
     tool: str, default is Undefined, optional.
-        Name of the tool, value can be `email`, `slack`, `teams`, `discord`, `ticket`, `googlechat`, or `other`.
+        Name of the tool.
+        Examples: "email", "slack", "teams", "discord", "ticket", "googlechat", "other"
     scope: str, default is Undefined, optional.
-        Scope can be: `interactive`, `announcements`, `issues`, `notifications`.
+        The channel scope.
+        Examples: "interactive", "announcements", "issues", "notifications"
     invitationUrl: str, default is Undefined, optional.
         Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).
-    customProperties: [prop.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
 
     Examples
     --------
@@ -49,7 +49,8 @@ schema Support:
     }
     """
     mixin [
-        id.OptionalStableIdMixin
+        mixins.StableIdMixin,
+        property.CustomPropertiesMixin
     ]
     channel: str
     url?: str
@@ -57,5 +58,4 @@ schema Support:
     tool?: str
     scope?: str
     invitationUrl?: str
-    customProperties?: [prop.CustomProperty]
 

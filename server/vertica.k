@@ -1,4 +1,4 @@
-import .common as srv
+import .common as server
 
 schema VerticaServer:
     """
@@ -16,10 +16,11 @@ schema VerticaServer:
         The name of the schema.
     """
     mixin [
-        srv.ServerMixin
+        server.ServerMixin
     ]
     $type = "vertica"
     host: str
     port: int
     database: str
     $schema: str
+

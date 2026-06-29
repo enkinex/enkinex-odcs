@@ -98,25 +98,25 @@ A data contract defines the agreement between a data producer and consumers. Thi
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**apiVersion** `required`|str|Version of the standard used to build data contract.|"v3.1.0"|
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the data contract.||
+|**apiVersion** `required` `readOnly`|"v3.1.0"|Version of the standard used to build data contract.|"v3.1.0"|
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|[Description](#description)|Object containing the descriptions.||
-|**domain**|str|Name of the logical data domain.||
+|**domain**|str|Name of the logical data domain.<br />Examples: "imdb_ds_aggregate", "receiver_profile_out", "transaction_profile_out"||
 |**id** `required`|str|A unique identifier used to reduce the risk of dataset name collisions, such as a UUID.||
-|**kind** `required`|str|The kind of file this is.|"DataContract"|
+|**kind** `required` `readOnly`|"DataContract"|The kind of file this is.|"DataContract"|
 |**name**|str|Name of the data contract.||
 |**price**|[[Pricing](#pricing)]|Pricing when you bill your customer for using this data product.||
 |**roles**|[[Role](#role)]|A list of roles that will provide user access to the dataset.||
 |**schema**|[[SchemaObject](#schemaobject)]|A list of objects within the schema to be cataloged.||
 |**servers** `required`|[[Server](#server)]|List of servers where the datasets reside.||
-|**slaProperties**|[[ServiceLevelAgreement](#servicelevelagreement)]|A list of key/value pairs for SLA specific properties. There is no limit on the type of properties.||
-|**status** `required`|str|Current status of the data contract. Examples are "proposed", "draft", "active", "deprecated", "retired".||
+|**slaProperties**|[[ServiceLevelAgreement](#servicelevelagreement)]|A list of key/value pairs for SLA specific properties.<br />There is no limit on the type of properties.||
+|**status** `required`|str|Current status of the data contract.<br />Examples: "proposed", "draft", "active", "deprecated", "retired"||
 |**support**|[[Support](#support)]|Top level for support channels.||
-|**tags**|[str]|A list of tags that may be assigned to the elements (object or property); the tags keyword may appear at any level. For example, finance, sensitive, employee_record.||
-|**team**|[[Team](#team)]|Team information object with members array.||
-|**tenant**|str|Indicates the property the data is primarily associated with. Value is case insensitive.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
+|**team**|[Team](#team)|Team information object with members array.||
+|**tenant**|str|Indicates the property the data is primarily associated with.<br />Value is case insensitive.||
 |**version** `required`|str|Current version of the data contract.||
 #### Examples
 
@@ -895,7 +895,7 @@ Data quality rule with all the relevant information for setup and execution.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Describe the quality check to be completed.||
 |**dimension**|"accuracy" \| "completeness" \| "conformity" \| "consistency" \| "coverage" \| "timeliness" \| "uniqueness"|The key performance indicator (KPI) or dimension for data quality.<br />Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"||
-|**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks.<br />Examples: `soda`, `great-expectations`, `monte-carlo`, `dbt`.||
+|**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks.<br />Examples: "soda", "great-expectations", "monte-carlo", "dbt"||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**implementation**|str|A text (non-parsed) block of code required for the third-party DQ engine to run.||
 |**method**|str|Values are open.<br />Exemples: "reconciliation"||
@@ -909,7 +909,7 @@ Data quality rule with all the relevant information for setup and execution.
 |**mustBeNotBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
 |**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
 |**name**|str|Name of the data quality check.||
-|**query**|str|Required for `sql` DQ rules: the SQL query to be executed.<br />Note that it should match the target SQL engine/database, no transalation service are provided here.||
+|**query**|str|Required for `sql` DQ rules: the SQL query to be executed.<br />Note that it should match the target SQL engine/database, no transalation service are provided here.<br />Examples: "SELECT COUNT(*) FROM ${table} WHERE ${column} IS NOT NULL"||
 |**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
 |**scheduler**|str|Name of the scheduler or tool your organization support.<br />Examples: "cron"||
 |**severity**|str|The severity of the DQ rule.<br />Examples: "info", "warning", "error"||
@@ -1017,8 +1017,9 @@ API Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**location** `required`|str|The URL to the API, For example, `https://api.example.com/v1`||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location** `required`|str|The URL to the API.<br />Examples: "https://api.example.com/v1"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### AthenaServer
@@ -1032,12 +1033,13 @@ AWS Athena Server.
 |**catalog**|str|Identify the name of the Data Source, also referred to as a Catalog.|"awsdatacatalog"|
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**regionName**|str|The region your AWS account uses. For example, `eu-west-1`||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**regionName**|str|The region your AWS account uses.<br />Examples: "eu-west-1"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|Identify the schema in the data source in which your tables exist.||
 |**server** `required`|str|Identifier of the server.||
-|**stagingDir** `required`|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3. For example, `s3://my_storage_account_name/my_container/path`.||
+|**stagingDir** `required`|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Examples: "s3://my_storage_account_name/my_container/path"||
 ### AzureServer
 
 Azure Blob Storage Server.
@@ -1047,11 +1049,12 @@ Azure Blob Storage Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.||
+|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format** `required`|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs. For example, `az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet`, `abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format** `required`|str|File format.<br />Examples: "parquet", "delta", "json", "csv".||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### BigQueryServer
@@ -1065,7 +1068,8 @@ Google BigQuery Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dataset** `required`|str|The GCP dataset name.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**project** `required`|str|The GCP project name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1080,8 +1084,9 @@ ClickHouse Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the ClickHouse server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the ClickHouse server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1123,8 +1128,9 @@ Databricks Server.
 |**catalog** `required`|str|The name of the Hive or Unity catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**host**|str|The Databricks host. For example, `dbc-abcdefgh-1234.cloud.databricks.com`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**host**|str|The Databricks host.<br />Examples: "dbc-abcdefgh-1234.cloud.databricks.com"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The schema name in the catalog.||
 |**server** `required`|str|Identifier of the server.||
@@ -1139,8 +1145,9 @@ Denodo Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the Denodo server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Denodo server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1154,8 +1161,9 @@ Dremio Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the Dremio server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Dremio server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
@@ -1171,7 +1179,8 @@ DuckDB Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|Path to duckdb database file.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
@@ -1183,13 +1192,14 @@ AWS Glue Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**account** `required`|str|The AWS Glue account. For example, `1234-5678-9012`.||
+|**account** `required`|str|The AWS Glue account.<br />Examples: "1234-5678-9012"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The AWS Glue database name. For example, `my_database`.||
+|**database** `required`|str|The AWS Glue database name.<br />Examples: "my_database"||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format**|str|The format of the files. For example, `parquet`, `csv`, `json`, `delta`.||
-|**location**|str|The AWS S3 path. Must be in the form of a URL. For example, `s3://datacontract-example-orders-latest/data/{model}`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|The format of the files.<br />Examples: "parquet", "csv", "json", "delta"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|The AWS S3 path. Must be in the form of a URL.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### GoogleCloudSqlServer
@@ -1203,8 +1213,9 @@ Google Cloud Sql Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the Google Cloud Sql server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Google Cloud Sql server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1220,8 +1231,9 @@ Apache Hive Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the Hive database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host to the Hive server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Hive server. Defaults to 10000.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1236,8 +1248,9 @@ IBM DB2 Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the IBM DB2 server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the IBM DB2 server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
@@ -1253,9 +1266,10 @@ Apache Impala Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the Impala database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host to the Impala server.||
-|**port**|int|The port to the Impala server. Defaults to 21050.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**port** `readOnly`|21050|The port to the Impala server.|21050|
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### InformixServer
@@ -1269,9 +1283,10 @@ IBM Informix Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host to the Informix server.||
-|**port**|int|The port to the Informix server. Defaults to 9088.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**port** `readOnly`|9088|The port to the Informix server.|9088|
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### KafkaServer
@@ -1284,9 +1299,10 @@ Apache Kafka Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format**|str|The format of the messages. For example, `json`, `avro`, `protobuf`, `xml`.|"json"|
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|The format of the messages.<br />Examples: "json", "avro", "protobuf", "xml"|"json"|
 |**host** `required`|str|The bootstrap server of the kafka cluster.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### KinesisServer
@@ -1299,9 +1315,10 @@ AWS Kinesis Data Streams Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format**|str|The format of the record. For example, `json`, `avro`, `protobuf`.||
-|**region**|str|AWS region. For example, `eu-west-1`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|The format of the record.<br />Examples: "json", "avro", "protobuf"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**region**|str|AWS region.<br />Examples: "eu-west-1"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### LocalServer
@@ -1314,9 +1331,10 @@ Local File Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format** `required`|str|The format of the file(s). For example, `json`, `parquet`, `delta`, `csv`.||
-|**path** `required`|str|The relative or absolute path to the data file(s). For example, `./folder/data.parquet`, `./folder/*.parquet`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format** `required`|str|The format of the file(s).<br />Examples: "json", "parquet", "delta", "csv"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**path** `required`|str|The relative or absolute path to the data file(s).<br />Examples: "./folder/data.parquet", "./folder/*.parquet"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### MySqlServer
@@ -1330,8 +1348,9 @@ MySQL Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the MySql server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the MySql server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1345,12 +1364,13 @@ Oracle Database Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**host** `required`|str|The host to the oracle server. For example, `localhost`.||
-|**port** `required`|int|The port to the oracle server. For example, `1523`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**host** `required`|str|The host to the oracle server.<br />Examples: "localhost"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**port** `required`|int|The port to the oracle server.<br />Examples: "1523"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
-|**serviceName** `required`|str|The name of the service. For example, `service`.||
+|**serviceName** `required`|str|The name of the service.<br />Examples: "service"||
 ### PostgresServer
 
 PostgreSQL Server.
@@ -1362,8 +1382,9 @@ PostgreSQL Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host to the Postgres server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port to the Postgres server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database.||
@@ -1376,13 +1397,14 @@ Presto Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**catalog**|str|The name of the catalog. For example, `postgres`.||
+|**catalog**|str|The name of the catalog.<br />Examples: "postgres"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**host** `required`|str|The host to the Presto server. For example, `localhost:8080`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**host** `required`|str|The host to the Presto server.<br />Examples: "localhost:8080"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema**|str|The name of the schema. For example, `public`.||
+|**schema**|str|The name of the schema.<br />Examples: "public"||
 |**server** `required`|str|Identifier of the server.||
 ### PubSubServer
 
@@ -1394,7 +1416,8 @@ Google Cloud Pub/Sub Server.
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**project** `required`|str|The GCP project name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1410,9 +1433,10 @@ Amazon Redshift Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host**|str|An optional string describing the server.||
-|**region**|str|AWS region of Redshift server. For example, `us-east-1`.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**region**|str|AWS region of Redshift server.<br />Examples: "us-east-1"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
@@ -1425,12 +1449,13 @@ Amazon S3 Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.||
+|**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
-|**endpointUrl**|str|The server endpoint for S3-compatible servers. For example, `https://minio.example.com`.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**location** `required`|str|S3 URL, starting with `s3://`. For example, `s3://datacontract-example-orders-latest/data/{model}/*.json`.||
+|**endpointUrl**|str|The server endpoint for S3-compatible servers.<br />Examples: "https://minio.example.com`"||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location** `required`|str|S3 URL, starting with `s3://`.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}/*.json"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### Server
@@ -1449,9 +1474,10 @@ General Server Structure.
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
 |**endpointUrl**|str|Server endpoint.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1464,7 +1490,7 @@ General Server Structure.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the cluster or warehouse.||
-|**type** `required`|str|Type of the server. Can be one of: api, athena, azure, bigquery, clickhouse, cloudsql, custom, databricks, db2, denodo, dremio, duckdb, glue, hive, impala, informix, kafka, kinesis, local, mysql, oracle, postgres, postgresql, presto, pubsub, redshift, s3, sftp, snowflake, sqlserver, synapse, trino, vertica, zen.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the data stream.||
 #### Examples
 
@@ -1497,7 +1523,8 @@ server = Server {
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### SftpServer
@@ -1509,11 +1536,12 @@ SFTP Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file. For example, `new_line`, `array`.||
+|**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**format**|str|File format. For example, `parquet`, `delta`, `json`, `csv`.||
-|**location** `required`|str|SFTP URL, starting with `sftp://`. For example, `sftp://123.123.12.123/{model}/*.json`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location** `required`|str|SFTP URL, starting with `sftp://`.<br />Examples: "sftp://123.123.12.123/{model}/*.json"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### SnowflakeServer
@@ -1528,8 +1556,9 @@ Snowflake Data Warehouse Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host**|str|The host to the Snowflake server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port**|int|The port to the Snowflake server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1544,13 +1573,14 @@ Microsoft SQL Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database. For example, `database`.||
+|**database** `required`|str|The name of the database.<br />Examples: "database"||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**host** `required`|str|The host to the database server. For example, `localhost`.||
-|**port**|int|The port to the database server. For example, `1433`.|1433|
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**host** `required`|str|The host to the database server.<br />Examples: "localhost"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**port**|int|The port to the database server.<br />Examples: "1433"|1433|
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema in the database. For example, `dbo`.||
+|**schema** `required`|str|The name of the schema in the database.<br />Examples: "dbo"||
 |**server** `required`|str|Identifier of the server.||
 ### SynapseServer
 
@@ -1563,8 +1593,9 @@ Azure Synapse Analytics Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the Synapse server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Synapse server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
@@ -1576,14 +1607,15 @@ Trino Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**catalog** `required`|str|The name of the catalog. For example, `hive`.||
+|**catalog** `required`|str|The name of the catalog.<br />Examples: "hive"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
-|**host** `required`|str|The Trino host URL. For example, `localhost`.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**host** `required`|str|The Trino host URL.<br />Examples: "localhost"||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The Trino port.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema in the database. For example, `my_schema`.||
+|**schema** `required`|str|The name of the schema in the database.<br />Examples: "my_schema"||
 |**server** `required`|str|Identifier of the server.||
 ### VerticaServer
 
@@ -1596,8 +1628,9 @@ Vertica Database Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the Vertica server.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**port** `required`|int|The port of the Vertica server.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema.||
@@ -1613,9 +1646,10 @@ Zen Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|Database name to connect to on the Zen server.||
 |**description**|str|Description of the server.||
-|**environment**|str|Environment of the server. Examples includes: prod, preprod, dev, uat.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|Hostname or IP address of the Zen server.||
-|**port**|int|Zen server SQL connections port. Defaults to 1583.||
+|**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**port**|int|Zen server SQL connections port.|1583|
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 <!-- Auto generated by kcl-doc tool, please do not edit. -->

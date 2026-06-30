@@ -75,14 +75,14 @@ mixin MustBeBetweenMixin:
     """
     mustBeBetween?: [int | float]
 
-mixin MustBeNotBetweenMixin:
+mixin MustNotBeBetweenMixin:
     """
-    Data quality operator mixin `mustBeNotBetween`
+    Data quality operator mixin `mustNotBeBetween`
 
     Attributes
     ----------
-    mustBeNotBetween: [int | float], default is Undefined, optional.
+    mustNotBeBetween: [int | float], default is Undefined, optional.
         Must not be between the two numbers to be valid. Smallest number first in the array.
     """
-    mustBeNotBetween?: [int | float]
+    mustNotBeBetween?: [int | float]
 

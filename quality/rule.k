@@ -89,7 +89,7 @@ schema DataQuality:
         operator.MustBeLessThanMixin,
         operator.MustBeLessOrEqualToMixin,
         operator.MustBeBetweenMixin,
-        operator.MustBeNotBetweenMixin
+        operator.MustNotBeBetweenMixin
     ]
     name?: str
     description?: str

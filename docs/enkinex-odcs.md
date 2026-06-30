@@ -43,13 +43,14 @@
   - [TeamMember](#teammember)
 - quality
   - [DataQuality](#dataquality)
+  - [DataQualityOperatorsMixin](#dataqualityoperatorsmixin)
   - [MustBeBetweenMixin](#mustbebetweenmixin)
   - [MustBeGreaterOrEqualToMixin](#mustbegreaterorequaltomixin)
   - [MustBeGreaterThanMixin](#mustbegreaterthanmixin)
   - [MustBeLessOrEqualToMixin](#mustbelessorequaltomixin)
   - [MustBeLessThanMixin](#mustbelessthanmixin)
   - [MustBeMixin](#mustbemixin)
-  - [MustBeNotBetweenMixin](#mustbenotbetweenmixin)
+  - [MustNotBeBetweenMixin](#mustnotbebetweenmixin)
   - [MustNotBeMixin](#mustnotbemixin)
 - server
   - [ApiServer](#apiserver)
@@ -889,7 +890,7 @@ Data quality rule with all the relevant information for setup and execution.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**arguments**|str|Additional arguments for the metric, if needed.||
+|**arguments**|{str:}|Additional arguments for the metric, if needed.||
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessImpact**|str|Consequences of the rule failure.<br />Examples: "operational", "regulatory"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
@@ -897,8 +898,8 @@ Data quality rule with all the relevant information for setup and execution.
 |**dimension**|"accuracy" \| "completeness" \| "conformity" \| "consistency" \| "coverage" \| "timeliness" \| "uniqueness"|The key performance indicator (KPI) or dimension for data quality.<br />Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"||
 |**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks.<br />Examples: "soda", "great-expectations", "monte-carlo", "dbt"||
 |**id**|str|Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**implementation**|str|A text (non-parsed) block of code required for the third-party DQ engine to run.||
-|**method**|str|Values are open.<br />Exemples: "reconciliation"||
+|**implementation**|str \| {str:}|A text (non-parsed) block of code required for the third-party DQ engine to run.||
+|**method**|str|Values are open.<br />Examples: "reconciliation"||
 |**metric**|"nullValues" \| "missingValues" \| "invalidValues" \| "duplicateValues" \| "rowCount"|Define a data quality check based on the predefined metrics as per ODCS.<br />Examples: "nullValues", "missingValues", "invalidValues", "duplicateValues", "rowCount"||
 |**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
 |**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
@@ -906,10 +907,10 @@ Data quality rule with all the relevant information for setup and execution.
 |**mustBeGreaterThan**|int \| float|Must be greater than the value to be valid. It is equivalent to &#39;&gt;&#39;.||
 |**mustBeLessOrEqualTo**|int \| float|Must be less than or equal to the value to be valid. It is equivalent to &#39;&lt;=&#39;.||
 |**mustBeLessThan**|int \| float|Must be less than the value to be valid. It is equivalent to &#39;&lt;&#39;.||
-|**mustBeNotBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
 |**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
+|**mustNotBeBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
 |**name**|str|Name of the data quality check.||
-|**query**|str|Required for `sql` DQ rules: the SQL query to be executed.<br />Note that it should match the target SQL engine/database, no transalation service are provided here.<br />Examples: "SELECT COUNT(*) FROM ${table} WHERE ${column} IS NOT NULL"||
+|**query**|str|Required for `sql` DQ rules: the SQL query to be executed.<br />Note that it should match the target SQL engine/database, no translation service are provided here.<br />Examples: "SELECT COUNT(*) FROM ${table} WHERE ${column} IS NOT NULL"||
 |**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
 |**scheduler**|str|Name of the scheduler or tool your organization support.<br />Examples: "cron"||
 |**severity**|str|The severity of the DQ rule.<br />Examples: "info", "warning", "error"||
@@ -935,6 +936,22 @@ percentNullStatus = DataQuality {
 }
 ```
 
+### DataQualityOperatorsMixin
+
+Combined data quality operators mixin.  Applies all eight comparison operators and enforces the ODCS `oneOf` semantics so that at most one operator is set on a single rule. Some rule types (e.g. `text`) legitimately set none.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
+|**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
+|**mustBeGreaterOrEqualTo**|int \| float|Must be greater than or equal to the value to be valid. It is equivalent to &#39;&gt;=&#39;.||
+|**mustBeGreaterThan**|int \| float|Must be greater than the value to be valid. It is equivalent to &#39;&gt;&#39;.||
+|**mustBeLessOrEqualTo**|int \| float|Must be less than or equal to the value to be valid. It is equivalent to &#39;&lt;=&#39;.||
+|**mustBeLessThan**|int \| float|Must be less than the value to be valid. It is equivalent to &#39;&lt;&#39;.||
+|**mustNotBe**|any|Must not be equal to the value to be valid. When using numbers, it is equivalent to &#39;!=&#39;.||
+|**mustNotBeBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
 ### MustBeBetweenMixin
 
 Data quality operator mixin `mustBeBetween`
@@ -989,15 +1006,15 @@ Data quality operator mixin `mustBe`
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
-### MustBeNotBetweenMixin
+### MustNotBeBetweenMixin
 
-Data quality operator mixin `mustBeNotBetween`
+Data quality operator mixin `mustNotBeBetween`
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**mustBeNotBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
+|**mustNotBeBetween**|[int \| float]|Must not be between the two numbers to be valid. Smallest number first in the array.||
 ### MustNotBeMixin
 
 Data quality operator mixin `mustNotBe`

@@ -1,4 +1,4 @@
-schema MustBeMixin:
+mixin MustBeMixin:
     """
     Data quality operator mixin `mustBe`
 
@@ -9,7 +9,7 @@ schema MustBeMixin:
     """
     mustBe?: any
 
-schema MustNotBeMixin:
+mixin MustNotBeMixin:
     """
     Data quality operator mixin `mustNotBe`
 
@@ -20,7 +20,7 @@ schema MustNotBeMixin:
     """
     mustNotBe?: any
 
-schema MustBeGreaterThanMixin:
+mixin MustBeGreaterThanMixin:
     """
     Data quality operator mixin `mustBeGreaterThan`
 
@@ -31,7 +31,7 @@ schema MustBeGreaterThanMixin:
     """
     mustBeGreaterThan?: int | float
 
-schema MustBeGreaterOrEqualToMixin:
+mixin MustBeGreaterOrEqualToMixin:
     """
     Data quality operator mixin `mustBeGreaterOrEqualTo`
 
@@ -42,7 +42,7 @@ schema MustBeGreaterOrEqualToMixin:
     """
     mustBeGreaterOrEqualTo?: int | float
 
-schema MustBeLessThanMixin:
+mixin MustBeLessThanMixin:
     """
     Data quality operator mixin `mustBeLessThan`
 
@@ -53,7 +53,7 @@ schema MustBeLessThanMixin:
     """
     mustBeLessThan?: int | float
 
-schema MustBeLessOrEqualToMixin:
+mixin MustBeLessOrEqualToMixin:
     """
     Data quality operator mixin `mustBeLessOrEqualTo`
 
@@ -64,7 +64,7 @@ schema MustBeLessOrEqualToMixin:
     """
     mustBeLessOrEqualTo?: int | float
 
-schema MustBeBetweenMixin:
+mixin MustBeBetweenMixin:
     """
     Data quality operator mixin `mustBeBetween`
 
@@ -75,7 +75,7 @@ schema MustBeBetweenMixin:
     """
     mustBeBetween?: [int | float]
 
-schema MustBeNotBetweenMixin:
+mixin MustBeNotBetweenMixin:
     """
     Data quality operator mixin `mustBeNotBetween`
 

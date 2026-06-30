@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema PubSubServer:
+schema PubSubServer(base.ServerObject):
     """
     Google Cloud Pub/Sub Server.
 
@@ -9,9 +9,6 @@ schema PubSubServer:
     project: str, default is Undefined, required.
         The GCP project name.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "pubsub"
     project: str
 

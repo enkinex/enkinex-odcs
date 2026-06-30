@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema RedshiftServer:
+schema RedshiftServer(base.ServerObject):
     """
     Amazon Redshift Server.
 
@@ -18,9 +18,6 @@ schema RedshiftServer:
     account: str, default is Undefined, optional.
         The account used by the server.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "redshift"
     database: str
     $schema: str

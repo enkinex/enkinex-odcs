@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema MySqlServer:
+schema MySqlServer(base.ServerObject):
     """
     MySQL Server.
 
@@ -13,9 +13,6 @@ schema MySqlServer:
     database: str, default is Undefined, required.
         The name of the database.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "mysql"
     host: str
     port: int

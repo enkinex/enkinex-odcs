@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema GlueServer:
+schema GlueServer(base.ServerObject):
     """
     AWS Glue Server.
 
@@ -19,9 +19,6 @@ schema GlueServer:
         The format of the files.
         Examples: "parquet", "csv", "json", "delta"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "glue"
     account: str
     database: str

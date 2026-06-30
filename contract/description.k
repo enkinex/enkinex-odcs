@@ -21,18 +21,16 @@ schema Description:
         limitations = "Cannot be used in conjunction with days with full moons."
         usage = "Twice a day, preferable before meals."
         customProperties = [
-            CustomProperty = {
+            CustomProperty {
                 property = "publish"
                 value = True
             }
         ]
     }
     """
-    mixin[
-        authoritative.AuthoritativeDefinitionsMixin,
-        property.CustomPropertiesMixin
-    ]
     purpose?: str
     limitations?: str
     usage?: str
+    authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
+    customProperties?: [property.CustomProperty]
 

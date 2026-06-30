@@ -1,11 +1,13 @@
-import .common as server
+import .base
 
-schema KinesisServer:
+schema KinesisServer(base.ServerObject):
     """
     AWS Kinesis Data Streams Server.
 
     Attributes
     ----------
+    stream: str, default is Undefined, required.
+        The name of the Kinesis data stream.
     region: str, default is Undefined, optional.
         AWS region.
         Examples: "eu-west-1"
@@ -13,10 +15,8 @@ schema KinesisServer:
         The format of the record.
         Examples: "json", "avro", "protobuf"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "kinesis"
+    stream: str
     region?: str
     format?: str
 

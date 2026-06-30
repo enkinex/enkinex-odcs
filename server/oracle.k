@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema OracleServer:
+schema OracleServer(base.ServerObject):
     """
     Oracle Database Server.
 
@@ -16,9 +16,6 @@ schema OracleServer:
         The name of the service.
         Examples: "service"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "oracle"
     host: str
     port: int

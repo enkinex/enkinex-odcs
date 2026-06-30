@@ -1,9 +1,7 @@
 import ..common.authoritative as authoritative
-import ..common.mixins
-import ..common.property as property
 import ..quality.rule as rule
 
-schema SchemaElement:
+schema SchemaElement(authoritative.CatalogedObject):
     """
     Schema element to be cataloged.
     Applicable to either Objects or Properties
@@ -24,12 +22,6 @@ schema SchemaElement:
     quality: [rule.DataQuality], default is Undefined, optional.
         Data quality rules with all the relevant information for rule setup and execution.
     """
-    mixin [
-        mixins.StableIdMixin,
-        mixins.TagsMixin,
-        authoritative.AuthoritativeDefinitionsMixin,
-        property.CustomPropertiesMixin
-    ]
     name: str
     physicalName?: str
     physicalType?: str

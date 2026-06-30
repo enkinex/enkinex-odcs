@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema PostgresServer:
+schema PostgresServer(base.ServerObject):
     """
     PostgreSQL Server.
 
@@ -15,9 +15,6 @@ schema PostgresServer:
     schema: str, default is Undefined, required.
         The name of the schema in the database.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "postgres"
     host: str
     port: int

@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema VerticaServer:
+schema VerticaServer(base.ServerObject):
     """
     Vertica Database Server.
 
@@ -15,9 +15,6 @@ schema VerticaServer:
     schema: str, default is Undefined, required.
         The name of the schema.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "vertica"
     host: str
     port: int

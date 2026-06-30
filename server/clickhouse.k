@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema ClickHouseServer:
+schema ClickHouseServer(base.ServerObject):
     """
     ClickHouse Server.
 
@@ -13,9 +13,6 @@ schema ClickHouseServer:
     database: str, default is Undefined, required.
         The name of the database.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "clickhouse"
     host: str
     port: int

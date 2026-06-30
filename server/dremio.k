@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema DremioServer:
+schema DremioServer(base.ServerObject):
     """
     Dremio Server.
 
@@ -13,9 +13,6 @@ schema DremioServer:
     schema: str, default is Undefined, optional.
         The name of the schema.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "dremio"
     host: str
     port: int

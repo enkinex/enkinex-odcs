@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema AthenaServer:
+schema AthenaServer(base.ServerObject):
     """
     AWS Athena Server.
 
@@ -17,9 +17,6 @@ schema AthenaServer:
         The region your AWS account uses.
         Examples: "eu-west-1"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "athena"
     $schema: str
     stagingDir: str

@@ -16,11 +16,9 @@ schema RelationshipBase:
     to: str | [str], default is Undefined, required.
         Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.
     """
-    mixin [
-        property.CustomPropertiesMixin
-    ]
     $type?: str = "foreignKey"
     to: str | [str]
+    customProperties?: [property.CustomProperty]
 
     check:
         all x in to {regex.match(x, shorthandReference) or regex.match(x, fullyQualifiedReference)}

@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema S3Server:
+schema S3Server(base.ServerObject):
     """
     Amazon S3 Server.
 
@@ -20,9 +20,6 @@ schema S3Server:
         How multiple json documents are delimited within one file.
         Examples: "new_line", "array"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "s3"
     location: str
     endpointUrl?: str

@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema LocalServer:
+schema LocalServer(base.ServerObject):
     """
     Local File Server.
 
@@ -13,9 +13,6 @@ schema LocalServer:
         The format of the file(s).
         Examples: "json", "parquet", "delta", "csv"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "local"
     path: str
     format: str

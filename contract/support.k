@@ -1,7 +1,6 @@
-import ..common.mixins
 import ..common.property
 
-schema Support:
+schema Support(property.CustomPropertiesObject):
     """
     Support and communication channels help consumers find help regarding their use of the data contract.
 
@@ -48,10 +47,6 @@ schema Support:
         url = "https://bitol.io/ticket/my-product"
     }
     """
-    mixin [
-        mixins.StableIdMixin,
-        property.CustomPropertiesMixin
-    ]
     channel: str
     url?: str
     description?: str

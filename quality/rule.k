@@ -1,14 +1,10 @@
 import .operator
 
-import ..common.authoritative
-import ..common.mixins
-import ..common.property
-
 type QualityRuleType = "library" | "sql" | "text" | "custom"
 type QualityRuleMetric = "nullValues" | "missingValues" | "invalidValues" | "duplicateValues" | "rowCount"
 type QualityRuleDimension = "accuracy" | "completeness" | "conformity" | "consistency" | "coverage" | "timeliness" | "uniqueness"
 
-schema DataQuality:
+schema DataQuality(operator.DataQualityOperatorsObject):
     """
     Data quality rule with all the relevant information for setup and execution.
 
@@ -77,13 +73,6 @@ schema DataQuality:
         description = "There must be less than 1% null values in the column."
     }
     """
-    mixin [
-        mixins.StableIdMixin,
-        mixins.TagsMixin,
-        authoritative.AuthoritativeDefinitionsMixin,
-        property.CustomPropertiesMixin,
-        operator.DataQualityOperatorsMixin
-    ]
     name?: str
     description?: str
     $type?: QualityRuleType = "library"

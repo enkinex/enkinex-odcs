@@ -1,8 +1,6 @@
 import ..common.authoritative
-import ..common.mixins
-import ..common.property
 
-schema TeamMember:
+schema TeamMember(authoritative.CatalogedObject):
     """
     Team member.
 
@@ -23,12 +21,6 @@ schema TeamMember:
     replacedByUsername: str, default is Undefined, optional.
         The username of the user who replaced the previous user.
     """
-    mixin [
-        mixins.StableIdMixin,
-        mixins.TagsMixin,
-        authoritative.AuthoritativeDefinitionsMixin,
-        property.CustomPropertiesMixin
-    ]
     username: str
     name?: str
     description?: str
@@ -37,7 +29,7 @@ schema TeamMember:
     dateOut?: str
     replacedByUsername?: str
 
-schema Team:
+schema Team(authoritative.CatalogedObject):
     """
     Team information.
 
@@ -81,12 +73,6 @@ schema Team:
         ]
     }
     """
-    mixin [
-        mixins.StableIdMixin,
-        mixins.TagsMixin,
-        authoritative.AuthoritativeDefinitionsMixin,
-        property.CustomPropertiesMixin
-    ]
     name?: str
     description?: str
     members?: [TeamMember]

@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema DuckdbServer:
+schema DuckdbServer(base.ServerObject):
     """
     DuckDB Server.
 
@@ -11,9 +11,6 @@ schema DuckdbServer:
     schema: str, default is Undefined, optional.
         The name of the schema.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "duckdb"
     database: str
     $schema?: str

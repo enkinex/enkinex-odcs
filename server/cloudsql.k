@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema GoogleCloudSqlServer:
+schema GoogleCloudSqlServer(base.ServerObject):
     """
     Google Cloud Sql Server.
 
@@ -15,9 +15,6 @@ schema GoogleCloudSqlServer:
     schema: str, default is Undefined, required.
         The name of the schema.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "cloudsql"
     host: str
     port: int

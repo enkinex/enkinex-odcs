@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema IBMDB2Server:
+schema IBMDB2Server(base.ServerObject):
     """
     IBM DB2 Server.
 
@@ -15,9 +15,6 @@ schema IBMDB2Server:
     schema: str, default is Undefined, optional.
         The name of the schema.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "db2"
     host: str
     port: int

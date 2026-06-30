@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema BigQueryServer:
+schema BigQueryServer(base.ServerObject):
     """
     Google BigQuery Server.
 
@@ -11,9 +11,6 @@ schema BigQueryServer:
     dataset: str, default is Undefined, required.
         The GCP dataset name.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "bigquery"
     project: str
     dataset: str

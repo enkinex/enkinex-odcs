@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema HiveServer:
+schema HiveServer(base.ServerObject):
     """
     Apache Hive Server.
 
@@ -10,14 +10,11 @@ schema HiveServer:
         The host to the Hive server.
     database: str, default is Undefined, required.
         The name of the Hive database.
-    port: int, default is Undefined, optional.
-        The port to the Hive server. Defaults to 10000.
+    port: int, default is 10000, optional.
+        The port to the Hive server.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "hive"
     host: str
     database: str
-    port?: int
+    port?: int = 10000
 

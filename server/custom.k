@@ -1,4 +1,6 @@
-schema CustomServer:
+import .base
+
+schema CustomServer(base.ServerObject):
     """
     Custom server properties
 
@@ -24,7 +26,7 @@ schema CustomServer:
         A URL to a location.
     path: str, default is Undefined, optional.
         Relative or absolute path to the data file(s).
-    port: integer, default is Undefined, optional.
+    port: int, default is Undefined, optional.
         Port to the server. No default value is assumed for custom servers.
     project: str, default is Undefined, optional.
         Project name.
@@ -39,9 +41,9 @@ schema CustomServer:
     stagingDir: str, default is Undefined, optional.
         Staging directory.
     stream: str, default is Undefined, optional.
-        Name of the cluster or warehouse.
-    warehouse: str, default is Undefined, optional.
         Name of the data stream.
+    warehouse: str, default is Undefined, optional.
+        Name of the cluster or warehouse.
     """
     account?: str
     catalog?: str

@@ -1,7 +1,6 @@
-import ..common.mixins
 import ..common.property
 
-schema Role:
+schema Role(property.CustomPropertiesObject):
     """
     Role that a consumer may need to access the dataset, depending on the type of access they require.
 
@@ -36,10 +35,6 @@ schema Role:
         secondLevelApprovers = "mickey"
     }
     """
-    mixin [
-        mixins.StableIdMixin,
-        property.CustomPropertiesMixin
-    ]
     role: str
     description?: str
     access?: str

@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema ZenServer:
+schema ZenServer(base.ServerObject):
     """
     Zen Server.
 
@@ -13,9 +13,6 @@ schema ZenServer:
     port: int, default is 1583, optional.
         Zen server SQL connections port.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "zen"
     host: str
     database: str

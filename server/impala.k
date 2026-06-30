@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema ImpalaServer:
+schema ImpalaServer(base.ServerObject):
     """
     Apache Impala Server.
 
@@ -13,11 +13,8 @@ schema ImpalaServer:
     port: int, default is 21050, optional.
         The port to the Impala server.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "impala"
     host: str
     database: str
-    port?: 21050
+    port?: int = 21050
 

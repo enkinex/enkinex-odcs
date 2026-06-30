@@ -1,6 +1,6 @@
 import ..common.mixins
 
-schema ServiceLevelAgreement:
+schema ServiceLevelAgreement(mixins.StableIdObject):
     """
     This section describes the service-level agreements (SLA).
 
@@ -65,9 +65,6 @@ schema ServiceLevelAgreement:
         driver = "analytics"
     }
     """
-    mixin [
-        mixins.StableIdMixin
-    ]
     property: str
     value: any
     valueExt?: str

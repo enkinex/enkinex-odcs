@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema AzureServer:
+schema AzureServer(base.ServerObject):
     """
     Azure Blob Storage Server.
 
@@ -16,9 +16,6 @@ schema AzureServer:
         Only for format = json. How multiple json documents are delimited within one file.
         Examples: "new_line", "array"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "azure"
     location: str
     format: str

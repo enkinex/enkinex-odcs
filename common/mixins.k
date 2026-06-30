@@ -1,29 +1,24 @@
 import regex
 
-mixin StableIdMixin:
+stableIdPattern = "^[A-Za-z0-9_-]+$"
+
+schema StableIdObject:
     """
-    Optional `id` property reference mixin.
+    Base object carrying the optional stable `id` property.
+
+    The `id` is always optional (the JSON references `StableId` from a
+    non-required position everywhere it is used). Use this as a base class
+    so the `id` attribute is recognized by KCL dict→schema coercion (mixin
+    attributes are not).
 
     Attributes
     ----------
-    id: str, default is Undefined
-        Stable technical identifier for references. Must be unique within its containing array. Cannot contain special characters ('-', '_' allowed).
+    id: str, default is Undefined, optional.
+        Stable technical identifier for references.
+        Must be unique within its containing array.
+        Cannot contain special characters ('-', '_' allowed).
     """
     id?: str
 
     check:
-        regex.match(id, "^[A-Za-z0-9_-]+$")
-
-mixin TagsMixin:
-    """
-    Optional `tags` property mixin.
-
-    Attributes
-    ----------
-    tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property).
-        The tags keyword may appear at any level.
-        Examples: "finance", "sensitive", "employee_record"
-    """
-    tags?: [str]
-
+        regex.match(id, stableIdPattern) if id, "id must match ${stableIdPattern}"

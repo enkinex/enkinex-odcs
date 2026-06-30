@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema DenodoServer:
+schema DenodoServer(base.ServerObject):
     """
     Denodo Server.
 
@@ -13,9 +13,6 @@ schema DenodoServer:
     database: str, default is Undefined, optional.
         The name of the database.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "denodo"
     host: str
     port: int

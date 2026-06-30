@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema KafkaServer:
+schema KafkaServer(base.ServerObject):
     """
     Apache Kafka Server.
 
@@ -12,9 +12,6 @@ schema KafkaServer:
         The format of the messages.
         Examples: "json", "avro", "protobuf", "xml"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "kafka"
     host: str
     format?: str = "json"

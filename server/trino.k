@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema TrinoServer:
+schema TrinoServer(base.ServerObject):
     """
     Trino Server.
 
@@ -18,9 +18,6 @@ schema TrinoServer:
         The name of the schema in the database.
         Examples: "my_schema"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "trino"
     host: str
     port: int

@@ -1,6 +1,6 @@
 import .mixins
 
-schema CustomProperty:
+schema CustomProperty(mixins.StableIdObject):
     """
     This section covers custom properties you can use to add non-standard properties.
     This block is available in many sections.
@@ -16,34 +16,34 @@ schema CustomProperty:
 
     Examples
     --------
-    rfcRuleset = Property {
+    rfcRuleset = CustomProperty {
         id = "rfc_ruleset_name"
         property = "refRulesetName"
         value = "gcsc.ruleset.name"
     }
 
-    dnsOptions = Property {
+    dnsOptions = CustomProperty {
         id = "dns_options"
         property = "clusterDnsOptions"
         value = [ "1.1.1.1", "8.8.8.8" ]
         description = "Cluster DNS options"
     }
     """
-    mixin [
-        mixins.StableIdMixin
-    ]
     property: str
     value: any
     description?: str
 
-mixin CustomPropertiesMixin:
+schema CustomPropertiesObject(mixins.StableIdObject):
     """
-    Optional `customProperties` property mixin.
+    Base object carrying the optional `customProperties` property (and,
+    via `StableIdObject`, the optional `id`). Used as a base class so the
+    attributes are recognized by KCL dict→schema coercion.
 
     Attributes
     ----------
     customProperties: [CustomProperty], default is Undefined, optional.
         A list of key/value pairs for custom properties.
+        Use a property's `id` (not `property`) when referencing it from elsewhere.
     """
     customProperties?: [CustomProperty]
 

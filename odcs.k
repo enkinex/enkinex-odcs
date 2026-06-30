@@ -7,7 +7,6 @@ import .common.authoritative
 import .common.property
 import .iam.role
 import .iam.team
-import .common.mixins
 import .server.common as server
 
 type KindType = "DataContract"
@@ -86,11 +85,6 @@ schema DataContract:
         tags = ["finance"]
     }
     """
-    mixin [
-        mixins.TagsMixin,
-        authoritative.AuthoritativeDefinitionsMixin,
-        property.CustomPropertiesMixin
-    ]
     apiVersion: ApiVersionType = "v3.1.0"
     kind: KindType = "DataContract"
     id: str
@@ -108,4 +102,7 @@ schema DataContract:
     roles?: [role.Role]
     slaProperties?: [sla.ServiceLevelAgreement]
     contractCreatedTs?: str
+    tags?: [str]
+    authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
+    customProperties?: [property.CustomProperty]
 

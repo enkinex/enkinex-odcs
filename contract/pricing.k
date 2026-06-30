@@ -1,6 +1,6 @@
 import ..common.mixins
 
-schema Pricing:
+schema Pricing(mixins.StableIdObject):
     """
     This section covers pricing when you bill your customer for using this data product.
 
@@ -21,9 +21,6 @@ schema Pricing:
         priceUnit = "megabyte"
     }
     """
-    mixin [
-        mixins.StableIdMixin
-    ]
     priceAmount?: str
     priceCurrency?: str
     priceUnit?: str

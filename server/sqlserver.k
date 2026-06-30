@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema SqlserverServer:
+schema SqlserverServer(base.ServerObject):
     """
     Microsoft SQL Server.
 
@@ -19,9 +19,6 @@ schema SqlserverServer:
         The port to the database server.
         Examples: "1433"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "sqlserver"
     host: str
     database: str

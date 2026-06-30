@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema DatabricksServer:
+schema DatabricksServer(base.ServerObject):
     """
     Databricks Server.
 
@@ -14,9 +14,6 @@ schema DatabricksServer:
         The Databricks host.
         Examples: "dbc-abcdefgh-1234.cloud.databricks.com"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "databricks"
     catalog: str
     $schema: str

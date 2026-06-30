@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema SynapseServer:
+schema SynapseServer(base.ServerObject):
     """
     Azure Synapse Analytics Server.
 
@@ -13,9 +13,6 @@ schema SynapseServer:
     database: str, default is Undefined, required.
         The name of the database.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "synapse"
     host: str
     port: int

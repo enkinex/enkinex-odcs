@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema SnowflakeServer:
+schema SnowflakeServer(base.ServerObject):
     """
     Snowflake Data Warehouse Server.
 
@@ -19,9 +19,6 @@ schema SnowflakeServer:
     warehouse: str, default is Undefined, optional.
         The name of the cluster of resources that is a Snowflake virtual warehouse.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "snowflake"
     account: str
     database: str

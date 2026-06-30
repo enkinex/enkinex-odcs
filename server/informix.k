@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema InformixServer:
+schema InformixServer(base.ServerObject):
     """
     IBM Informix Server.
 
@@ -13,11 +13,8 @@ schema InformixServer:
     port: int, default is 9088, optional.
         The port to the Informix server.
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "informix"
     host: str
     database: str
-    port?: 9088
+    port?: int = 9088
 

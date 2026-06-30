@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema ApiServer:
+schema ApiServer(base.ServerObject):
     """
     API Server.
 
@@ -10,9 +10,6 @@ schema ApiServer:
         The URL to the API.
         Examples: "https://api.example.com/v1"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "api"
     location: str
 

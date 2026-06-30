@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema SftpServer:
+schema SftpServer(base.ServerObject):
     """
     SFTP Server.
 
@@ -17,9 +17,6 @@ schema SftpServer:
         How multiple json documents are delimited within one file.
         Examples: "new_line", "array"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "sftp"
     location: str
     format?: str

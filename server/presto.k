@@ -1,6 +1,6 @@
-import .common as server
+import .base
 
-schema PrestoServer:
+schema PrestoServer(base.ServerObject):
     """
     Presto Server.
 
@@ -16,9 +16,6 @@ schema PrestoServer:
         The name of the schema.
         Examples: "public"
     """
-    mixin [
-        server.ServerMixin
-    ]
     $type = "presto"
     host: str
     catalog?: str

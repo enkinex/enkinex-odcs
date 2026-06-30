@@ -24,29 +24,29 @@ schema DataQuality:
         `library` is a set of maintained predefined quality attributes such as row count or unique.
         `sql` is an individual SQL query that returns a value that can be compared.
         `custom` is quality attributes that are vendor-specific, such as Soda or Great Expectations.
-    metric: QualityRuleMetric, default is Undefined, otpional.
+    metric: QualityRuleMetric, default is Undefined, optional.
         Define a data quality check based on the predefined metrics as per ODCS.
         Examples: "nullValues", "missingValues", "invalidValues", "duplicateValues", "rowCount"
-    arguments: str, default is Undefined, otpional.
+    arguments: {str:any}, default is Undefined, optional.
         Additional arguments for the metric, if needed.
     unit: str, default is Undefined, optional.
         Unit the rule is using.
         Examples: "rows", "percent"
     query: str, default is Undefined, optional.
         Required for `sql` DQ rules: the SQL query to be executed.
-        Note that it should match the target SQL engine/database, no transalation service are provided here.
+        Note that it should match the target SQL engine/database, no translation service are provided here.
         Examples: "SELECT COUNT(*) FROM ${table} WHERE ${column} IS NOT NULL"
     engine: str, default is Undefined, optional.
         Required for `custom` DQ rule: name of the engine which executes the data quality checks.
         Examples: "soda", "great-expectations", "monte-carlo", "dbt"
-    implementation: str, default is Undefined, optional.
+    implementation: str | {str:any}, default is Undefined, optional.
         A text (non-parsed) block of code required for the third-party DQ engine to run.
     dimension: QualityRuleDimension, default is Undefined, optional.
         The key performance indicator (KPI) or dimension for data quality.
         Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"
     method: str, default is Undefined, optional.
         Values are open.
-        Exemples: "reconciliation"
+        Examples: "reconciliation"
     severity: str, default is Undefined, optional.
         The severity of the DQ rule.
         Examples: "info", "warning", "error"
@@ -82,28 +82,27 @@ schema DataQuality:
         mixins.TagsMixin,
         authoritative.AuthoritativeDefinitionsMixin,
         property.CustomPropertiesMixin,
-        operator.MustBeMixin,
-        operator.MustNotBeMixin,
-        operator.MustBeGreaterThanMixin,
-        operator.MustBeGreaterOrEqualToMixin,
-        operator.MustBeLessThanMixin,
-        operator.MustBeLessOrEqualToMixin,
-        operator.MustBeBetweenMixin,
-        operator.MustNotBeBetweenMixin
+        operator.DataQualityOperatorsMixin
     ]
     name?: str
     description?: str
     $type?: QualityRuleType = "library"
     metric?: QualityRuleMetric
-    arguments?: str
+    arguments?: {str:any}
     unit?: str
     query?: str
     engine?: str
-    implementation?: str
+    implementation?: str | {str:any}
     dimension?: QualityRuleDimension
     method?: str
     severity?: str
     businessImpact?: str
     scheduler?: str
     schedule?: str
+
+    check:
+        $type != "library" or metric != Undefined, "library rules require 'metric'"
+        $type != "sql" or query != Undefined, "sql rules require 'query'"
+        $type != "custom" or (engine != Undefined and implementation != Undefined), \
+            "custom rules require 'engine' and 'implementation'"
 

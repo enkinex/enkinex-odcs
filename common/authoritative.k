@@ -1,7 +1,6 @@
-import .mixins
-import .property
+import .id
 
-schema AuthoritativeDefinition(mixins.StableIdObject):
+schema AuthoritativeDefinition(id.StableIdObject):
     """
     Authoritative Definitions are an essential part of the contract.
     They allow to delegate the definition to a third party system like an enterprise catalog, repository, etc.
@@ -45,23 +44,5 @@ schema AuthoritativeDefinition(mixins.StableIdObject):
     check:
         len(url) > 0, "url must not be empty"
 
-schema CatalogedObject(property.CustomPropertiesObject):
-    """
-    Base object carrying the optional catalog properties shared by cataloged
-    elements: `tags` and `authoritativeDefinitions` (and, via the chain,
-    `customProperties` and `id`). Used as a base class so all of these are
-    recognized by KCL dict→schema coercion.
 
-    Attributes
-    ----------
-    tags: [str], default is Undefined, optional.
-        A list of tags that may be assigned to the elements (object or property).
-        The tags keyword may appear at any level.
-        Examples: "finance", "sensitive", "employee_record"
-    authoritativeDefinitions: [AuthoritativeDefinition], default is Undefined, optional.
-        List of links to sources that provide more details on the element.
-        Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.
-    """
-    tags?: [str]
-    authoritativeDefinitions?: [AuthoritativeDefinition]
 

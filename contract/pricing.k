@@ -1,6 +1,6 @@
-import ..common.mixins
+import ..common.id
 
-schema Pricing(mixins.StableIdObject):
+schema Pricing(id.StableIdObject):
     """
     This section covers pricing when you bill your customer for using this data product.
 

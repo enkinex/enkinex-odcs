@@ -1,6 +1,6 @@
-import ..common.authoritative
+import ..common.discovery
 
-schema DataQualityOperatorsObject(authoritative.CatalogedObject):
+schema DataQualityOperatorsObject(discovery.DiscoverableObject):
     """
     Base object carrying the eight data-quality comparison operators and the
     ODCS `oneOf` semantics (at most one operator per rule). Some rule types

@@ -1,6 +1,6 @@
-import ..common.authoritative
+import ..common.discovery
 
-schema TeamMember(authoritative.CatalogedObject):
+schema TeamMember(discovery.DiscoverableObject):
     """
     Team member.
 
@@ -29,7 +29,7 @@ schema TeamMember(authoritative.CatalogedObject):
     dateOut?: str
     replacedByUsername?: str
 
-schema Team(authoritative.CatalogedObject):
+schema Team(discovery.DiscoverableObject):
     """
     Team information.
 

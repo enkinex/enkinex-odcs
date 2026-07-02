@@ -1,6 +1,6 @@
-import ..common.mixins
+import ..common.id
 
-schema ServiceLevelAgreement(mixins.StableIdObject):
+schema ServiceLevelAgreement(id.StableIdObject):
     """
     This section describes the service-level agreements (SLA).
 

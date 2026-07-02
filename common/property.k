@@ -1,6 +1,6 @@
-import .mixins
+import .id
 
-schema CustomProperty(mixins.StableIdObject):
+schema CustomProperty(id.StableIdObject):
     """
     This section covers custom properties you can use to add non-standard properties.
     This block is available in many sections.
@@ -33,7 +33,7 @@ schema CustomProperty(mixins.StableIdObject):
     value: any
     description?: str
 
-schema CustomPropertiesObject(mixins.StableIdObject):
+schema CustomPropertiesObject(id.StableIdObject):
     """
     Base object carrying the optional `customProperties` property (and,
     via `StableIdObject`, the optional `id`). Used as a base class so the

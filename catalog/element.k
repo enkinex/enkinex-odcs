@@ -1,7 +1,7 @@
-import ..common.authoritative as authoritative
+import ..common.discovery
 import ..quality.rule as rule
 
-schema SchemaElement(authoritative.CatalogedObject):
+schema SchemaElement(discovery.DiscoverableObject):
     """
     Schema element to be cataloged.
     Applicable to either Objects or Properties

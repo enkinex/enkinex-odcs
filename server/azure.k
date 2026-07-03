@@ -15,6 +15,14 @@ schema AzureServer(base.ServerObject):
     delimiter: str, default is Undefined, optional.
         Only for format = json. How multiple json documents are delimited within one file.
         Examples: "new_line", "array"
+
+    Examples
+    --------
+    azure = AzureServer {
+        server = "my-azure"
+        location = "az://my-data-location"
+        format = "parquet"
+    }
     """
     $type = "azure"
     location: str

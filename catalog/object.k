@@ -25,14 +25,65 @@ schema SchemaObject(element.SchemaElement):
 
     Examples
     --------
-    simpleTable = SchemaObject {
-        name = "SimpleTable"
-        physicalType = "table"
+    anotherObject = SchemaObject {
+        id = "another_obj"
+        name = "AnotherObject"
+        logicalType = "object"
         properties = [
             SchemaProperty {
-                name = "id"
+                id = "x_prop"
+                name = "x"
+                logicalType = "array"
+                items = SchemaPropertyItems {
+                    properties = [
+                        SchemaProperty {
+                            id = "id_field"
+                            name = "id"
+                            logicalType = "string"
+                            physicalType = "VARCHAR(40)"
+                        }
+                        SchemaProperty {
+                            id = "zip_field"
+                            name = "zip"
+                            logicalType = "string"
+                            physicalType = "VARCHAR(15)"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+
+    tableObject = SchemaObject {
+        id = "tbl_obj"
+        name = "tbl"
+        logicalType = "object"
+        physicalType = "table"
+        physicalName = "tbl_1"
+        description = "Provides core payment metrics"
+        tags = ["finance"]
+        dataGranularityDescription = "Aggregation on columns txn_ref_dt, pmt_txn_id"
+        properties = [
+            SchemaProperty {
+                id = "txn_ref_dt_prop"
+                name = "txn_ref_dt"
+                businessName = "transaction reference date"
+                logicalType = "date"
+                physicalType = "date"
+                partitioned = True
+                partitionKeyPosition = 1
+                classification = "public"
+            }
+            SchemaProperty {
+                id = "rcvr_id_prop"
+                name = "rcvr_id"
+                primaryKey = True
+                primaryKeyPosition = 1
+                businessName = "receiver id"
                 logicalType = "string"
-                physicalType = "VARCHAR(40)"
+                physicalType = "varchar(18)"
+                classification = "restricted"
+                encryptedName = "enc_rcvr_id"
             }
         ]
     }

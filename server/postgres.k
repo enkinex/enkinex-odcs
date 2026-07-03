@@ -14,6 +14,16 @@ schema PostgresServer(base.ServerObject):
         The name of the database.
     schema: str, default is Undefined, required.
         The name of the schema in the database.
+
+    Examples
+    --------
+    postgres = PostgresServer {
+        server = "my-postgres"
+        host = "localhost"
+        port = 5432
+        database = "pypl-edw"
+        $schema = "pp_access_views"
+    }
     """
     $type = "postgres"
     host: str

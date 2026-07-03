@@ -6,12 +6,15 @@ schema SchemaElement(discovery.DiscoverableObject):
     Schema element to be cataloged.
     Applicable to either Objects or Properties
 
+    Inherited via DiscoverableObject: id, tags, authoritativeDefinitions, customProperties.
+
     Attributes
     ----------
     name: str, default is Undefined, required.
         Name of the element.
     physicalName: str, default is Undefined, optional.
         Physical name.
+        Examples: "table_1_2_0" for objects. "col_str_a" for properties.
     physicalType: str, default is Undefined, optional.
         The physical element data type in the data source.
         Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.

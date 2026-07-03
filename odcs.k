@@ -1,3 +1,5 @@
+import regex
+
 import .catalog.object
 import .contract.description
 import .contract.pricing
@@ -11,15 +13,19 @@ import .server.common as server
 
 type KindType = "DataContract"
 type ApiVersionType = "v3.1.0"
+type StatusType = "proposed" | "draft" | "active" | "deprecated" | "retired"
 
 schema DataContract:
     """
     A data contract defines the agreement between a data producer and consumers.
     This schema contains general information about the contract.
 
+    The deprecated root fields `dataProduct` and `slaDefaultElement` are
+    intentionally omitted.
+
     Attributes
     ----------
-    apiVersion : ApiVersionType, default is "v3.1.0", required.
+    apiVersion: ApiVersionType, default is "v3.1.0", required.
         Version of the standard used to build data contract.
     kind: KindType, default is "DataContract", required.
         The kind of file this is.
@@ -29,9 +35,9 @@ schema DataContract:
         Name of the data contract.
     version: str, default is Undefined, required.
         Current version of the data contract.
-    status: str, default is Undefined, required.
+    status: StatusType, default is Undefined, required.
         Current status of the data contract.
-        Examples: "proposed", "draft", "active", "deprecated", "retired"
+        One of "proposed", "draft", "active", "deprecated", "retired".
     tenant: str, default is Undefined, optional.
         Indicates the property the data is primarily associated with.
         Value is case insensitive.
@@ -46,7 +52,7 @@ schema DataContract:
         A list of objects within the schema to be cataloged.
     support: [support.Support], default is Undefined, optional.
         Top level for support channels.
-    price: [pricing.Pricing], default is Undefined, optional.
+    price: pricing.Pricing, default is Undefined, optional.
         Pricing when you bill your customer for using this data product.
     team: team.Team, default is Undefined, optional.
         Team information object with members array.
@@ -58,8 +64,8 @@ schema DataContract:
     contractCreatedTs: str, default is Undefined, optional.
         Timestamp in UTC of when the data contract was created, using ISO 8601.
 
-    Examples:
-    ---------
+    Examples
+    --------
     contract = DataContract {
         id = "53581432-6c55-4ba2-a65f-72344a91553a"
         name = "seller_payments_v1"
@@ -90,14 +96,14 @@ schema DataContract:
     id: str
     name?: str
     version: str
-    status: str
+    status: StatusType
     tenant?: str
     domain?: str
-    servers: [server.Server]
+    servers?: [server.Server]
     description?: description.Description
     $schema?: [object.SchemaObject]
     support?: [support.Support]
-    price?: [pricing.Pricing]
+    price?: pricing.Pricing
     team?: team.Team
     roles?: [role.Role]
     slaProperties?: [sla.ServiceLevelAgreement]
@@ -105,4 +111,10 @@ schema DataContract:
     tags?: [str]
     authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
     customProperties?: [property.CustomProperty]
+
+    check:
+        len(version) > 0, "version must not be empty"
+        len(id) > 0, "id must not be empty"
+        regex.match(contractCreatedTs, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$") if contractCreatedTs, \
+            "contractCreatedTs must be an ISO-8601 timestamp"
 

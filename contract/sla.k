@@ -1,5 +1,7 @@
 import ..common.id
 
+type SlaDriver = "regulatory" | "analytics" | "operational"
+
 schema ServiceLevelAgreement(id.StableIdObject):
     """
     This section describes the service-level agreements (SLA).
@@ -9,19 +11,21 @@ schema ServiceLevelAgreement(id.StableIdObject):
     property: str, default is Undefined, required.
         Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1).
         May require units.
-    value: any, default is Undefined, required.
+    value: str | int | float | bool, default is Undefined, required.
         Agreement value. The label will change based on the property itself.
-    valueExt: str, default is Undefined, optional.
+        A non-collection scalar (matches JSON anyOf string/number/integer/boolean/null).
+    valueExt: str | int | float | bool, default is Undefined, optional.
         Extended agreement value. The label will change based on the property itself.
+        A non-collection scalar (matches JSON AnyNonCollectionType).
     unit: str, default is Undefined, optional.
         Units use the ISO standard.
         Examples: "**d**", "day", "days" for days."**y**", "yr", "years" for years.
     element: str, default is Undefined, optional.
         Element(s) to check on.
         Multiple elements should be extremely rare and, if so, separated by commas.
-    driver: str, default is Undefined, optional.
+    driver: SlaDriver, default is Undefined, optional.
         Describes the importance of the SLA.
-        Examples: "regulatory", "analytics", "operational"
+        One of "regulatory", "analytics", "operational".
     description: str, default is Undefined, optional.
         Description of the SLA for humans.
     scheduler: str, default is Undefined, optional.
@@ -57,7 +61,7 @@ schema ServiceLevelAgreement(id.StableIdObject):
         driver = "regulatory"
     }
 
-    analytics = = ServiceLevelAgreement {
+    analytics = ServiceLevelAgreement {
         id = "analytics_toa"
         property = "timeOfAvailability"
         value = "08:00-08:00"
@@ -66,11 +70,11 @@ schema ServiceLevelAgreement(id.StableIdObject):
     }
     """
     property: str
-    value: any
-    valueExt?: str
+    value: str | int | float | bool
+    valueExt?: str | int | float | bool
     unit?: str
     element?: str
-    driver?: str
+    driver?: SlaDriver
     description?: str
     scheduler?: str
     schedule?: str

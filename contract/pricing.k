@@ -6,22 +6,26 @@ schema Pricing(id.StableIdObject):
 
     Attributes
     ----------
-    priceAmmount: str, default is Undefined, optional.
+    priceAmount: int | float, default is Undefined, optional.
         Subscription price per unit of measure in `priceUnit`.
     priceCurrency: str, default is Undefined, optional.
         Currency of the subscription price in `price.priceAmount`.
     priceUnit: str, default is Undefined, optional.
-        The unit of measure for calculating cost. Examples megabyte, gigabyte.
+        The unit of measure for calculating cost.
+        Examples: "megabyte", "gigabyte".
 
     Examples
     --------
     price = Pricing {
-        priceAmount = "9.95"
+        priceAmount = 9.95
         priceCurrency = "USD"
         priceUnit = "megabyte"
     }
     """
-    priceAmount?: str
+    priceAmount?: int | float
     priceCurrency?: str
     priceUnit?: str
+
+    check:
+        priceAmount == Undefined or priceAmount >= 0, "priceAmount must be non-negative"
 

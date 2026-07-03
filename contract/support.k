@@ -1,5 +1,8 @@
 import ..common.property
 
+type SupportTool = "email" | "slack" | "teams" | "discord" | "ticket" | "googlechat" | "other"
+type SupportScope = "interactive" | "announcements" | "issues" | "notifications"
+
 schema Support(property.CustomPropertiesObject):
     """
     Support and communication channels help consumers find help regarding their use of the data contract.
@@ -12,12 +15,12 @@ schema Support(property.CustomPropertiesObject):
         Access URL using normal [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax) (https, mailto, etc.).
     description: str, default is Undefined, optional.
         Description of the channel, free text.
-    tool: str, default is Undefined, optional.
+    tool: SupportTool, default is Undefined, optional.
         Name of the tool.
-        Examples: "email", "slack", "teams", "discord", "ticket", "googlechat", "other"
-    scope: str, default is Undefined, optional.
+        One of "email", "slack", "teams", "discord", "ticket", "googlechat", "other".
+    scope: SupportScope, default is Undefined, optional.
         The channel scope.
-        Examples: "interactive", "announcements", "issues", "notifications"
+        One of "interactive", "announcements", "issues", "notifications".
     invitationUrl: str, default is Undefined, optional.
         Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).
 
@@ -50,7 +53,7 @@ schema Support(property.CustomPropertiesObject):
     channel: str
     url?: str
     description?: str
-    tool?: str
-    scope?: str
+    tool?: SupportTool
+    scope?: SupportScope
     invitationUrl?: str
 

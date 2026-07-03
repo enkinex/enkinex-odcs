@@ -2,6 +2,8 @@ import .element
 import .property as schema_property
 import .relationship
 
+type ObjectLogicalType = "object"
+
 schema SchemaObject(element.SchemaElement):
     """
     Schema object to be cataloged.
@@ -9,11 +11,11 @@ schema SchemaObject(element.SchemaElement):
 
     Attributes
     ----------
+    logicalType: ObjectLogicalType, default is "object", optional.
+        The logical object data type. Always "object".
     dataGranularityDescription: str, default is Undefined, optional.
         Granular level of the data in the object.
         Examples: "Aggregation by country"
-    logicalType: str, default is "object", optional.
-        The logical object data type.
     properties: [schema_property.SchemaProperty], default is Undefined, optional.
         A list of properties for the object.
     relationships: [relationship.RelationshipSchemaLevel], default is Undefined, optional.
@@ -25,7 +27,7 @@ schema SchemaObject(element.SchemaElement):
     --------
     simpleTable = SchemaObject {
         name = "SimpleTable"
-        phisicalType = "table"
+        physicalType = "table"
         properties = [
             SchemaProperty {
                 name = "id"
@@ -35,8 +37,12 @@ schema SchemaObject(element.SchemaElement):
         ]
     }
     """
-    logicalType?: str = "object"
+    logicalType?: ObjectLogicalType = "object"
     dataGranularityDescription?: str
     properties?: [schema_property.SchemaProperty]
     relationships?: [relationship.RelationshipSchemaLevel]
+
+    check:
+        properties == Undefined or len(properties) == len({p.name: p for p in properties}), \
+            "property names must be unique within the object"
 

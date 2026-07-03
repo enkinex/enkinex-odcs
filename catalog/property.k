@@ -32,6 +32,7 @@ schema SchemaProperty(element.SchemaElement):
         Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.
     classification: str, default is Undefined, optional.
         Can be anything, like confidential, restricted, and public to more advanced categorization.
+        Examples: "confidential", "restricted", "public"
     encryptedName: str, default is Undefined, optional.
         The element name within the dataset that contains the encrypted element value.
         Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.
@@ -48,8 +49,9 @@ schema SchemaProperty(element.SchemaElement):
     relationships: [relationship.RelationshipPropertyLevel], default is Undefined, optional.
         A list of relationships to other properties.
         When defined at property level, the 'from' field is implicit and should not be specified.
-    items: [SchemaPropertyItems], default is Undefined, optional.
-        A list of properties for the property.
+    items: SchemaPropertyItems, default is Undefined, optional.
+        Descriptor for the items of an array property.
+        Only applicable when logicalType is "array".
 
     Examples
     --------
@@ -93,15 +95,75 @@ schema SchemaProperty(element.SchemaElement):
     relationships?: [relationship.RelationshipPropertyLevel]
     items?: SchemaPropertyItems
 
+    check:
+        logicalType != "array" or items != Undefined, \
+            "array properties require 'items'"
+        logicalType == "array" or items == Undefined, \
+            "'items' is only valid when logicalType is 'array'"
+        not primaryKey or primaryKeyPosition >= 1, \
+            "primaryKeyPosition must be >= 1 when primaryKey is true"
+        not partitioned or partitionKeyPosition >= 1, \
+            "partitionKeyPosition must be >= 1 when partitioned is true"
+
+        # Per-type option validation: reject logicalTypeOptions keys that do
+        # not belong to the chosen logicalType (recovers the JSON
+        # additionalProperties:false strictness of each conditional branch).
+        logicalTypeOptions == Undefined or logicalTypeOptions.maxItems == Undefined or logicalType == "array", \
+            "maxItems is only valid for logicalType 'array'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.minItems == Undefined or logicalType == "array", \
+            "minItems is only valid for logicalType 'array'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.uniqueItems == Undefined or logicalType == "array", \
+            "uniqueItems is only valid for logicalType 'array'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.maxProperties == Undefined or logicalType == "object", \
+            "maxProperties is only valid for logicalType 'object'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.minProperties == Undefined or logicalType == "object", \
+            "minProperties is only valid for logicalType 'object'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.required == Undefined or logicalType == "object", \
+            "required is only valid for logicalType 'object'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.pattern == Undefined or logicalType == "string", \
+            "pattern is only valid for logicalType 'string'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.maxLength == Undefined or logicalType == "string", \
+            "maxLength is only valid for logicalType 'string'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.minLength == Undefined or logicalType == "string", \
+            "minLength is only valid for logicalType 'string'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.multipleOf == Undefined or logicalType in ["number", "integer"], \
+            "multipleOf is only valid for logicalType 'number' or 'integer'"
+        logicalTypeOptions == Undefined or logicalTypeOptions.timezone == Undefined or logicalType in ["date", "timestamp", "time"], \
+            "timezone is only valid for date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.defaultTimezone == Undefined or logicalType in ["date", "timestamp", "time"], \
+            "defaultTimezone is only valid for date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.maximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], \
+            "maximum is only valid for numeric or date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.minimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], \
+            "minimum is only valid for numeric or date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMaximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], \
+            "exclusiveMaximum is only valid for numeric or date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMinimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], \
+            "exclusiveMinimum is only valid for numeric or date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.format == Undefined or logicalType in ["string", "number", "integer", "date", "timestamp", "time"], \
+            "format is only valid for string/numeric/date/timestamp/time logicalType"
+
 schema SchemaPropertyItems:
     """
-    The collection of items in an array.
+    Descriptor for the items of an array property.
     Only applicable when the schema property logicalType is array.
+
+    Supports both an array of scalars (set the scalar descriptors such as
+    `logicalType`/`physicalType`) and an array of objects (set `properties`).
 
     Attributes
     ----------
-    properties: [SchemaProperty], default is Undefined, required.
-        A list of properties for the object.
+    logicalType: LogicalType, default is Undefined, optional.
+        The logical data type of each scalar item.
+    logicalTypeOptions: type_options.TypeOptions, default is Undefined, optional.
+        Additional optional metadata to describe the item logical type.
+    physicalType: str, default is Undefined, optional.
+        The physical data type of each item in the data source.
+    properties: [SchemaProperty], default is Undefined, optional.
+        A list of properties when each item is itself an object.
     """
-    properties: [SchemaProperty]
+    logicalType?: LogicalType
+    logicalTypeOptions?: type_options.TypeOptions
+    physicalType?: str
+    properties?: [SchemaProperty]
 

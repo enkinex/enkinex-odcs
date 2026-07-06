@@ -1,16 +1,19 @@
----
-title: "Changelog: Enkinex KCL implementation for ODCS"
-description: "Enkinex KCL implementation for ODCS documentation."
----
-
 This document tracks the history and evolution of the Enkinex KCL implementation for the **Open Data Contract Standard (ODCS)**.
 
 # v3.1.0-draft - Initial v3.1.0 Draft
 * Schemas
-  * Data Contract Fundamentals schema
-  * Authoritative Definitions schema
-  * Custom Property schema
+  * Catalog Schemas
+  * Common Schemas
+  * Contract Fundamentals Schemas
+  * IAM Schemas
+  * Quality Schemas
+  * Server Schemas
 * Documentation
-  * Documentation generated from KCL
-* Validation test
+  * README
+  * Schema Mapping and Architectural Decisions 
+  * Reference documentation generated from KCL
+  * Tutorial
+* Sample Project
+  * ODCS Data Contract full example implemented as a KCL modular project  
+* Validation
   * Validate DataContract schema

@@ -1,4 +1,6 @@
-schema AuthoritativeDefinition:
+import .id
+
+schema AuthoritativeDefinition(id.StableIdObject):
     """
     Authoritative Definitions are an essential part of the contract.
     They allow to delegate the definition to a third party system like an enterprise catalog, repository, etc.
@@ -6,10 +8,10 @@ schema AuthoritativeDefinition:
 
     Attributes
     ----------
-    id: str, default is Undefined, optional.
-        A unique identifier for the element used to create stable, refactor-safe references. Recommended for elements that will be referenced.
-    $type: str, default is Undefined, required.
-        Type of definition for authority. Recommended values are: businessDefinition, transformationImplementation, videoTutorial, tutorial, and implementation. At the root level, a type can also be canonicalUrl to indicate a reference to the data contract's latest version.
+    type: str, default is Undefined, required.
+        Type of definition for authority.
+        At the root level, a type can also be canonicalUrl to indicate a reference to the data contract's latest version.
+        Examples: "businessDefinition", "transformationImplementation", "videoTutorial", "tutorial", "implementation".
     url: str, default is Undefined, required.
         URL to the authority.
     description: str, default is Undefined, optional.
@@ -19,7 +21,7 @@ schema AuthoritativeDefinition:
     --------
     datasetDefinitions = AuthoritativeDefinition {
         url = "https://catalog.data.gov/dataset/air-quality"
-        type = "businessDefinition"
+        $type = "businessDefinition"
         description = "Business definition for the dataset."
     }
 
@@ -33,8 +35,12 @@ schema AuthoritativeDefinition:
         url = "https://github.com/bitol-io/open-data-contract-standard/blob/main/docs/examples/all/full-example.odcs.yaml"
         $type = "canonicalUrl"
         description = "Data contract's latest version."
+    }
     """
-    id?: str
     $type: str
     url: str
     description?: str
+
+    check:
+        len(url) > 0, "url must not be empty"
+

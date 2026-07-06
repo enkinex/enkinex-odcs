@@ -1,6 +1,6 @@
 import regex
 
-import ..common.property
+import ..common.custom
 
 type RelationshipType = "foreignKey"
 
@@ -13,10 +13,10 @@ refOk = lambda r: any -> bool {
 
 allRefsOk = lambda v: str | [str] -> bool {
     refs = [v] if typeof(v) == "str" else v
-    all r in refs { refOk(r) }
+    all r in refs {refOk(r)}
 }
 
-schema RelationshipBase:
+schema RelationshipBase(custom.Customizable):
     """
     Base definition for relationships between elements, typically for foreign key constraints.
 
@@ -29,11 +29,9 @@ schema RelationshipBase:
     """
     $type?: RelationshipType = "foreignKey"
     to: str | [str]
-    customProperties?: [property.CustomProperty]
 
     check:
-        allRefsOk(to), \
-            "each 'to' reference must use shorthand or fully-qualified notation"
+        allRefsOk(to), "each 'to' reference must use shorthand or fully-qualified notation"
 
 schema RelationshipSchemaLevel(RelationshipBase):
     """
@@ -78,12 +76,9 @@ schema RelationshipSchemaLevel(RelationshipBase):
     from: str | [str]
 
     check:
-        allRefsOk(from), \
-            "each 'from' reference must use shorthand or fully-qualified notation"
-        (typeof(from) == "str") == (typeof(to) == "str"), \
-            "'from' and 'to' must both be strings or both be arrays"
-        typeof(from) == "str" or len(from) == len(to), \
-            "composite keys must have matching lengths"
+        allRefsOk(from), "each 'from' reference must use shorthand or fully-qualified notation"
+        (typeof(from) == "str") == (typeof(to) == "str"), "'from' and 'to' must both be strings or both be arrays"
+        typeof(from) == "str" or len(from) == len(to), "composite keys must have matching lengths"
 
 schema RelationshipPropertyLevel(RelationshipBase):
     """
@@ -96,3 +91,4 @@ schema RelationshipPropertyLevel(RelationshipBase):
         RelationshipPropertyLevel { to = "accounts.owner_id" }
     ]
     """
+

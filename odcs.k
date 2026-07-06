@@ -5,8 +5,7 @@ import .contract.description
 import .contract.pricing
 import .contract.sla
 import .contract.support
-import .common.authoritative
-import .common.property
+import .common.discovery
 import .iam.role
 import .iam.team
 import .server.common as server
@@ -15,13 +14,10 @@ type KindType = "DataContract"
 type ApiVersionType = "v3.1.0"
 type StatusType = "proposed" | "draft" | "active" | "deprecated" | "retired"
 
-schema DataContract:
+schema DataContract(discovery.TagsDiscoverable):
     """
     A data contract defines the agreement between a data producer and consumers.
     This schema contains general information about the contract.
-
-    The deprecated root fields `dataProduct` and `slaDefaultElement` are
-    intentionally omitted.
 
     Attributes
     ----------
@@ -108,13 +104,9 @@ schema DataContract:
     roles?: [role.Role]
     slaProperties?: [sla.ServiceLevelAgreement]
     contractCreatedTs?: str
-    tags?: [str]
-    authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
-    customProperties?: [property.CustomProperty]
 
     check:
         len(version) > 0, "version must not be empty"
         len(id) > 0, "id must not be empty"
-        regex.match(contractCreatedTs, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$") if contractCreatedTs, \
-            "contractCreatedTs must be an ISO-8601 timestamp"
+        regex.match(contractCreatedTs, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$") if contractCreatedTs, "contractCreatedTs must be an ISO-8601 timestamp"
 

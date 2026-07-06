@@ -1,12 +1,9 @@
 import ..common.discovery
 
-schema DataQualityOperatorsObject(discovery.DiscoverableObject):
+schema DataQualityOperators(discovery.StableIdDiscoverable):
     """
-    Base object carrying the eight data-quality comparison operators and the
-    ODCS `oneOf` semantics (at most one operator per rule). Some rule types
-    (e.g. `text`) legitimately set none. Declared as a base class — extending
-    `CatalogedObject` — so the operator attributes are recognized by KCL
-    dict→schema coercion (mixin attributes are not).
+    Base object carrying the eight data-quality comparison operators and the ODCS `oneOf` semantics.
+    Some rule types(e.g. `text`) legitimately set none.
 
     Attributes
     ----------
@@ -37,9 +34,7 @@ schema DataQualityOperatorsObject(discovery.DiscoverableObject):
     mustNotBeBetween?: [int | float]
 
     check:
-        mustBeBetween == Undefined or (len(mustBeBetween) == 2 and mustBeBetween[0] != mustBeBetween[1]), \
-            "mustBeBetween must have exactly two distinct numbers"
-        mustNotBeBetween == Undefined or (len(mustNotBeBetween) == 2 and mustNotBeBetween[0] != mustNotBeBetween[1]), \
-            "mustNotBeBetween must have exactly two distinct numbers"
-        len([o for o in [mustBe, mustNotBe, mustBeGreaterThan, mustBeGreaterOrEqualTo, mustBeLessThan, mustBeLessOrEqualTo, mustBeBetween, mustNotBeBetween] if o != Undefined]) <= 1, \
-            "at most one comparison operator may be set per rule"
+        mustBeBetween == Undefined or (len(mustBeBetween) == 2 and mustBeBetween[0] != mustBeBetween[1]), "mustBeBetween must have exactly two distinct numbers"
+        mustNotBeBetween == Undefined or (len(mustNotBeBetween) == 2 and mustNotBeBetween[0] != mustNotBeBetween[1]), "mustNotBeBetween must have exactly two distinct numbers"
+        len([o for o in [mustBe, mustNotBe, mustBeGreaterThan, mustBeGreaterOrEqualTo, mustBeLessThan, mustBeLessOrEqualTo, mustBeBetween, mustNotBeBetween] if o != Undefined]) <= 1, "at most one comparison operator may be set per rule"
+

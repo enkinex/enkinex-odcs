@@ -1,5 +1,6 @@
 import ...common.authoritative
 import ...common.property
+import ...contract.description
 import ...odcs
 
 odcs.DataContract {
@@ -18,7 +19,7 @@ odcs.DataContract {
         }
     ]
 
-    description = odcs.Description {
+    description = description.Description {
         purpose = "Views built on top of the seller tables."
         limitations = "Cannot be used in conjunction with days with full moons."
         usage = "Twice a day, preferable before meals."

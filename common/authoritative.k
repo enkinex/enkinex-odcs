@@ -44,5 +44,3 @@ schema AuthoritativeDefinition(id.StableIdObject):
     check:
         len(url) > 0, "url must not be empty"
 
-
-

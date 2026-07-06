@@ -1,7 +1,6 @@
-import ..common.authoritative
-import ..common.property
+import ..common.custom
 
-schema Description:
+schema Description(custom.AuthoritativeCustomizable):
     """
     Object containing the data contract description.
 
@@ -13,10 +12,6 @@ schema Description:
         Technical, compliance, and legal limitations for data use.
     usage: str, default is Undefined, optional.
         Recommended usage of the data.
-    authoritativeDefinitions: [authoritative.AuthoritativeDefinition], default is Undefined, optional.
-        List of links to sources that provide more details on the description.
-    customProperties: [property.CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
 
     Examples
     --------
@@ -35,6 +30,4 @@ schema Description:
     purpose?: str
     limitations?: str
     usage?: str
-    authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
-    customProperties?: [property.CustomProperty]
 

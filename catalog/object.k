@@ -94,6 +94,5 @@ schema SchemaObject(element.SchemaElement):
     relationships?: [relationship.RelationshipSchemaLevel]
 
     check:
-        properties == Undefined or len(properties) == len({p.name: p for p in properties}), \
-            "property names must be unique within the object"
+        properties == Undefined or len(properties) == len({p.name: p for p in properties}), "property names must be unique within the object"
 

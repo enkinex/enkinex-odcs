@@ -1,13 +1,9 @@
-import ..common.property
+import ..common.custom
 import ..iam.role
 
-schema ServerObject(property.CustomPropertiesObject):
+schema ServerObject(custom.StableIdCustomizable):
     """
-    Base object carrying the server properties common to every server type
-    (plus `id` and `customProperties` via the chain). Declared as a base
-    class so the attributes are recognized by KCL dict→schema coercion
-    (mixin attributes are not). Per-type server schemas and the permissive
-    `Server` extend this.
+    Base object carrying the server properties common to every server type.
 
     Attributes
     ----------
@@ -25,3 +21,4 @@ schema ServerObject(property.CustomPropertiesObject):
     description?: str
     environment?: str
     roles?: [role.Role]
+

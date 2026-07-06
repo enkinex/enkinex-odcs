@@ -4,7 +4,7 @@ import ..common.discovery
 
 isoDatePattern = r"^\d{4}-\d{2}-\d{2}$"
 
-schema TeamMember(discovery.DiscoverableObject):
+schema TeamMember(discovery.StableIdDiscoverable):
     """
     Team member.
 
@@ -38,7 +38,7 @@ schema TeamMember(discovery.DiscoverableObject):
         regex.match(dateOut, isoDatePattern) if dateOut, "dateOut must be an ISO-8601 date (YYYY-MM-DD)"
         replacedByUsername == Undefined or dateOut != Undefined, "dateOut should be set when replacedByUsername is provided"
 
-schema Team(discovery.DiscoverableObject):
+schema Team(discovery.StableIdDiscoverable):
     """
     Team information.
 

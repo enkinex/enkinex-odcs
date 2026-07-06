@@ -33,17 +33,3 @@ schema CustomProperty(id.StableIdObject):
     value: any
     description?: str
 
-schema CustomPropertiesObject(id.StableIdObject):
-    """
-    Base object carrying the optional `customProperties` property (and,
-    via `StableIdObject`, the optional `id`). Used as a base class so the
-    attributes are recognized by KCL dict→schema coercion.
-
-    Attributes
-    ----------
-    customProperties: [CustomProperty], default is Undefined, optional.
-        A list of key/value pairs for custom properties.
-        Use a property's `id` (not `property`) when referencing it from elsewhere.
-    """
-    customProperties?: [CustomProperty]
-

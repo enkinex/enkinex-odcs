@@ -1,9 +1,9 @@
-import ..common.property
+import ..common.custom
 
 type SupportTool = "email" | "slack" | "teams" | "discord" | "ticket" | "googlechat" | "other"
 type SupportScope = "interactive" | "announcements" | "issues" | "notifications"
 
-schema Support(property.CustomPropertiesObject):
+schema Support(custom.StableIdCustomizable):
     """
     Support and communication channels help consumers find help regarding their use of the data contract.
 

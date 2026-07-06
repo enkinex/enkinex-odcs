@@ -4,7 +4,7 @@ type QualityRuleType = "library" | "sql" | "text" | "custom"
 type QualityRuleMetric = "nullValues" | "missingValues" | "invalidValues" | "duplicateValues" | "rowCount"
 type QualityRuleDimension = "accuracy" | "completeness" | "conformity" | "consistency" | "coverage" | "timeliness" | "uniqueness"
 
-schema DataQuality(operator.DataQualityOperatorsObject):
+schema DataQuality(operator.DataQualityOperators):
     """
     Data quality rule with all the relevant information for setup and execution.
 
@@ -92,6 +92,5 @@ schema DataQuality(operator.DataQualityOperatorsObject):
     check:
         $type != "library" or metric != Undefined, "library rules require 'metric'"
         $type != "sql" or query != Undefined, "sql rules require 'query'"
-        $type != "custom" or (engine != Undefined and implementation != Undefined), \
-            "custom rules require 'engine' and 'implementation'"
+        $type != "custom" or (engine != Undefined and implementation != Undefined), "custom rules require 'engine' and 'implementation'"
 

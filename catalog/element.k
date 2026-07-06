@@ -1,12 +1,11 @@
 import ..common.discovery
 import ..quality.rule as rule
 
-schema SchemaElement(discovery.DiscoverableObject):
+schema SchemaElement(discovery.StableIdDiscoverable):
     """
     Schema element to be cataloged.
     Applicable to either Objects or Properties
-
-    Inherited via DiscoverableObject: id, tags, authoritativeDefinitions, customProperties.
+    Inherited via StableIdDiscoverable: id, tags, authoritativeDefinitions, customProperties.
 
     Attributes
     ----------

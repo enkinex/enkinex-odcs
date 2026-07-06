@@ -6,6 +6,7 @@
 - catalog
   - [ArrayOptions](#arrayoptions)
   - [DatetimeOptions](#datetimeoptions)
+  - [IntegerOptions](#integeroptions)
   - [NumberOptions](#numberoptions)
   - [ObjectOptions](#objectoptions)
   - [RelationshipBase](#relationshipbase)
@@ -18,11 +19,14 @@
   - [StringOptions](#stringoptions)
   - [TypeOptions](#typeoptions)
 - common
+  - [AuthoritativeCustomizable](#authoritativecustomizable)
   - [AuthoritativeDefinition](#authoritativedefinition)
-  - [CustomPropertiesObject](#custompropertiesobject)
   - [CustomProperty](#customproperty)
-  - [DiscoverableObject](#discoverableobject)
+  - [Customizable](#customizable)
+  - [StableIdCustomizable](#stableidcustomizable)
+  - [StableIdDiscoverable](#stableiddiscoverable)
   - [StableIdObject](#stableidobject)
+  - [TagsDiscoverable](#tagsdiscoverable)
 - contract
   - [Description](#description)
   - [Pricing](#pricing)
@@ -34,7 +38,7 @@
   - [TeamMember](#teammember)
 - quality
   - [DataQuality](#dataquality)
-  - [DataQualityOperatorsObject](#dataqualityoperatorsobject)
+  - [DataQualityOperators](#dataqualityoperators)
 - server
   - [ApiServer](#apiserver)
   - [AthenaServer](#athenaserver)
@@ -83,22 +87,22 @@ A data contract defines the agreement between a data producer and consumers. Thi
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**apiVersion** `required` `readOnly`|"v3.1.0"|Version of the standard used to build data contract.|"v3.1.0"|
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.||
-|**customProperties**|[[CustomProperty](#customproperty)]|||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|[Description](#description)|Object containing the descriptions.||
 |**domain**|str|Name of the logical data domain.<br />Examples: "imdb_ds_aggregate", "receiver_profile_out", "transaction_profile_out"||
 |**id** `required`|str|A unique identifier used to reduce the risk of dataset name collisions, such as a UUID.||
 |**kind** `required` `readOnly`|"DataContract"|The kind of file this is.|"DataContract"|
 |**name**|str|Name of the data contract.||
-|**price**|[[Pricing](#pricing)]|Pricing when you bill your customer for using this data product.||
+|**price**|[Pricing](#pricing)|Pricing when you bill your customer for using this data product.||
 |**roles**|[[Role](#role)]|A list of roles that will provide user access to the dataset.||
 |**schema**|[[SchemaObject](#schemaobject)]|A list of objects within the schema to be cataloged.||
-|**servers** `required`|[[Server](#server)]|List of servers where the datasets reside.||
+|**servers**|[[Server](#server)]|List of servers where the datasets reside.||
 |**slaProperties**|[[ServiceLevelAgreement](#servicelevelagreement)]|A list of key/value pairs for SLA specific properties.<br />There is no limit on the type of properties.||
-|**status** `required`|str|Current status of the data contract.<br />Examples: "proposed", "draft", "active", "deprecated", "retired"||
+|**status** `required`|"proposed" \| "draft" \| "active" \| "deprecated" \| "retired"|Current status of the data contract.<br />One of "proposed", "draft", "active", "deprecated", "retired".||
 |**support**|[[Support](#support)]|Top level for support channels.||
-|**tags**|[str]|||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 |**team**|[Team](#team)|Team information object with members array.||
 |**tenant**|str|Indicates the property the data is primarily associated with.<br />Value is case insensitive.||
 |**version** `required`|str|Current version of the data contract.||
@@ -150,7 +154,7 @@ Additional metadata options to define date, timestamp, and time types.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone UTC is used.|"Z"|
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.|"Etc/UTC"|
 |**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format of the date. Default value is using ISO 8601.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]|"YYYY-MM-DDTHH:mm:ss.SSSZ"|
@@ -209,9 +213,23 @@ physicalDateAndTimeUTC = SchemaProperty {
 }
 ```
 
+### IntegerOptions
+
+Additional metadata options to define the integer type.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**exclusiveMaximum**|int|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|int|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|"i8" \| "i16" \| "i32" \| "i64" \| "i128" \| "u8" \| "u16" \| "u32" \| "u64" \| "u128"|Format of the value in terms of how many bits of space it can use and whether it is signed or unsigned.<br />Follows the Rust integer types.|"i32"|
+|**maximum**|int|All values are less than or equal to this value (values &lt;= maximum).||
+|**minimum**|int|All values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
 ### NumberOptions
 
-Additional metadata options to define integer and number types.
+Additional metadata options to define the number type.
 
 #### Attributes
 
@@ -219,7 +237,7 @@ Additional metadata options to define integer and number types.
 | --- | --- | --- | --- |
 |**exclusiveMaximum**|int \| float|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|int \| float|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
-|**format**|"i8" \| "i16" \| "i32" \| "i64" \| "i128" \| "u8" \| "u16" \| "u32" \| "u64" \| "u128" \| "f32" \| "f64"|Format of the value in terms of how many bits of space it can use and whether it is signed or unsigned.<br />Follows the Rust integer and float types.||
+|**format**|"f32" \| "f64"|Format of the value in terms of floating-point precision.<br />Follows the Rust float types (f32, f64).||
 |**maximum**|int \| float|All values are less than or equal to this value (values &lt;= maximum).||
 |**minimum**|int \| float|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
@@ -236,15 +254,15 @@ Additional metadata options to define the object type.
 |**required**|[str]|Property names that are required to exist in the object.||
 ### RelationshipBase
 
-Base definition for relationships between elements, typically for foreign key constraints."
+Base definition for relationships between elements, typically for foreign key constraints.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
-|**type**|str|The type of relationship.|"foreignKey"|
+|**type** `readOnly`|"foreignKey"|The type of relationship.|"foreignKey"|
 ### RelationshipPropertyLevel
 
 Relationship definition at property level, where &#39;from&#39; is implicitly the current property.
@@ -253,9 +271,9 @@ Relationship definition at property level, where &#39;from&#39; is implicitly th
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
-|**type**|str|The type of relationship.|"foreignKey"|
+|**type** `readOnly`|"foreignKey"|The type of relationship.|"foreignKey"|
 ### RelationshipSchemaLevel
 
 Relationship definition at schema level, requiring both &#39;from&#39; and &#39;to&#39; fields with matching types. Single-column relationship - both fields must be strings. Composite key relationship - both fields must be arrays with matching lengths.
@@ -264,13 +282,44 @@ Relationship definition at schema level, requiring both &#39;from&#39; and &#39;
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**from** `required`|str \| [str]|Source object reference using fully qualified or shorthand notation; Or an array of source objects for composite keys.||
 |**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
-|**type**|str|The type of relationship.|"foreignKey"|
+|**type** `readOnly`|"foreignKey"|The type of relationship.|"foreignKey"|
+#### Examples
+
+```
+usersRelationships = [
+    RelationshipSchemaLevel {
+        $type = "foreignKey"
+        from = "schema/users_tbl/properties/user_account_id"
+        to = "schema/accounts_tbl/properties/acct_id_pk"
+    }
+    RelationshipSchemaLevel {
+        $type = "foreignKey"
+        from = "users.account_id"
+        to = "accounts.id"
+    }
+]
+
+orderItemsRelationships = [
+    RelationshipSchemaLevel {
+        $type = "foreignKey"
+        from = [
+            "schema/order_items_tbl/properties/item_order_id"
+            "schema/order_items_tbl/properties/item_product_id"
+        ]
+        to = [
+            "schema/product_inventory_tbl/properties/inv_order_id"
+            "schema/product_inventory_tbl/properties/inv_product_id"
+        ]
+    }
+]
+```
+
 ### SchemaElement
 
-Schema element to be cataloged. Applicable to either Objects or Properties
+Schema element to be cataloged. Applicable to either Objects or Properties Inherited via StableIdDiscoverable: id, tags, authoritativeDefinitions, customProperties.
 
 #### Attributes
 
@@ -278,11 +327,11 @@ Schema element to be cataloged. Applicable to either Objects or Properties
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**name** `required`|str|Name of the element.||
-|**physicalName**|str|Physical name.||
+|**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
@@ -296,13 +345,13 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dataGranularityDescription**|str|Granular level of the data in the object.<br />Examples: "Aggregation by country"||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**logicalType**|str|The logical object data type.|"object"|
+|**logicalType** `readOnly`|"object"|The logical object data type. Always "object".|"object"|
 |**name** `required`|str|Name of the element.||
-|**physicalName**|str|Physical name.||
+|**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties for the object.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
@@ -311,14 +360,65 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 #### Examples
 
 ```
-simpleTable = SchemaObject {
-    name = "SimpleTable"
-    phisicalType = "table"
+anotherObject = SchemaObject {
+    id = "another_obj"
+    name = "AnotherObject"
+    logicalType = "object"
     properties = [
         SchemaProperty {
-            name = "id"
+            id = "x_prop"
+            name = "x"
+            logicalType = "array"
+            items = SchemaPropertyItems {
+                properties = [
+                    SchemaProperty {
+                        id = "id_field"
+                        name = "id"
+                        logicalType = "string"
+                        physicalType = "VARCHAR(40)"
+                    }
+                    SchemaProperty {
+                        id = "zip_field"
+                        name = "zip"
+                        logicalType = "string"
+                        physicalType = "VARCHAR(15)"
+                    }
+                ]
+            }
+        }
+    ]
+}
+
+tableObject = SchemaObject {
+    id = "tbl_obj"
+    name = "tbl"
+    logicalType = "object"
+    physicalType = "table"
+    physicalName = "tbl_1"
+    description = "Provides core payment metrics"
+    tags = ["finance"]
+    dataGranularityDescription = "Aggregation on columns txn_ref_dt, pmt_txn_id"
+    properties = [
+        SchemaProperty {
+            id = "txn_ref_dt_prop"
+            name = "txn_ref_dt"
+            businessName = "transaction reference date"
+            logicalType = "date"
+            physicalType = "date"
+            partitioned = True
+            partitionKeyPosition = 1
+            classification = "public"
+        }
+        SchemaProperty {
+            id = "rcvr_id_prop"
+            name = "rcvr_id"
+            primaryKey = True
+            primaryKeyPosition = 1
+            businessName = "receiver id"
             logicalType = "string"
-            physicalType = "VARCHAR(40)"
+            physicalType = "varchar(18)"
+            classification = "restricted"
+            encryptedName = "enc_rcvr_id"
         }
     ]
 }
@@ -334,20 +434,20 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
-|**classification**|str|Can be anything, like confidential, restricted, and public to more advanced categorization.||
+|**classification**|str|Can be anything, like confidential, restricted, and public to more advanced categorization.<br />Examples: "confidential", "restricted", "public"||
 |**criticalDataElement**|bool|If element is considered a critical data element (CDE) then true else false.|False|
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**items**|[SchemaPropertyItems](#schemapropertyitems)|A list of properties for the property.||
+|**items**|[SchemaPropertyItems](#schemapropertyitems)|Descriptor for the items of an array property.<br />Only applicable when logicalType is "array".||
 |**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
 |**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.||
 |**name** `required`|str|Name of the element.||
 |**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1.<br />Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
 |**partitioned**|bool|Indicates if the element is partitioned.|False|
-|**physicalName**|str|Physical name.||
+|**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**primaryKey**|bool|Boolean value specifying whether the field is primary or not.|False|
 |**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1.<br />Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
@@ -387,13 +487,13 @@ arrayProperty = SchemaProperty {
 
 ### SchemaPropertyItems
 
-The collection of items in an array. Only applicable when the schema property logicalType is array.
+Descriptor for the items of an array property. Only applicable when the schema property logicalType is array.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**properties** `required`|[[SchemaProperty](#schemaproperty)]|A list of properties for the object.||
+|**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties when each item is itself an object.||
 ### StringOptions
 
 Additional metadata options to define the string type.
@@ -408,13 +508,13 @@ Additional metadata options to define the string type.
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 ### TypeOptions
 
-Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion.
+Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone UTC is used.|"Z"|
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
 |**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
@@ -431,6 +531,16 @@ Base type for every logical type options.  The union of every logical-type optio
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
 |**uniqueItems**|bool|If set to true, all items in the array are unique.||
+### AuthoritativeCustomizable
+
+Base object carrying the optional `authoritativeDefinitions` and `customProperties` properties.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 ### AuthoritativeDefinition
 
 Authoritative Definitions are an essential part of the contract. They allow to delegate the definition to a third party system like an enterprise catalog, repository, etc. The structure describing "Authoritative Definitions" is shared between all Bitol standards.
@@ -465,16 +575,6 @@ odcsVersion = AuthoritativeDefinition {
 }
 ```
 
-### CustomPropertiesObject
-
-Base object carrying the optional `customProperties` property (and, via `StableIdObject`, the optional `id`). Used as a base class so the attributes are recognized by KCL dict→schema coercion.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 ### CustomProperty
 
 This section covers custom properties you can use to add non-standard properties. This block is available in many sections.
@@ -504,16 +604,35 @@ dnsOptions = CustomProperty {
 }
 ```
 
-### DiscoverableObject
+### Customizable
 
-Base object carrying the optional properties shared by discoverable elements.
+Base object carrying the optional `customProperties` property.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+### StableIdCustomizable
+
+Base object carrying the optional stable `id` and `customProperties` properties.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+### StableIdDiscoverable
+
+Base object carrying the optional properties shared by discoverable elements with an stable &#39;id&#39;.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### StableIdObject
@@ -525,6 +644,17 @@ Base object carrying the optional stable `id` property.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+### TagsDiscoverable
+
+Base object carrying the optional properties shared by discoverable elements.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### Description
 
 Object containing the data contract description.
@@ -533,8 +663,8 @@ Object containing the data contract description.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|||
-|**customProperties**|[[CustomProperty](#customproperty)]|||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**limitations**|str|Technical, compliance, and legal limitations for data use.||
 |**purpose**|str|Intended purpose for the provided data.||
 |**usage**|str|Recommended usage of the data.||
@@ -563,14 +693,14 @@ This section covers pricing when you bill your customer for using this data prod
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**priceAmount**|str|||
+|**priceAmount**|int \| float|Subscription price per unit of measure in `priceUnit`.||
 |**priceCurrency**|str|Currency of the subscription price in `price.priceAmount`.||
-|**priceUnit**|str|The unit of measure for calculating cost. Examples megabyte, gigabyte.||
+|**priceUnit**|str|The unit of measure for calculating cost.<br />Examples: "megabyte", "gigabyte".||
 #### Examples
 
 ```
 price = Pricing {
-    priceAmount = "9.95"
+    priceAmount = 9.95
     priceCurrency = "USD"
     priceUnit = "megabyte"
 }
@@ -585,15 +715,15 @@ This section describes the service-level agreements (SLA).
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**description**|str|Description of the SLA for humans.||
-|**driver**|str|Describes the importance of the SLA.<br />Examples: "regulatory", "analytics", "operational"||
+|**driver**|"regulatory" \| "analytics" \| "operational"|Describes the importance of the SLA.<br />One of "regulatory", "analytics", "operational".||
 |**element**|str|Element(s) to check on.<br />Multiple elements should be extremely rare and, if so, separated by commas.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**property** `required`|str|Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1).<br />May require units.||
 |**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
 |**scheduler**|str|Name of the scheduler, can be cron or any tool your organization support.||
 |**unit**|str|Units use the ISO standard.<br />Examples: "**d**", "day", "days" for days."**y**", "yr", "years" for years.||
-|**value** `required`|any|Agreement value. The label will change based on the property itself.||
-|**valueExt**|str|Extended agreement value. The label will change based on the property itself.||
+|**value** `required`|str \| int \| float \| bool|Agreement value. The label will change based on the property itself.<br />A non-collection scalar (matches JSON anyOf string/number/integer/boolean/null).||
+|**valueExt**|str \| int \| float \| bool|Extended agreement value. The label will change based on the property itself.<br />A non-collection scalar (matches JSON AnyNonCollectionType).||
 #### Examples
 
 ```
@@ -622,7 +752,7 @@ regulatory = ServiceLevelAgreement {
     driver = "regulatory"
 }
 
-analytics = = ServiceLevelAgreement {
+analytics = ServiceLevelAgreement {
     id = "analytics_toa"
     property = "timeOfAvailability"
     value = "08:00-08:00"
@@ -640,12 +770,12 @@ Support and communication channels help consumers find help regarding their use 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**channel** `required`|str|Channel name or identifier.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the channel, free text.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**invitationUrl**|str|Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).||
-|**scope**|str|The channel scope.<br />Examples: "interactive", "announcements", "issues", "notifications"||
-|**tool**|str|Name of the tool.<br />Examples: "email", "slack", "teams", "discord", "ticket", "googlechat", "other"||
+|**scope**|"interactive" \| "announcements" \| "issues" \| "notifications"|The channel scope.<br />One of "interactive", "announcements", "issues", "notifications".||
+|**tool**|"email" \| "slack" \| "teams" \| "discord" \| "ticket" \| "googlechat" \| "other"|Name of the tool.<br />One of "email", "slack", "teams", "discord", "ticket", "googlechat", "other".||
 |**url**|str|Access URL using normal [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax) (https, mailto, etc.).||
 #### Examples
 
@@ -684,7 +814,7 @@ Role that a consumer may need to access the dataset, depending on the type of ac
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**access**|str|The type of access provided by the IAM role.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the IAM role and its permissions.||
 |**firstLevelApprovers**|str|The name(s) of the first-level approver(s) of the role.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
@@ -719,7 +849,7 @@ Team information.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Team description.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**members**|[[TeamMember](#teammember)]|List of members.||
@@ -767,7 +897,7 @@ Team member.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dateIn**|str|The date when the user joined the team.||
 |**dateOut**|str|The date when the user ceased to be part of the team.||
 |**description**|str|The user&#39;s description.||
@@ -788,7 +918,7 @@ Data quality rule with all the relevant information for setup and execution.
 |**arguments**|{str:}|Additional arguments for the metric, if needed.||
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessImpact**|str|Consequences of the rule failure.<br />Examples: "operational", "regulatory"||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Describe the quality check to be completed.||
 |**dimension**|"accuracy" \| "completeness" \| "conformity" \| "consistency" \| "coverage" \| "timeliness" \| "uniqueness"|The key performance indicator (KPI) or dimension for data quality.<br />Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"||
 |**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks.<br />Examples: "soda", "great-expectations", "monte-carlo", "dbt"||
@@ -831,16 +961,16 @@ percentNullStatus = DataQuality {
 }
 ```
 
-### DataQualityOperatorsObject
+### DataQualityOperators
 
-Base object carrying the eight data-quality comparison operators and the ODCS `oneOf` semantics (at most one operator per rule). Some rule types (e.g. `text`) legitimately set none. Declared as a base class — extending `CatalogedObject` — so the operator attributes are recognized by KCL dict→schema coercion (mixin attributes are not).
+Base object carrying the eight data-quality comparison operators and the ODCS `oneOf` semantics. Some rule types(e.g. `text`) legitimately set none.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
 |**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
@@ -859,7 +989,7 @@ API Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
@@ -875,7 +1005,7 @@ AWS Athena Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**catalog**|str|Identify the name of the Data Source, also referred to as a Catalog.|"awsdatacatalog"|
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
@@ -892,7 +1022,7 @@ Azure Blob Storage Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -901,6 +1031,16 @@ Azure Blob Storage Server.
 |**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
+#### Examples
+
+```
+azure = AzureServer {
+    server = "my-azure"
+    location = "az://my-data-location"
+    format = "parquet"
+}
+```
+
 ### BigQueryServer
 
 Google BigQuery Server.
@@ -909,7 +1049,7 @@ Google BigQuery Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dataset** `required`|str|The GCP dataset name.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -925,7 +1065,7 @@ ClickHouse Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -944,7 +1084,7 @@ Custom server properties
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
@@ -976,7 +1116,7 @@ Databricks Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**catalog** `required`|str|The name of the Hive or Unity catalog.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host**|str|The Databricks host.<br />Examples: "dbc-abcdefgh-1234.cloud.databricks.com"||
@@ -992,7 +1132,7 @@ Denodo Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1009,7 +1149,7 @@ Dremio Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host of the Dremio server.||
@@ -1026,7 +1166,7 @@ DuckDB Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|Path to duckdb database file.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1043,7 +1183,7 @@ AWS Glue Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**account** `required`|str|The AWS Glue account.<br />Examples: "1234-5678-9012"||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The AWS Glue database name.<br />Examples: "my_database"||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1060,7 +1200,7 @@ Google Cloud Sql Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1078,7 +1218,7 @@ Apache Hive Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the Hive database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1095,7 +1235,7 @@ IBM DB2 Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1113,7 +1253,7 @@ Apache Impala Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the Impala database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1130,7 +1270,7 @@ IBM Informix Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1147,7 +1287,7 @@ Apache Kafka Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the messages.<br />Examples: "json", "avro", "protobuf", "xml"|"json"|
@@ -1155,6 +1295,16 @@ Apache Kafka Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
+#### Examples
+
+```
+kafka = KafkaServer {
+    server = "my-kafka"
+    host = "pkc-7xoy1.eu-central-1.aws.confluent.cloud:9092"
+    format = "avro"
+}
+```
+
 ### KinesisServer
 
 AWS Kinesis Data Streams Server.
@@ -1163,7 +1313,7 @@ AWS Kinesis Data Streams Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the record.<br />Examples: "json", "avro", "protobuf"||
@@ -1180,7 +1330,7 @@ Local File Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format** `required`|str|The format of the file(s).<br />Examples: "json", "parquet", "delta", "csv"||
@@ -1196,7 +1346,7 @@ MySQL Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1213,7 +1363,7 @@ Oracle Database Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host to the oracle server.<br />Examples: "localhost"||
@@ -1230,7 +1380,7 @@ PostgreSQL Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1240,6 +1390,18 @@ PostgreSQL Server.
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema** `required`|str|The name of the schema in the database.||
 |**server** `required`|str|Identifier of the server.||
+#### Examples
+
+```
+postgres = PostgresServer {
+    server = "my-postgres"
+    host = "localhost"
+    port = 5432
+    database = "pypl-edw"
+    $schema = "pp_access_views"
+}
+```
+
 ### PrestoServer
 
 Presto Server.
@@ -1249,7 +1411,7 @@ Presto Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**catalog**|str|The name of the catalog.<br />Examples: "postgres"||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The host to the Presto server.<br />Examples: "localhost:8080"||
@@ -1265,7 +1427,7 @@ Google Cloud Pub/Sub Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
@@ -1281,7 +1443,7 @@ Amazon Redshift Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**account**|str|The account used by the server.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1299,7 +1461,7 @@ Amazon S3 Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
 |**endpointUrl**|str|The server endpoint for S3-compatible servers.<br />Examples: "https://minio.example.com`"||
@@ -1319,7 +1481,7 @@ General Server Structure.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
@@ -1368,13 +1530,13 @@ server = Server {
 
 ### ServerObject
 
-Base object carrying the server properties common to every server type (plus `id` and `customProperties` via the chain). Declared as a base class so the attributes are recognized by KCL dict→schema coercion (mixin attributes are not). Per-type server schemas and the permissive `Server` extend this.
+Base object carrying the server properties common to every server type.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
@@ -1388,7 +1550,7 @@ SFTP Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1406,7 +1568,7 @@ Snowflake Data Warehouse Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**account** `required`|str|The Snowflake account used by the server.||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1425,7 +1587,7 @@ Microsoft SQL Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.<br />Examples: "database"||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1443,7 +1605,7 @@ Azure Synapse Analytics Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1461,7 +1623,7 @@ Trino Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**catalog** `required`|str|The name of the catalog.<br />Examples: "hive"||
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**host** `required`|str|The Trino host URL.<br />Examples: "localhost"||
@@ -1478,7 +1640,7 @@ Vertica Database Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|The name of the database.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
@@ -1496,7 +1658,7 @@ Zen Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.<br />Use a property&#39;s `id` (not `property`) when referencing it from elsewhere.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database** `required`|str|Database name to connect to on the Zen server.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||

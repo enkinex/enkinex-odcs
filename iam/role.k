@@ -1,6 +1,6 @@
-import ..common.property
+import ..common.custom
 
-schema Role(property.CustomPropertiesObject):
+schema Role(custom.StableIdCustomizable):
     """
     Role that a consumer may need to access the dataset, depending on the type of access they require.
 

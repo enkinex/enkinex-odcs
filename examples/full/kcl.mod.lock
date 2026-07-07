@@ -1,0 +1,7 @@
+[dependencies]
+  [dependencies.enkinex_odcs]
+    name = "enkinex_odcs"
+    full_name = "enkinex-odcs_3.1.0-draft"
+    version = "3.1.0-draft"
+    url = "https://github.com/enkinex/enkinex-odcs"
+    commit = "d47beff"

@@ -8,7 +8,7 @@ docs:
     kcl doc generate --escape-html
 
 example:
-    (cd "{{justfile_directory()}}/examples/full" && kcl contract.k)
+    (cd "{{justfile_directory()}}/examples/full" && kcl contract.k --format yaml > contract.yaml)
 
 test:
     kcl vet test/contract/contract.yaml odcs.k --format yaml --schema DataContract

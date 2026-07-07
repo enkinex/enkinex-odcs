@@ -2,6 +2,7 @@ import enkinex_odcs.odcs
 import enkinex_odcs.iam.team
 
 import .catalog.payment
+import .catalog.receiver
 import .contract.authoritative as contract_authoritative
 import .contract.description as contract_description
 import .contract.price as contract_price
@@ -10,6 +11,7 @@ import .contract.sla as contract_sla
 import .contract.support as contract_support
 import .iam.role as contract_role
 import .iam.member as contract_member
+import .server.postgres as server_postgres
 
 odcs.DataContract {
     domain = "seller"
@@ -21,8 +23,12 @@ odcs.DataContract {
     ]
     description = contract_description.SampleContractDescription
     tenant = "ClimateQuantumInc"
+    servers= [
+        server_postgres.LocalPostgresServer
+    ]
     $schema = [
         payment.PaymentMetricsTable
+        receiver.ReceiversMasterDataTable
     ]
     price = contract_price.MegabyteUSD
     team = team.Team {

@@ -73,7 +73,7 @@ TransactionReferenceDate = schema_property.SchemaProperty {
     ]
 }
 
-ReceiverId = schema_property.SchemaProperty {
+PaymentReceiverId = schema_property.SchemaProperty {
     id = "rcvr_id_prop"
     name = "rcvr_id"
     primaryKey = True
@@ -189,7 +189,7 @@ PaymentMetricsTable = schema_object.SchemaObject {
     ]
     properties = [
         TransactionReferenceDate
-        ReceiverId
+        PaymentReceiverId
         ReceiverCountryCode
     ]
     quality = [

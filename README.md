@@ -160,20 +160,35 @@ validation path.
 Common tasks are wrapped in the [`Justfile`](Justfile):
 
 ```bash
+just init      # sync module dependencies (root + examples/full)
 just test      # kcl vet the contract + catalog fixtures against the schemas
-just example   # kcl test the sample DataContract in test/contract/
+just example   # parse examples/full/contract.k and export it to examples/full/contract.yaml
 just docs      # regenerate docs/enkinex-odcs.md from the schema docstrings
 ```
 
+Running `just example` is how the tutorial's sample project is materialized: it
+parses [`examples/full/contract.k`](examples/full/contract.k) and writes the
+resulting ODCS document to
+[`examples/full/contract.yaml`](examples/full/contract.yaml).
+
 ## Getting Started with Enkinex ODCS
 
-A hands-on quick-start — porting the canonical ODCS **full example** contract
-into an equivalent KCL project, section by section — lives in
-**[docs/tutorial.md](docs/tutorial.md)**.
+The **[Enkinex ODCS Tutorial](docs/tutorial.md)** is a hands-on quick start that
+ports the canonical ODCS **full example** contract into an equivalent, modular
+KCL project — the one under [`examples/full`](examples/full) — and then parses
+and exports it back to YAML.
 
-> The tutorial content is delivered by a separate backlog item (the
-> "sample-project quick tutorial" issue); this page is the placeholder it will
-> fill.
+**What you are going to learn:**
+
+1. **Installing KCL** — get the KCL CLI on your machine.
+2. **Creating the Contract Project Module** — initialize a KCL module, depend on
+   `enkinex-odcs`, and lay out a modular project.
+3. **Declare the Contract KCL Code** — author the contract as small, reusable
+   typed KCL sources.
+4. **Parse and Export to YAML** — validate, print, and export the contract to
+   YAML or JSON.
+
+**➡ Start here: [docs/tutorial.md](docs/tutorial.md)**
 
 ## ODCS KCL Schema Reference
 

@@ -1,4 +1,4 @@
-# Enkinex ODCS — a KCL library for the Open Data Contract Standard
+# Enkinex ODCS — Data Contract as Code Library
 
 [![Standard](https://img.shields.io/badge/ODCS-v3.1.0-blue)](https://github.com/bitol-io/open-data-contract-standard/tree/v3.1.0)
 [![KCL](https://img.shields.io/badge/KCL-%E2%89%A5%200.12.4-7B68EE)](https://www.kcl-lang.io/)

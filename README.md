@@ -12,30 +12,30 @@
 
 ## Project Summary
 
-The Open Data Contract Standard (ODCS) is a well-designed, community-driven standard, distributed as a YAML/JSON
-document.
-YAML is an excellent format for serializing and sharing a contract.
+The Open Data Contract Standard (ODCS), a Linux Foundation AI & Data Incubation project, is a community-driven standard
+distributed as a YAML/JSON document. While YAML is a popular format for data serialization, application configuration,
+and parameterization of automation scripts, it poses significant maintainability challenges.
+
 As organizations adopt ODCS across many domains and begin treating contracts as **governed**, **versioned code**, they
 naturally reach for software-engineering affordances that a serialization format was never meant to provide on its own:
-modularity, typing, and reuse. Plain YAML lacks modules and packages, so shared logic tends to be copied and pasted
-across contracts, and mistakes tend to surface at runtime rather than during authoring.
+modularity, typing, and reuse. Plain YAML lacks modules and packages, so shared logic is often copied and pasted across
+contracts, leading to runtime errors rather than authoring errors.
 
-**Enkinex ODCS complements the standard by expressing it as a modular KCL
-schema library**. It defines an engineering layer on top of ODCS that keeps the standard
-intact while adding code-level ergonomics.
-KCL is "an open-source, constraint-based record and functional language" for configuration and policy whose stability
-rests on "a static type system, strong immutability, and constraints", with
-"schema-centric configuration types and modular abstraction with logic and
-policy" ([kcl-lang.io](https://www.kcl-lang.io/)). Concretely, that gives a data contract:
+**Enkinex ODCS** complements the standard by expressing it as a modular KCL schema library. It defines an engineering
+layer on top of ODCS that keeps the standard intact while adding code-level ergonomics.
 
-- **Modularity & reuse** — schemas, imports and packages instead of copy-paste
-  YAML.
-- **Type safety & constraints** — invalid contracts fail at compile time, not
-  in production.
-- **Two-way validation** — validate existing ODCS YAML *and* author new
-  contracts in typed KCL.
-- **Living documentation** — a schema reference generated straight from the
-  code.
+The [KCL language](https://www.kcl-lang.io/) emerges as an interesting alternative for developing "governance-as-code"
+libraries, as it is open-source and multi-paradigm (functional, with some object-oriented and constraint-based
+features).
+In addition, it provides a static type system, strong immutability, and modular abstractions that incorporate logic and
+policy.
+
+By defining the data contract as a code project, we are able to mitigate specific challenges:
+
+- **Modularity & reuse**: schemas, imports, and packages instead of copy-paste YAML.
+- **Type safety & constraints**: invalid contracts fail at compile time, not in production.
+- **Two-way validation**: validate existing ODCS YAML *and* author new contracts in typed KCL.
+- **Living documentation**: a schema reference generated straight from the code.
 
 Each of these is expanded in the sections below.
 
@@ -60,46 +60,37 @@ Each of these is expanded in the sections below.
 
 ## Why KCL as a Governance-as-Code DSL
 
-This library grew out of a concrete problem: building **data mesh** projects
-with many domains, where each domain owns dozens of data contracts. **YAML does
-not scale** to that — and, being pure data, it offers **no computational
-governance** out of the box. Tools such as the excellent
-[Data Contract CLI](https://cli.datacontract.com/) validate and integrate ODCS
-very well, but they do not give you the scalability of keeping
-**governance-as-code in the repository**, written in a DSL designed for exactly
+This library grew out of a concrete problem: building **data mesh** projects with many domains, where each domain owns
+dozens of data contracts. **YAML does not scale** to that — and, being pure data, it offers **no computational
+governance**
+out of the box. Tools such as the [Data Contract CLI](https://cli.datacontract.com/) validate and integrate ODCS very
+well, but they do not give
+you the scalability of keeping **governance-as-code in the repository**, written in a DSL designed for exactly
 that purpose.
 
-The insight came from a prior experience using KCL to model Kubernetes
-applications deployed with Crossplane and Argo CD: KCL behaved for
-configuration and policy the way HCL does for infrastructure-as-code. Applied
+The insight came from a prior experience using KCL to model Kubernetes applications deployed with Crossplane and
+Argo CD: KCL behaved for configuration and policy the way HCL does for infrastructure-as-code. Applied
 to data contracts, KCL opens up possibilities that flat YAML cannot:
 
-- **Reusable domain libraries** — factor data-quality rules, PII/privacy
-  policies, and ownership rules into shared schemas that many contracts import
-  and specialize.
-- **Reusable server catalogs** — define organization-wide, domain-specific, and
-  environment-restricted server configurations (sources and targets) once, and
-  reference them across contracts.
-- **Enterprise conventions enforced in CI/CD** — apply custom parameters and
-  `check` rules to enforce naming conventions and establish standardized,
-  hierarchical, machine-readable identifiers for IT resources, applications,
-  and data models (IDs, catalogs, tables, rules, …).
-- **Export to the wider toolchain** — emit dynamically generated governance
-  parameters to Terraform, Argo CD, or Crossplane, reducing IaC complexity and
-  removing the need for intermediate parsers and bespoke CLIs.
-- **Better AI & spec-driven workflows** — a well-typed, well-documented KCL
-  schema adds a layer of declarative semantics that materially improves AI code
-  assistants, spec-driven design, and overall project-lifecycle management.
+- **Reusable domain libraries**: factor data-quality rules, PII/privacy policies, and ownership rules into shared
+  schemas that many contracts import and specialize.
+- **Reusable server catalogs**: define organization-wide, domain-specific, and environment-restricted server
+  configurations (sources and targets) once, and reference them across contracts.
+- **Enterprise conventions enforced in CI/CD**: apply custom parameters and `check` rules to enforce naming conventions
+  and establish standardized, hierarchical, machine-readable identifiers for IT resources, applications, and data models
+  (IDs, catalogs, tables, rules, …).
+- **Export to the wider toolchain**: emit dynamically generated governance parameters to Terraform, Argo CD,
+  or Crossplane, reducing IaC complexity and removing the need for intermediate parsers and bespoke CLIs.
+- **Better AI & spec-driven workflows**: a well-typed, well-documented KCL schema adds a layer of declarative semantics
+  that improves AI code assistants, spec-driven design, and overall project-lifecycle management.
 
 ## How the ODCS standard was mapped to KCL schemas
 
-The upstream ODCS JSON Schema already organizes its `$defs` into logical
-groups (fundamentals, schema/catalog, servers, quality, roles/teams, SLAs,
-…). Enkinex ODCS keeps that grouping, but treats it as an **opinionated
-software-engineering decision**: the KCL port is designed as a **library**
-where **modularity and maintainability are first-class requirements**, so each
-group becomes a KCL **module** (a directory of related schemas) that other
-modules import.
+The upstream ODCS JSON Schema already organizes its `$defs` into logical groups (fundamentals, schema/catalog, servers,
+quality, roles/teams, SLAs, …). Enkinex ODCS keeps that grouping, but treats it as an **opinionated software-engineering
+decision**:
+the KCL port is designed as a **library** where **modularity and maintainability are first-class requirements**, so each
+group becomes a KCL **module** (a directory of related schemas) that other modules import.
 
 The library is composed of six modules plus a root contract:
 
@@ -113,12 +104,11 @@ The library is composed of six modules plus a root contract:
 | **`server`**          | Connection details: a shared `ServerObject` base plus 30+ typed server schemas (postgres, bigquery, snowflake, kafka, s3, …).                                                                         | [docs/schemas/server.md](docs/schemas/server.md)     |
 | **`odcs.k`** *(root)* | The root **`DataContract`** schema. It imports from every module and composes them into the final ODCS contract definition.                                                                           | [docs/schemas/odcs.md](docs/schemas/odcs.md)         |
 
-The root `DataContract` in [`odcs.k`](odcs.k) pins `apiVersion = "v3.1.0"` and
-`kind = "DataContract"`, closes `status` to a fixed set, and wires in the
-module schemas (`servers`, `schema`, `description`, `support`, `price`,
-`team`, `roles`, `slaProperties`) — while inheriting the shared `tags`,
-`authoritativeDefinitions`, and `customProperties` blocks from the `common`
-module.
+The root `DataContract` in [`odcs.k`](odcs.k) pins `apiVersion = "v3.1.0"` and `kind = "DataContract"`, closes `status`
+to a fixed set, and wires in the module schemas (`servers`, `schema`, `description`, `support`, `price`,
+`team`, `roles`, `slaProperties`) — while inheriting the shared `tags`,`authoritativeDefinitions`, and
+`customProperties`
+blocks from the `common` module.
 
 > The **design decisions and trade-offs** behind each module are
 > documented per module under [`docs/schemas/`](docs/schemas/).
@@ -131,7 +121,7 @@ Add the package to your KCL module's `kcl.mod` dependencies (Git or OCI source,
 per your setup), then import the schemas you need:
 
 ```kcl
-import enkinex_odcs as odcs
+import enkinex_odcs.odcs
 
 contract = odcs.DataContract {
     id = "53581432-6c55-4ba2-a65f-72344a91553a"
@@ -151,29 +141,40 @@ existing ODCS YAML file and the root schema:
 kcl vet path/to/contract.yaml odcs.k --format yaml --schema DataContract
 ```
 
-The YAML is coerced into the typed schemas, so per-type server rules, the
-data-quality `oneOf` operator rule, and the stable-`id` pattern all fire on the
-validation path.
+The YAML is coerced into the typed schemas, so per-type server rules, the data-quality `oneOf` operator rule,
+and the stable-`id` pattern all fire on the validation path.
 
 ### Justfile targets
 
 Common tasks are wrapped in the [`Justfile`](Justfile):
 
 ```bash
+just init      # sync module dependencies (root + examples/full)
 just test      # kcl vet the contract + catalog fixtures against the schemas
-just example   # kcl test the sample DataContract in test/contract/
+just example   # parse examples/full/contract.k and export it to examples/full/contract.yaml
 just docs      # regenerate docs/enkinex-odcs.md from the schema docstrings
 ```
 
+Running `just example` is how the tutorial's sample project is materialized: it parses [
+`examples/full/contract.k`](examples/full/contract.k)
+and writes the resulting ODCS document to [`examples/full/contract.yaml`](examples/full/contract.yaml).
+
 ## Getting Started with Enkinex ODCS
 
-A hands-on quick-start — porting the canonical ODCS **full example** contract
-into an equivalent KCL project, section by section — lives in
-**[docs/tutorial.md](docs/tutorial.md)**.
+The **[Enkinex ODCS Tutorial](docs/tutorial.md)** is a hands-on quick start that ports the canonical ODCS **full example
+** contract
+into an equivalent, modular KCL project — the one under [`examples/full`](examples/full) — and then parses and exports
+it back to YAML.
 
-> The tutorial content is delivered by a separate backlog item (the
-> "sample-project quick tutorial" issue); this page is the placeholder it will
-> fill.
+**What you are going to learn:**
+
+1. **Installing KCL**: get the KCL CLI on your machine.
+2. **Creating the Contract Project Module**: initialize a KCL module, depend on `enkinex-odcs`, and lay out a modular
+   project.
+3. **Declare the Contract KCL Code**: author the contract as small, reusable typed KCL sources.
+4. **Parse and Export to YAML**: validate, print, and export the contract to YAML or JSON.
+
+**➡ Start here: [docs/tutorial.md](docs/tutorial.md)**
 
 ## ODCS KCL Schema Reference
 

@@ -1,10 +1,14 @@
 #!/usr/bin/env just --justfile
 
+init:
+    kcl mod update
+    (cd "{{justfile_directory()}}/examples/full" && kcl mod update)
+
 docs:
     kcl doc generate --escape-html
 
 example:
-    kcl test/contract/contract.k
+    (cd "{{justfile_directory()}}/examples/full" && kcl contract.k --format yaml > contract.yaml)
 
 test:
     kcl vet test/contract/contract.yaml odcs.k --format yaml --schema DataContract

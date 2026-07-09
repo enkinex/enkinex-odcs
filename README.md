@@ -161,8 +161,7 @@ and writes the resulting ODCS document to [`examples/full/contract.yaml`](exampl
 
 ## Getting Started with Enkinex ODCS
 
-The **[Enkinex ODCS Tutorial](docs/tutorial.md)** is a hands-on quick start that ports the canonical ODCS **full example
-** contract
+The **[Enkinex ODCS Tutorial](docs/tutorial.md)** is a hands-on quick start that ports the canonical ODCS **full example** contract
 into an equivalent, modular KCL project — the one under [`examples/full`](examples/full) — and then parses and exports
 it back to YAML.
 
@@ -174,7 +173,11 @@ it back to YAML.
 3. **Declare the Contract KCL Code**: author the contract as small, reusable typed KCL sources.
 4. **Parse and Export to YAML**: validate, print, and export the contract to YAML or JSON.
 
-**➡ Start here: [docs/tutorial.md](docs/tutorial.md)**
+### Pick your pace:
+
+**➡ Quick version: [Documentation Tutorial](docs/tutorial.md)**
+
+**➡ Full walkthrough, step by step (3 parts): [Enkinex Blog Tutorial](https://enkinex.hashnode.dev/enkinex-odcs-tutorial)**
 
 ## ODCS KCL Schema Reference
 

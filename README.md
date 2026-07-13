@@ -177,7 +177,7 @@ it back to YAML.
 
 **➡ Quick version: [Documentation Tutorial](docs/tutorial.md)**
 
-**➡ Full walkthrough, step by step (3 parts): [Enkinex Blog Tutorial](https://enkinex.hashnode.dev/enkinex-odcs-tutorial)**
+**➡ Full walkthrough, step by step (3 parts): [Enkinex ODCS Tutorial](https://enkinex.org/docs/governance/odcs/tutorial/)**
 
 ## ODCS KCL Schema Reference
 

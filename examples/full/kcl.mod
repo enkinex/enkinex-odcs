@@ -5,4 +5,4 @@ version = "3.1.0-draft"
 description = "Enkinex KCL implementation for ODCS full example"
 
 [dependencies]
-enkinex_odcs = { git = "https://github.com/enkinex/enkinex-odcs", branch = "main" }
+enkinex_odcs = { git = "https://github.com/enkinex/enkinex-odcs", commit = "fe8b0b1" }

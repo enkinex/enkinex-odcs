@@ -1013,7 +1013,7 @@ API Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### AthenaServer
 
@@ -1047,7 +1047,7 @@ AWS Athena Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Examples: "s3://my_storage_account_name/my_container/path"||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### AzureServer
 
@@ -1081,7 +1081,7 @@ Azure Blob Storage Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
@@ -1139,7 +1139,7 @@ Google BigQuery Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### ClickHouseServer
 
@@ -1173,7 +1173,7 @@ ClickHouse Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### CustomServer
 
@@ -1240,7 +1240,7 @@ Databricks Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### DenodoServer
 
@@ -1274,7 +1274,7 @@ Denodo Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### DremioServer
 
@@ -1308,7 +1308,7 @@ Dremio Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### DuckdbServer
 
@@ -1342,7 +1342,7 @@ DuckDB Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### GlueServer
 
@@ -1376,7 +1376,7 @@ AWS Glue Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### GoogleCloudSqlServer
 
@@ -1410,7 +1410,7 @@ Google Cloud Sql Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### HiveServer
 
@@ -1444,7 +1444,7 @@ Apache Hive Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### IBMDB2Server
 
@@ -1478,7 +1478,7 @@ IBM DB2 Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### ImpalaServer
 
@@ -1512,7 +1512,7 @@ Apache Impala Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### InformixServer
 
@@ -1546,7 +1546,7 @@ IBM Informix Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### KafkaServer
 
@@ -1580,7 +1580,7 @@ Apache Kafka Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
@@ -1624,7 +1624,7 @@ AWS Kinesis Data Streams Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|The name of the Kinesis data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### LocalServer
 
@@ -1658,7 +1658,7 @@ Local File Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### MySqlServer
 
@@ -1692,7 +1692,7 @@ MySQL Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### OracleServer
 
@@ -1726,7 +1726,7 @@ Oracle Database Server.
 |**serviceName**|str|The name of the service.<br />Examples: "service"||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### PostgresServer
 
@@ -1760,7 +1760,7 @@ PostgreSQL Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
@@ -1806,7 +1806,7 @@ Presto Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### PubSubServer
 
@@ -1840,7 +1840,7 @@ Google Cloud Pub/Sub Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### RedshiftServer
 
@@ -1874,7 +1874,7 @@ Amazon Redshift Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### S3Server
 
@@ -1908,7 +1908,7 @@ Amazon S3 Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### Server
 
@@ -1942,7 +1942,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
@@ -1999,7 +1999,7 @@ SFTP Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### SnowflakeServer
 
@@ -2033,7 +2033,7 @@ Snowflake Data Warehouse Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|The name of the cluster of resources that is a Snowflake virtual warehouse.||
 ### SqlserverServer
 
@@ -2067,7 +2067,7 @@ Microsoft SQL Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### SynapseServer
 
@@ -2101,7 +2101,7 @@ Azure Synapse Analytics Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### TrinoServer
 
@@ -2135,7 +2135,7 @@ Trino Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### VerticaServer
 
@@ -2169,7 +2169,7 @@ Vertica Database Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 ### ZenServer
 
@@ -2203,6 +2203,6 @@ Zen Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|any|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 <!-- Auto generated by kcl-doc tool, please do not edit. -->

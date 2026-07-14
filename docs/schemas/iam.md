@@ -18,7 +18,7 @@ team (and its members) responsible for the contract.
     - `Team` and `TeamMember` → `StableIdDiscoverable` (id-bearing discoverable
       tail: `id`, `customProperties`, `tags`, `authoritativeDefinitions`).
 - **`Role` reused across modules.** The same `Role` schema types both
-  `DataContract.roles` and `ServerObject.roles` (in the `server` module),
+  `DataContract.roles` and `BaseServer.roles` (in the `server` module),
   avoiding a second role definition.
 - **Date validation as guarded `check`s.** `TeamMember.dateIn` / `dateOut` are
   validated against an ISO-8601 date pattern only when present, and

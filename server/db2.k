@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema IBMDB2Server(base.ServerObject):
+schema IBMDB2Server(server.Server):
     """
     IBM DB2 Server.
 

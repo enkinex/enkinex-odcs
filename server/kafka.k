@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema KafkaServer(base.ServerObject):
+schema KafkaServer(server.Server):
     """
     Apache Kafka Server.
 

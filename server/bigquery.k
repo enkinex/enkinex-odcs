@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema BigQueryServer(base.ServerObject):
+schema BigQueryServer(server.Server):
     """
     Google BigQuery Server.
 

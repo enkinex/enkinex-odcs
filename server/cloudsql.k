@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema GoogleCloudSqlServer(base.ServerObject):
+schema GoogleCloudSqlServer(server.Server):
     """
     Google Cloud Sql Server.
 

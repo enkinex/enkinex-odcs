@@ -43,6 +43,7 @@
   - [ApiServer](#apiserver)
   - [AthenaServer](#athenaserver)
   - [AzureServer](#azureserver)
+  - [BaseServer](#baseserver)
   - [BigQueryServer](#bigqueryserver)
   - [ClickHouseServer](#clickhouseserver)
   - [CustomServer](#customserver)
@@ -67,7 +68,6 @@
   - [RedshiftServer](#redshiftserver)
   - [S3Server](#s3server)
   - [Server](#server)
-  - [ServerObject](#serverobject)
   - [SftpServer](#sftpserver)
   - [SnowflakeServer](#snowflakeserver)
   - [SqlserverServer](#sqlserverserver)
@@ -989,13 +989,32 @@ API Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**location** `required`|str|The URL to the API.<br />Examples: "https://api.example.com/v1"||
+|**location**|str|The URL to the API.<br />Examples: "https://api.example.com/v1"||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### AthenaServer
 
 AWS Athena Server.
@@ -1004,16 +1023,32 @@ AWS Athena Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
 |**catalog**|str|Identify the name of the Data Source, also referred to as a Catalog.|"awsdatacatalog"|
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
 |**regionName**|str|The region your AWS account uses.<br />Examples: "eu-west-1"||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|Identify the schema in the data source in which your tables exist.||
+|**schema**|str|Identify the schema in the data source in which your tables exist.||
 |**server** `required`|str|Identifier of the server.||
-|**stagingDir** `required`|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Examples: "s3://my_storage_account_name/my_container/path"||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Examples: "s3://my_storage_account_name/my_container/path"||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### AzureServer
 
 Azure Blob Storage Server.
@@ -1022,15 +1057,32 @@ Azure Blob Storage Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**format** `required`|str|File format.<br />Examples: "parquet", "delta", "json", "csv".||
+|**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv".||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**location** `required`|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
+|**location**|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
 ```
@@ -1041,6 +1093,20 @@ azure = AzureServer {
 }
 ```
 
+### BaseServer
+
+Base server object carrying the server properties common to every server type.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Description of the server.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**server** `required`|str|Identifier of the server.||
 ### BigQueryServer
 
 Google BigQuery Server.
@@ -1049,14 +1115,32 @@ Google BigQuery Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**dataset** `required`|str|The GCP dataset name.||
+|**database**|str|Name of the database.||
+|**dataset**|str|The GCP dataset name.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**project** `required`|str|The GCP project name.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|The GCP project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### ClickHouseServer
 
 ClickHouse Server.
@@ -1065,18 +1149,35 @@ ClickHouse Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the ClickHouse server.||
+|**format**|str|File format.||
+|**host**|str|The host of the ClickHouse server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port to the ClickHouse server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port to the ClickHouse server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### CustomServer
 
-Custom server properties
+Defines the CustomServer source with all properties shared by all types of sources.
 
 #### Attributes
 
@@ -1115,15 +1216,32 @@ Databricks Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**catalog** `required`|str|The name of the Hive or Unity catalog.||
+|**account**|str|Account used by the server.||
+|**catalog**|str|The name of the Hive or Unity catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
 |**host**|str|The Databricks host.<br />Examples: "dbc-abcdefgh-1234.cloud.databricks.com"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The schema name in the catalog.||
+|**schema**|str|The schema name in the catalog.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### DenodoServer
 
 Denodo Server.
@@ -1132,15 +1250,32 @@ Denodo Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the Denodo server.||
+|**format**|str|File format.||
+|**host**|str|The host of the Denodo server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the Denodo server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the Denodo server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### DremioServer
 
 Dremio Server.
@@ -1149,15 +1284,32 @@ Dremio Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the Dremio server.||
+|**format**|str|File format.||
+|**host**|str|The host of the Dremio server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the Dremio server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the Dremio server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### DuckdbServer
 
 DuckDB Server.
@@ -1166,14 +1318,32 @@ DuckDB Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|Path to duckdb database file.||
+|**database**|str|Path to duckdb database file.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### GlueServer
 
 AWS Glue Server.
@@ -1182,16 +1352,32 @@ AWS Glue Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**account** `required`|str|The AWS Glue account.<br />Examples: "1234-5678-9012"||
+|**account**|str|The AWS Glue account.<br />Examples: "1234-5678-9012"||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The AWS Glue database name.<br />Examples: "my_database"||
+|**database**|str|The AWS Glue database name.<br />Examples: "my_database"||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the files.<br />Examples: "parquet", "csv", "json", "delta"||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
 |**location**|str|The AWS S3 path. Must be in the form of a URL.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}"||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### GoogleCloudSqlServer
 
 Google Cloud Sql Server.
@@ -1200,16 +1386,32 @@ Google Cloud Sql Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the Google Cloud Sql server.||
+|**format**|str|File format.||
+|**host**|str|The host of the Google Cloud Sql server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the Google Cloud Sql server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the Google Cloud Sql server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema.||
+|**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### HiveServer
 
 Apache Hive Server.
@@ -1218,15 +1420,32 @@ Apache Hive Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the Hive database.||
+|**database**|str|The name of the Hive database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the Hive server.||
+|**format**|str|File format.||
+|**host**|str|The host to the Hive server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Hive server.|10000|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### IBMDB2Server
 
 IBM DB2 Server.
@@ -1235,16 +1454,32 @@ IBM DB2 Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the IBM DB2 server.||
+|**format**|str|File format.||
+|**host**|str|The host of the IBM DB2 server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the IBM DB2 server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the IBM DB2 server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### ImpalaServer
 
 Apache Impala Server.
@@ -1253,15 +1488,32 @@ Apache Impala Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the Impala database.||
+|**database**|str|The name of the Impala database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the Impala server.||
+|**format**|str|File format.||
+|**host**|str|The host to the Impala server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Impala server.|21050|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### InformixServer
 
 IBM Informix Server.
@@ -1270,15 +1522,32 @@ IBM Informix Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the Informix server.||
+|**format**|str|File format.||
+|**host**|str|The host to the Informix server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Informix server.|9088|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### KafkaServer
 
 Apache Kafka Server.
@@ -1287,14 +1556,32 @@ Apache Kafka Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the messages.<br />Examples: "json", "avro", "protobuf", "xml"|"json"|
-|**host** `required`|str|The bootstrap server of the kafka cluster.||
+|**host**|str|The bootstrap server of the kafka cluster.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
 ```
@@ -1313,15 +1600,32 @@ AWS Kinesis Data Streams Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the record.<br />Examples: "json", "avro", "protobuf"||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
 |**region**|str|AWS region.<br />Examples: "eu-west-1"||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
-|**stream** `required`|str|The name of the Kinesis data stream.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|The name of the Kinesis data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### LocalServer
 
 Local File Server.
@@ -1330,14 +1634,32 @@ Local File Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**format** `required`|str|The format of the file(s).<br />Examples: "json", "parquet", "delta", "csv"||
+|**format**|str|The format of the file(s).<br />Examples: "json", "parquet", "delta", "csv"||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**path** `required`|str|The relative or absolute path to the data file(s).<br />Examples: "./folder/data.parquet", "./folder/*.parquet"||
+|**location**|str|A URL to a location.||
+|**path**|str|The relative or absolute path to the data file(s).<br />Examples: "./folder/data.parquet", "./folder/*.parquet"||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### MySqlServer
 
 MySQL Server.
@@ -1346,15 +1668,32 @@ MySQL Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the MySql server.||
+|**format**|str|File format.||
+|**host**|str|The host of the MySql server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the MySql server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the MySql server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### OracleServer
 
 Oracle Database Server.
@@ -1363,15 +1702,32 @@ Oracle Database Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the oracle server.<br />Examples: "localhost"||
+|**format**|str|File format.||
+|**host**|str|The host to the oracle server.<br />Examples: "localhost"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port to the oracle server.<br />Examples: "1523"||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port to the oracle server.<br />Examples: "1523"||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
-|**serviceName** `required`|str|The name of the service.<br />Examples: "service"||
+|**serviceName**|str|The name of the service.<br />Examples: "service"||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### PostgresServer
 
 PostgreSQL Server.
@@ -1380,16 +1736,32 @@ PostgreSQL Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the Postgres server.||
+|**format**|str|File format.||
+|**host**|str|The host to the Postgres server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port to the Postgres server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port to the Postgres server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema in the database.||
+|**schema**|str|The name of the schema in the database.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 #### Examples
 
 ```
@@ -1410,15 +1782,32 @@ Presto Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
 |**catalog**|str|The name of the catalog.<br />Examples: "postgres"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the Presto server.<br />Examples: "localhost:8080"||
+|**format**|str|File format.||
+|**host**|str|The host to the Presto server.<br />Examples: "localhost:8080"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**schema**|str|The name of the schema.<br />Examples: "public"||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### PubSubServer
 
 Google Cloud Pub/Sub Server.
@@ -1427,13 +1816,32 @@ Google Cloud Pub/Sub Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**project** `required`|str|The GCP project name.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|The GCP project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### RedshiftServer
 
 Amazon Redshift Server.
@@ -1443,16 +1851,31 @@ Amazon Redshift Server.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**account**|str|The account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
 |**host**|str|An optional string describing the server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
 |**region**|str|AWS region of Redshift server.<br />Examples: "us-east-1"||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema.||
+|**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### S3Server
 
 Amazon S3 Server.
@@ -1461,19 +1884,35 @@ Amazon S3 Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
 |**endpointUrl**|str|The server endpoint for S3-compatible servers.<br />Examples: "https://minio.example.com`"||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**location** `required`|str|S3 URL, starting with `s3://`.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}/*.json"||
+|**location**|str|S3 URL, starting with `s3://`.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}/*.json"||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### Server
 
-General Server Structure.
+The Server schema inherits CustomServer properties and provides the `allOf` JSON schema validation against source type subschemas.
 
 #### Attributes
 
@@ -1528,20 +1967,6 @@ server = Server {
 }
 ```
 
-### ServerObject
-
-Base object carrying the server properties common to every server type.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**description**|str|Description of the server.||
-|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**server** `required`|str|Identifier of the server.||
 ### SftpServer
 
 SFTP Server.
@@ -1550,15 +1975,32 @@ SFTP Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
+|**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**location** `required`|str|SFTP URL, starting with `sftp://`.<br />Examples: "sftp://123.123.12.123/{model}/*.json"||
+|**location**|str|SFTP URL, starting with `sftp://`.<br />Examples: "sftp://123.123.12.123/{model}/*.json"||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### SnowflakeServer
 
 Snowflake Data Warehouse Server.
@@ -1567,17 +2009,31 @@ Snowflake Data Warehouse Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**account** `required`|str|The Snowflake account used by the server.||
+|**account**|str|The Snowflake account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
 |**host**|str|The host to the Snowflake server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Snowflake server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema.||
+|**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|The name of the cluster of resources that is a Snowflake virtual warehouse.||
 ### SqlserverServer
 
@@ -1587,16 +2043,32 @@ Microsoft SQL Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.<br />Examples: "database"||
+|**database**|str|The name of the database.<br />Examples: "database"||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host to the database server.<br />Examples: "localhost"||
+|**format**|str|File format.||
+|**host**|str|The host to the database server.<br />Examples: "localhost"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the database server.<br />Examples: "1433"|1433|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema in the database.<br />Examples: "dbo"||
+|**schema**|str|The name of the schema in the database.<br />Examples: "dbo"||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### SynapseServer
 
 Azure Synapse Analytics Server.
@@ -1605,15 +2077,32 @@ Azure Synapse Analytics Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the Synapse server.||
+|**format**|str|File format.||
+|**host**|str|The host of the Synapse server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the Synapse server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the Synapse server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### TrinoServer
 
 Trino Server.
@@ -1622,16 +2111,32 @@ Trino Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**catalog** `required`|str|The name of the catalog.<br />Examples: "hive"||
+|**account**|str|Account used by the server.||
+|**catalog**|str|The name of the catalog.<br />Examples: "hive"||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The Trino host URL.<br />Examples: "localhost"||
+|**format**|str|File format.||
+|**host**|str|The Trino host URL.<br />Examples: "localhost"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The Trino port.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The Trino port.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema in the database.<br />Examples: "my_schema"||
+|**schema**|str|The name of the schema in the database.<br />Examples: "my_schema"||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### VerticaServer
 
 Vertica Database Server.
@@ -1640,16 +2145,32 @@ Vertica Database Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|The name of the database.||
+|**database**|str|The name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|The host of the Vertica server.||
+|**format**|str|File format.||
+|**host**|str|The host of the Vertica server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**port** `required`|int|The port of the Vertica server.||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int|The port of the Vertica server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
-|**schema** `required`|str|The name of the schema.||
+|**schema**|str|The name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 ### ZenServer
 
 Zen Server.
@@ -1658,13 +2179,30 @@ Zen Server.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**database** `required`|str|Database name to connect to on the Zen server.||
+|**database**|str|Database name to connect to on the Zen server.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**host** `required`|str|Hostname or IP address of the Zen server.||
+|**format**|str|File format.||
+|**host**|str|Hostname or IP address of the Zen server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**location**|str|A URL to a location.||
+|**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Zen server SQL connections port.|1583|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
 |**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
 <!-- Auto generated by kcl-doc tool, please do not edit. -->

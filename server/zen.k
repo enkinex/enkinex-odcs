@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema ZenServer(base.ServerObject):
+schema ZenServer(server.Server):
     """
     Zen Server.
 

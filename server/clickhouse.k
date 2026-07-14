@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema ClickHouseServer(base.ServerObject):
+schema ClickHouseServer(server.Server):
     """
     ClickHouse Server.
 

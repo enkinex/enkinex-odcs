@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema SnowflakeServer(base.ServerObject):
+schema SnowflakeServer(server.Server):
     """
     Snowflake Data Warehouse Server.
 

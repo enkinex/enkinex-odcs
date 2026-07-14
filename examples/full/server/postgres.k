@@ -1,7 +1,6 @@
-import enkinex_odcs.server.common as common_server
+import enkinex_odcs.server.postgres
 
-LocalPostgresServer = common_server.Server {
-    $type = "postgres"
+LocalPostgresServer = postgres.PostgresServer {
     server = "my-postgres"
     host = "localhost"
     port = 5432

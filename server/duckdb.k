@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema DuckdbServer(base.ServerObject):
+schema DuckdbServer(server.Server):
     """
     DuckDB Server.
 

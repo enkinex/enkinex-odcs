@@ -1,8 +1,8 @@
-import .base
+import .base as base_server
 
-schema CustomServer(base.ServerObject):
+schema CustomServer(base_server.BaseServer):
     """
-    Custom server properties
+    Defines the CustomServer source with all properties shared by all types of sources.
 
     Attributes
     ----------

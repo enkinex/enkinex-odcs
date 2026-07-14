@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema S3Server(base.ServerObject):
+schema S3Server(server.Server):
     """
     Amazon S3 Server.
 

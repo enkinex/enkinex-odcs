@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema VerticaServer(base.ServerObject):
+schema VerticaServer(server.Server):
     """
     Vertica Database Server.
 

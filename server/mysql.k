@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema MySqlServer(base.ServerObject):
+schema MySqlServer(server.Server):
     """
     MySQL Server.
 

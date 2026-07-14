@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema PrestoServer(base.ServerObject):
+schema PrestoServer(server.Server):
     """
     Presto Server.
 

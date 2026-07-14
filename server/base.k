@@ -1,9 +1,9 @@
 import ..common.custom
 import ..iam.role
 
-schema ServerObject(custom.StableIdCustomizable):
+schema BaseServer(custom.StableIdCustomizable):
     """
-    Base object carrying the server properties common to every server type.
+    Base server object carrying the server properties common to every server type.
 
     Attributes
     ----------

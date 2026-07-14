@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema HiveServer(base.ServerObject):
+schema HiveServer(server.Server):
     """
     Apache Hive Server.
 

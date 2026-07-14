@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema SynapseServer(base.ServerObject):
+schema SynapseServer(server.Server):
     """
     Azure Synapse Analytics Server.
 

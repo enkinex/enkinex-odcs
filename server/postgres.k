@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema PostgresServer(base.ServerObject):
+schema PostgresServer(server.Server):
     """
     PostgreSQL Server.
 

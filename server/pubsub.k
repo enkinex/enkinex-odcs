@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema PubSubServer(base.ServerObject):
+schema PubSubServer(server.Server):
     """
     Google Cloud Pub/Sub Server.
 

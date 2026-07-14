@@ -25,7 +25,7 @@ schema PostgresServer(server.Server):
         $schema = "pp_access_views"
     }
     """
-    $type: str = "postgres"
+    $type = "postgres"
     host: str
     port: int
     database: str

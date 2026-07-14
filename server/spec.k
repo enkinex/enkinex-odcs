@@ -1,6 +1,6 @@
 import .custom as custom_server
 
-type ServerType = "api" | "athena" | "azure" | "bigquery" | "clickhouse" | "databricks" | "denodo" | "dremio" | "duckdb" | "glue" | "cloudsql" | "db2" | "hive" | "impala" | "informix" | "kafka" | "kinesis" | "local" | "mysql" | "oracle" | "postgresql" | "postgres" | "presto" | "pubsub" | "redshift" | "s3" | "sftp" | "snowflake" | "sqlserver" | "synapse" | "trino" | "vertica" | "zen" | "custom"
+type ServerSourceType = "api" | "athena" | "azure" | "bigquery" | "clickhouse" | "databricks" | "denodo" | "dremio" | "duckdb" | "glue" | "cloudsql" | "db2" | "hive" | "impala" | "informix" | "kafka" | "kinesis" | "local" | "mysql" | "oracle" | "postgresql" | "postgres" | "presto" | "pubsub" | "redshift" | "s3" | "sftp" | "snowflake" | "sqlserver" | "synapse" | "trino" | "vertica" | "zen" | "custom"
 
 schema Server(custom_server.CustomServer):
     """

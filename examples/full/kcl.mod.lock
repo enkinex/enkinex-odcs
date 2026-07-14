@@ -4,4 +4,4 @@
     full_name = "enkinex-odcs_3.1.0-draft"
     version = "3.1.0-draft"
     url = "https://github.com/enkinex/enkinex-odcs"
-    branch = "main"
+    commit = "fe8b0b1"

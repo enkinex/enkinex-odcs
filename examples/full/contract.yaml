@@ -1,17 +1,17 @@
 customProperties:
-  - property: refRulesetName
-    value: gcsc.ruleset.name
-  - property: somePropertyName
-    value: property.value
-  - property: dataprocClusterName
-    value:
-      - cluster name
+- property: refRulesetName
+  value: gcsc.ruleset.name
+- property: somePropertyName
+  value: property.value
+- property: dataprocClusterName
+  value:
+  - cluster name
 authoritativeDefinitions:
-  - type: canonical
-    url: https://github.com/bitol-io/open-data-contract-standard/blob/main/docs/examples/all/full-example.odcs.yaml
-    description: Canonical URL to the latest version of the contract.
+- type: canonical
+  url: https://github.com/bitol-io/open-data-contract-standard/blob/main/docs/examples/all/full-example.odcs.yaml
+  description: Canonical URL to the latest version of the contract.
 tags:
-  - transactions
+- transactions
 apiVersion: v3.1.0
 kind: DataContract
 id: '53581432-6c55-4ba2-a65f-72344a91553a'
@@ -20,244 +20,244 @@ status: active
 tenant: ClimateQuantumInc
 domain: seller
 servers:
-  - server: my-postgres
-    database: pypl-edw
-    host: localhost
-    port: 5432
-    schema: pp_access_views
-    type: postgres
+- server: my-postgres
+  database: pypl-edw
+  host: localhost
+  port: 5432
+  schema: pp_access_views
+  type: postgres
 description:
   authoritativeDefinitions:
-    - type: privacy-statement
-      url: https://example.com/gdpr.pdf
+  - type: privacy-statement
+    url: https://example.com/gdpr.pdf
   purpose: Views built on top of the seller tables.
   limitations: Data based on seller perspective, no buyer information
   usage: Predict sales over time
 schema:
-  - id: tbl_obj
+- id: tbl_obj
+  customProperties:
+  - property: business-key
+    value:
+    - txn_ref_dt
+    - rcvr_id
+  tags:
+  - finance
+  - payments
+  authoritativeDefinitions:
+  - type: businessDefinition
+    url: https://catalog.data.gov/dataset/air-quality
+  - type: videoTutorial
+    url: https://youtu.be/jbY1BKFj9ec
+  name: tbl
+  physicalName: tbl_1
+  physicalType: table
+  description: Provides core payment metrics
+  businessName: Core Payment Metrics
+  quality:
+  - mustBeGreaterThan: 1000000
+    description: Ensure row count is within expected volume range
+    type: library
+    metric: rowCount
+    dimension: completeness
+    method: reconciliation
+    severity: error
+    businessImpact: operational
+    scheduler: cron
+    schedule: '0 20 * * *'
+  logicalType: object
+  dataGranularityDescription: Aggregation on columns txn_ref_dt, pmt_txn_id
+  properties:
+  - id: txn_ref_dt_prop
     customProperties:
-      - property: business-key
-        value:
-          - txn_ref_dt
-          - rcvr_id
+    - property: anonymizationStrategy
+      value: none
+    tags: []
+    name: transaction_reference_date
+    physicalName: txn_ref_dt
+    physicalType: date
+    description: Reference date for transaction
+    businessName: transaction reference date
+    primaryKey: false
+    primaryKeyPosition: -1
+    logicalType: date
+    required: false
+    unique: false
+    partitioned: true
+    partitionKeyPosition: 1
+    classification: public
+    transformSourceObjects:
+    - table_name_1
+    - table_name_2
+    - table_name_3
+    transformLogic: sel t1.txn_dt as txn_ref_dt from table_name_1 as t1, table_name_2 as t2, table_name_3 as t3 where t1.txn_dt=date-3
+    transformDescription: defines the logic in business terms; logic for dummies
+    examples:
+    - '2022-10-03'
+    - '2020-01-28'
+    criticalDataElement: false
+  - id: rcvr_id_prop
     tags:
-      - finance
-      - payments
-    authoritativeDefinitions:
-      - type: businessDefinition
-        url: https://catalog.data.gov/dataset/air-quality
-      - type: videoTutorial
-        url: https://youtu.be/jbY1BKFj9ec
-    name: tbl
-    physicalName: tbl_1
-    physicalType: table
-    description: Provides core payment metrics
-    businessName: Core Payment Metrics
-    quality:
-      - mustBeGreaterThan: 1000000
-        description: Ensure row count is within expected volume range
-        type: library
-        metric: rowCount
-        dimension: completeness
-        method: reconciliation
-        severity: error
-        businessImpact: operational
-        scheduler: cron
-        schedule: '0 20 * * *'
-    logicalType: object
-    dataGranularityDescription: Aggregation on columns txn_ref_dt, pmt_txn_id
-    properties:
-      - id: txn_ref_dt_prop
-        customProperties:
-          - property: anonymizationStrategy
-            value: none
-        tags: [ ]
-        name: transaction_reference_date
-        physicalName: txn_ref_dt
-        physicalType: date
-        description: Reference date for transaction
-        businessName: transaction reference date
-        primaryKey: false
-        primaryKeyPosition: -1
-        logicalType: date
-        required: false
-        unique: false
-        partitioned: true
-        partitionKeyPosition: 1
-        classification: public
-        transformSourceObjects:
-          - table_name_1
-          - table_name_2
-          - table_name_3
-        transformLogic: sel t1.txn_dt as txn_ref_dt from table_name_1 as t1, table_name_2 as t2, table_name_3 as t3 where t1.txn_dt=date-3
-        transformDescription: defines the logic in business terms; logic for dummies
-        examples:
-          - '2022-10-03'
-          - '2020-01-28'
-        criticalDataElement: false
-      - id: rcvr_id_prop
-        tags:
-          - uid
-        name: rcvr_id
-        physicalType: varchar(18)
-        description: A description for column rcvr_id.
-        businessName: receiver id
-        primaryKey: true
-        primaryKeyPosition: 1
-        logicalType: string
-        required: false
-        unique: false
-        partitioned: false
-        partitionKeyPosition: -1
-        classification: restricted
-        criticalDataElement: false
-        relationships:
-          - customProperties:
-              - property: description
-                value: Links to receiver master data
-            type: foreignKey
-            to: receivers.id
-      - id: rcvr_cntry_code_prop
-        tags: [ ]
-        authoritativeDefinitions:
-          - type: businessDefinition
-            url: https://collibra.com/asset/742b358f-71a5-4ab1-bda4-dcdba9418c25
-          - type: transformationImplementation
-            url: https://github.com/myorg/myrepo
-          - type: implementation
-            url: jdbc:postgresql://localhost:5432/adventureworks/tbl_1/rcvr_cntry_code
-        name: rcvr_cntry_code
-        physicalType: varchar(2)
-        description: Country code
-        businessName: receiver country code
-        quality:
-          - customProperties:
-              - property: FIELD_NAME
-                value: rcvr_cntry_code
-              - property: COMPARE_TO
-                value: Some
-              - property: COMPARISON_TYPE
-                value: Greater than
-            mustBe: 0
-            description: column should not contain null values
-            type: library
-            metric: nullValues
-            dimension: completeness
-            severity: error
-            businessImpact: operational
-            scheduler: cron
-            schedule: '0 20 * * *'
-        primaryKey: false
-        primaryKeyPosition: -1
-        logicalType: string
-        required: false
-        unique: false
-        partitioned: false
-        partitionKeyPosition: -1
-        classification: public
-        encryptedName: rcvr_cntry_code_encrypted
-        criticalDataElement: false
+    - uid
+    name: rcvr_id
+    physicalType: varchar(18)
+    description: A description for column rcvr_id.
+    businessName: receiver id
+    primaryKey: true
+    primaryKeyPosition: 1
+    logicalType: string
+    required: false
+    unique: false
+    partitioned: false
+    partitionKeyPosition: -1
+    classification: restricted
+    criticalDataElement: false
     relationships:
-      - customProperties:
-          - property: description
-            value: Composite key linking to receivers table
-          - property: cardinality
-            value: many-to-one
-        type: foreignKey
-        to:
-          - receivers.id
-          - receivers.country_code
-        from:
-          - tbl.rcvr_id
-          - tbl.rcvr_cntry_code
-  - id: receivers_obj
-    tags:
-      - master-data
-      - receivers
-    name: receivers
-    physicalName: receivers_master
-    physicalType: table
-    description: Master data for all receivers
-    businessName: Receivers Master Data
-    logicalType: object
-    properties:
-      - id: receiver_id_prop
-        name: id
-        physicalType: varchar(18)
-        description: Unique identifier for receiver
-        businessName: receiver identifier
-        primaryKey: true
-        primaryKeyPosition: 1
-        logicalType: string
-        required: true
-        unique: true
-        partitioned: false
-        partitionKeyPosition: -1
-        classification: restricted
-        criticalDataElement: false
-      - id: country_code_prop
-        name: country_code
-        physicalType: varchar(2)
-        description: Country code of the receiver
-        businessName: receiver country
-        primaryKey: true
-        primaryKeyPosition: 2
-        logicalType: string
-        required: true
-        unique: false
-        partitioned: false
-        partitionKeyPosition: -1
-        classification: public
-        criticalDataElement: false
-      - id: receiver_name_prop
-        name: receiver_name
-        physicalType: varchar(255)
-        description: Name of the receiver
-        businessName: receiver name
-        primaryKey: false
-        primaryKeyPosition: -1
-        logicalType: string
-        required: true
-        unique: false
-        partitioned: false
-        partitionKeyPosition: -1
-        classification: restricted
-        criticalDataElement: false
-      - id: receiver_type_prop
-        name: receiver_type
-        physicalType: varchar(20)
-        description: Type of receiver (individual, business, etc.)
-        businessName: receiver type
-        primaryKey: false
-        primaryKeyPosition: -1
-        logicalType: string
-        required: false
-        unique: false
-        partitioned: false
-        partitionKeyPosition: -1
-        classification: public
-        criticalDataElement: false
-        relationships:
-          - customProperties:
-              - property: description
-                value: Links to receiver type definitions
-            type: foreignKey
-            to: receiver_types.type_code
-support:
-  - channel: '#product-help'
-    tool: slack
-  - channel: datacontract-ann
-    url: mailto:datacontract-ann@bitol.io
-    tool: email
-  - channel: Feedback
-    url: https://product-feedback.com
-    description: General Product Feedback (Public)
+    - customProperties:
+      - property: description
+        value: Links to receiver master data
+      type: foreignKey
+      to: receivers.id
+  - id: rcvr_cntry_code_prop
+    tags: []
+    authoritativeDefinitions:
+    - type: businessDefinition
+      url: https://collibra.com/asset/742b358f-71a5-4ab1-bda4-dcdba9418c25
+    - type: transformationImplementation
+      url: https://github.com/myorg/myrepo
+    - type: implementation
+      url: jdbc:postgresql://localhost:5432/adventureworks/tbl_1/rcvr_cntry_code
+    name: rcvr_cntry_code
+    physicalType: varchar(2)
+    description: Country code
+    businessName: receiver country code
+    quality:
+    - customProperties:
+      - property: FIELD_NAME
+        value: rcvr_cntry_code
+      - property: COMPARE_TO
+        value: Some
+      - property: COMPARISON_TYPE
+        value: Greater than
+      mustBe: 0
+      description: column should not contain null values
+      type: library
+      metric: nullValues
+      dimension: completeness
+      severity: error
+      businessImpact: operational
+      scheduler: cron
+      schedule: '0 20 * * *'
+    primaryKey: false
+    primaryKeyPosition: -1
+    logicalType: string
+    required: false
+    unique: false
+    partitioned: false
+    partitionKeyPosition: -1
+    classification: public
+    encryptedName: rcvr_cntry_code_encrypted
+    criticalDataElement: false
+  relationships:
   - customProperties:
-      - property: servicehours
-        value: '9-5 CET'
-    channel: product-issues
-    tool: teams
-    scope: issues
+    - property: description
+      value: Composite key linking to receivers table
+    - property: cardinality
+      value: many-to-one
+    type: foreignKey
+    to:
+    - receivers.id
+    - receivers.country_code
+    from:
+    - tbl.rcvr_id
+    - tbl.rcvr_cntry_code
+- id: receivers_obj
+  tags:
+  - master-data
+  - receivers
+  name: receivers
+  physicalName: receivers_master
+  physicalType: table
+  description: Master data for all receivers
+  businessName: Receivers Master Data
+  logicalType: object
+  properties:
+  - id: receiver_id_prop
+    name: id
+    physicalType: varchar(18)
+    description: Unique identifier for receiver
+    businessName: receiver identifier
+    primaryKey: true
+    primaryKeyPosition: 1
+    logicalType: string
+    required: true
+    unique: true
+    partitioned: false
+    partitionKeyPosition: -1
+    classification: restricted
+    criticalDataElement: false
+  - id: country_code_prop
+    name: country_code
+    physicalType: varchar(2)
+    description: Country code of the receiver
+    businessName: receiver country
+    primaryKey: true
+    primaryKeyPosition: 2
+    logicalType: string
+    required: true
+    unique: false
+    partitioned: false
+    partitionKeyPosition: -1
+    classification: public
+    criticalDataElement: false
+  - id: receiver_name_prop
+    name: receiver_name
+    physicalType: varchar(255)
+    description: Name of the receiver
+    businessName: receiver name
+    primaryKey: false
+    primaryKeyPosition: -1
+    logicalType: string
+    required: true
+    unique: false
+    partitioned: false
+    partitionKeyPosition: -1
+    classification: restricted
+    criticalDataElement: false
+  - id: receiver_type_prop
+    name: receiver_type
+    physicalType: varchar(20)
+    description: Type of receiver (individual, business, etc.)
+    businessName: receiver type
+    primaryKey: false
+    primaryKeyPosition: -1
+    logicalType: string
+    required: false
+    unique: false
+    partitioned: false
+    partitionKeyPosition: -1
+    classification: public
+    criticalDataElement: false
+    relationships:
+    - customProperties:
+      - property: description
+        value: Links to receiver type definitions
+      type: foreignKey
+      to: receiver_types.type_code
+support:
+- channel: '#product-help'
+  tool: slack
+- channel: datacontract-ann
+  url: mailto:datacontract-ann@bitol.io
+  tool: email
+- channel: Feedback
+  url: https://product-feedback.com
+  description: General Product Feedback (Public)
+- customProperties:
+  - property: servicehours
+    value: '9-5 CET'
+  channel: product-issues
+  tool: teams
+  scope: issues
 price:
   priceAmount: 9.95
   priceCurrency: USD
@@ -266,61 +266,61 @@ team:
   name: my-team
   description: The team owning the data contract
   members:
-    - username: ceastwood
-      role: Data Scientist
-      dateIn: '2022-08-02'
-      dateOut: '2022-10-01'
-      replacedByUsername: mhopper
-    - username: mhopper
-      role: Data Scientist
-      dateIn: '2022-10-01'
-    - username: daustin
-      description: Keeper of the grail
-      role: Owner
-      dateIn: '2022-10-01'
+  - username: ceastwood
+    role: Data Scientist
+    dateIn: '2022-08-02'
+    dateOut: '2022-10-01'
+    replacedByUsername: mhopper
+  - username: mhopper
+    role: Data Scientist
+    dateIn: '2022-10-01'
+  - username: daustin
+    description: Keeper of the grail
+    role: Owner
+    dateIn: '2022-10-01'
 roles:
-  - role: microstrategy_user_opr
-    access: read
-    firstLevelApprovers: Reporting Manager
-    secondLevelApprovers: mandolorian
-  - role: bq_queryman_user_opr
-    access: read
-    firstLevelApprovers: Reporting Manager
-    secondLevelApprovers: na
-  - role: risk_data_access_opr
-    access: read
-    firstLevelApprovers: Reporting Manager
-    secondLevelApprovers: dathvador
-  - role: bq_unica_user_opr
-    access: write
-    firstLevelApprovers: Reporting Manager
-    secondLevelApprovers: mickey
+- role: microstrategy_user_opr
+  access: read
+  firstLevelApprovers: Reporting Manager
+  secondLevelApprovers: mandolorian
+- role: bq_queryman_user_opr
+  access: read
+  firstLevelApprovers: Reporting Manager
+  secondLevelApprovers: na
+- role: risk_data_access_opr
+  access: read
+  firstLevelApprovers: Reporting Manager
+  secondLevelApprovers: dathvador
+- role: bq_unica_user_opr
+  access: write
+  firstLevelApprovers: Reporting Manager
+  secondLevelApprovers: mickey
 slaProperties:
-  - property: latency
-    value: 4
-    unit: d
-    element: tab1.txn_ref_dt
-  - property: generalAvailability
-    value: '2022-05-12T09:30:10-08:00'
-  - property: endOfSupport
-    value: '2032-05-12T09:30:10-08:00'
-  - property: endOfLife
-    value: '2042-05-12T09:30:10-08:00'
-  - property: retention
-    value: 3
-    unit: 'y'
-    element: tab1.txn_ref_dt
-  - property: frequency
-    value: 1
-    valueExt: 1
-    unit: d
-    element: tab1.txn_ref_dt
-  - property: timeOfAvailability
-    value: '09:00-08:00'
-    element: tab1.txn_ref_dt
-    driver: regulatory
-  - property: timeOfAvailability
-    value: '08:00-08:00'
-    element: tab1.txn_ref_dt
-    driver: analytics
+- property: latency
+  value: 4
+  unit: d
+  element: tab1.txn_ref_dt
+- property: generalAvailability
+  value: '2022-05-12T09:30:10-08:00'
+- property: endOfSupport
+  value: '2032-05-12T09:30:10-08:00'
+- property: endOfLife
+  value: '2042-05-12T09:30:10-08:00'
+- property: retention
+  value: 3
+  unit: 'y'
+  element: tab1.txn_ref_dt
+- property: frequency
+  value: 1
+  valueExt: 1
+  unit: d
+  element: tab1.txn_ref_dt
+- property: timeOfAvailability
+  value: '09:00-08:00'
+  element: tab1.txn_ref_dt
+  driver: regulatory
+- property: timeOfAvailability
+  value: '08:00-08:00'
+  element: tab1.txn_ref_dt
+  driver: analytics
 contractCreatedTs: '2022-11-15T02:59:43+00:00'

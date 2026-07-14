@@ -8,7 +8,7 @@ import .contract.support
 import .common.discovery
 import .iam.role
 import .iam.team
-import .server.common as server
+import .server.spec as server
 
 type KindType = "DataContract"
 type ApiVersionType = "v3.1.0"

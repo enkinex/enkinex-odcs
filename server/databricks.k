@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema DatabricksServer(base.ServerObject):
+schema DatabricksServer(server.Server):
     """
     Databricks Server.
 

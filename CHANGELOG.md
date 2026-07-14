@@ -1,4 +1,4 @@
-This document tracks the history and evolution of the Enkinex KCL implementation for the **Open Data Contract Standard (ODCS)**.
+This document tracks the history and evolution of the **Enkinex KCL Library** for the **Open Data Contract Standard (ODCS)**.
 
 # v3.1.0-draft - Initial v3.1.0 Draft
 * Schemas

@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema ImpalaServer(base.ServerObject):
+schema ImpalaServer(server.Server):
     """
     Apache Impala Server.
 

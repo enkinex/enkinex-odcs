@@ -5,7 +5,9 @@ init:
     (cd "{{justfile_directory()}}/examples/full" && kcl mod update)
 
 docs:
-    kcl doc generate --escape-html
+    kcl doc generate --escape-html --target docs/library
+    mv docs/library/docs/enkinex-odcs.md docs/library/odcs.md
+    rmdir docs/library/docs/
 
 example:
     (cd "{{justfile_directory()}}/examples/full" && kcl contract.k --format yaml > contract.yaml)

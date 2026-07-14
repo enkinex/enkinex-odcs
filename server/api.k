@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema ApiServer(base.ServerObject):
+schema ApiServer(server.Server):
     """
     API Server.
 

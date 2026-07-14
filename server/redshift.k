@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema RedshiftServer(base.ServerObject):
+schema RedshiftServer(server.Server):
     """
     Amazon Redshift Server.
 

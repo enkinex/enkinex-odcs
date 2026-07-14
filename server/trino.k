@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema TrinoServer(base.ServerObject):
+schema TrinoServer(server.Server):
     """
     Trino Server.
 

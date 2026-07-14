@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema InformixServer(base.ServerObject):
+schema InformixServer(server.Server):
     """
     IBM Informix Server.
 

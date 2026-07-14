@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema AzureServer(base.ServerObject):
+schema AzureServer(server.Server):
     """
     Azure Blob Storage Server.
 

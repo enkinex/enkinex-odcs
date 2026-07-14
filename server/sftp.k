@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema SftpServer(base.ServerObject):
+schema SftpServer(server.Server):
     """
     SFTP Server.
 

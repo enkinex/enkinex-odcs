@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema DremioServer(base.ServerObject):
+schema DremioServer(server.Server):
     """
     Dremio Server.
 

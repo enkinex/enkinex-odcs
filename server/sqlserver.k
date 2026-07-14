@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema SqlserverServer(base.ServerObject):
+schema SqlserverServer(server.Server):
     """
     Microsoft SQL Server.
 

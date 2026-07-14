@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema OracleServer(base.ServerObject):
+schema OracleServer(server.Server):
     """
     Oracle Database Server.
 

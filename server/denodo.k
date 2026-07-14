@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema DenodoServer(base.ServerObject):
+schema DenodoServer(server.Server):
     """
     Denodo Server.
 

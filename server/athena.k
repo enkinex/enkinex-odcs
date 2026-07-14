@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema AthenaServer(base.ServerObject):
+schema AthenaServer(server.Server):
     """
     AWS Athena Server.
 

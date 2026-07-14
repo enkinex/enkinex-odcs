@@ -4,7 +4,7 @@ type ServerType = "api" | "athena" | "azure" | "bigquery" | "clickhouse" | "data
 
 schema Server(custom_server.CustomServer):
     """
-    General Server Structure.
+    The Server schema inherits CustomServer properties and provides the `allOf` JSON schema validation against source type subschemas.
 
     Attributes
     ----------

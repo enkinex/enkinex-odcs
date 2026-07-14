@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema LocalServer(base.ServerObject):
+schema LocalServer(server.Server):
     """
     Local File Server.
 

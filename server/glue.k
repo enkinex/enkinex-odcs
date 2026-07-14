@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema GlueServer(base.ServerObject):
+schema GlueServer(server.Server):
     """
     AWS Glue Server.
 

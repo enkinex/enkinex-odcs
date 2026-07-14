@@ -1,6 +1,6 @@
-import .base
+import .spec as server
 
-schema KinesisServer(base.ServerObject):
+schema KinesisServer(server.Server):
     """
     AWS Kinesis Data Streams Server.
 

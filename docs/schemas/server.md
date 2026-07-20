@@ -19,7 +19,7 @@ validation, and 30+ thin per-type subschemas for ergonomic authoring.
 The inheritance chain (each level adds exactly what its JSON counterpart adds):
 
 ```
-StableIdObject → StableIdCustomizable → BaseServer → CustomServer → Server → <every typed server>
+StableId → StableIdCustomizable → BaseServer → CustomServer → Server → <every typed server>
 ```
 
 ## Architecture Decisions

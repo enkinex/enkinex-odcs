@@ -25,7 +25,7 @@ schema AuthoritativeCustomizable(Customizable):
     """
     authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]
 
-schema StableIdCustomizable(id.StableIdObject):
+schema StableIdCustomizable(id.StableId):
     """
     Base object carrying the optional stable `id` and `customProperties` properties.
 

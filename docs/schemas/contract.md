@@ -23,7 +23,7 @@ support channels.
   `common` base rather than re-declaring shared fields:
     - `Description` → `AuthoritativeCustomizable` (gets `authoritativeDefinitions`
         + `customProperties`, no `id`).
-    - `Pricing` and `ServiceLevelAgreement` → `StableIdObject` (get the optional
+    - `Pricing` and `ServiceLevelAgreement` → `StableId` (get the optional
       stable `id`).
     - `Support` → `StableIdCustomizable` (gets `id` + `customProperties`).
 - **Closed enums where ODCS closes them.** `ServiceLevelAgreement.driver` is

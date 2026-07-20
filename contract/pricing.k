@@ -1,6 +1,6 @@
 import ..common.id
 
-schema Pricing(id.StableIdObject):
+schema Pricing(id.StableId):
     """
     This section covers pricing when you bill your customer for using this data product.
 

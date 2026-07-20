@@ -10,7 +10,7 @@ once here and **inherited** by the schemas in `catalog`, `contract`, `iam`,
 
 | KCL schema                                           | ODCS JSON Schema entity                                                                    |
 |------------------------------------------------------|--------------------------------------------------------------------------------------------|
-| `StableIdObject` (`common/id.k`)                     | `$defs/StableId`                                                                           |
+| `StableId` (`common/id.k`)                     | `$defs/StableId`                                                                           |
 | `CustomProperty` (`common/property.k`)               | `$defs/CustomProperty`                                                                     |
 | `AuthoritativeDefinition` (`common/authoritative.k`) | `$defs/AuthoritativeDefinitions` (item object)                                             |
 | `Customizable` (`common/custom.k`)                   | `$defs/CustomProperties` (array wrapper)                                                   |
@@ -35,7 +35,7 @@ once here and **inherited** by the schemas in `catalog`, `contract`, `iam`,
 - **Two parallel inheritance chains, forked over the stable `id`.** KCL allows
   a single base class per schema, so the shared concerns are arranged as two
   supersets:
-    - **id-bearing:** `StableIdObject (id?)` → `StableIdCustomizable (+customProperties?)` →
+    - **id-bearing:** `StableId (id?)` → `StableIdCustomizable (+customProperties?)` →
       `StableIdDiscoverable (+tags?, +authoritativeDefinitions?)`.
     - **no-id:** `Customizable (customProperties?)` → `AuthoritativeCustomizable (+authoritativeDefinitions?)` →
       `TagsDiscoverable (+tags?)`.
@@ -48,7 +48,7 @@ once here and **inherited** by the schemas in `catalog`, `contract`, `iam`,
 - **Leaf objects vs. array wrappers are separated.** `CustomProperty` /
   `AuthoritativeDefinition` are the item objects; the `customProperties` /
   `authoritativeDefinitions` *arrays* live on the base classes above.
-- **Guarded `id` regex.** `StableIdObject.id` is validated against
+- **Guarded `id` regex.** `StableId.id` is validated against
   `^[A-Za-z0-9_-]+$` only when present (`... if id`), so any element carrying
   an optional `id` can still be constructed without one, while a malformed
   `id` is rejected.

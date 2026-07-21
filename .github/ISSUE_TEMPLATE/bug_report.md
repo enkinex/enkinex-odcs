@@ -12,7 +12,7 @@ assignees: ''
 
 ## Minimal reproduction
 
-<!-- A minimal KCL snippet or ODPS YAML fixture that shows the problem,
+<!-- A minimal KCL snippet or ODCS YAML fixture that shows the problem,
      plus the `kcl vet`/`kcl run` command you used. -->
 
 ```yaml

@@ -23,6 +23,6 @@ assignees: ''
 
 ## Upstream ODCS alignment
 
-<!-- Does this map to something in the upstream ODPS standard
+<!-- Does this map to something in the upstream ODCS standard
      (https://github.com/bitol-io/open-data-contract-standard), or is it an
      enkinex-odcs-specific addition? -->

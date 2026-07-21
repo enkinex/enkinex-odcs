@@ -2,7 +2,7 @@ import ..common.id
 
 type SlaDriver = "regulatory" | "analytics" | "operational"
 
-schema ServiceLevelAgreement(id.StableIdObject):
+schema ServiceLevelAgreement(id.StableId):
     """
     This section describes the service-level agreements (SLA).
 

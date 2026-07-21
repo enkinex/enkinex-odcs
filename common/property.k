@@ -1,6 +1,6 @@
 import .id
 
-schema CustomProperty(id.StableIdObject):
+schema CustomProperty(id.StableId):
     """
     This section covers custom properties you can use to add non-standard properties.
     This block is available in many sections.

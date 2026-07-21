@@ -1,6 +1,6 @@
 import .id
 
-schema AuthoritativeDefinition(id.StableIdObject):
+schema AuthoritativeDefinition(id.StableId):
     """
     Authoritative Definitions are an essential part of the contract.
     They allow to delegate the definition to a third party system like an enterprise catalog, repository, etc.

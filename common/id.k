@@ -2,7 +2,7 @@ import regex
 
 stableIdPattern = "^[A-Za-z0-9_-]+$"
 
-schema StableIdObject:
+schema StableId:
     """
     Base object carrying the optional stable `id` property.
 

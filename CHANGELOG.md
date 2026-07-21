@@ -5,15 +5,18 @@ This document tracks the history and evolution of the **Enkinex ODCS Library** f
 * Schemas
     * StableIdObject schema renamed to StableId
 * Documentation
-    * Update README
-    * Update CONTRIBUTING.md
+    * Update `README.md`
+    * Update `AUTHORS.md`
+    * Update `CONTRIBUTING.md`
+    * Update `docs/schemas/*.md`
 * Sample Project
     * Move to a new repository at `enkinex-odcs-tutorial`
 * Validation
-    * Add validation test cases for every schema
+    * Add validation test case for ODCS full example
 * CI/CD
     * Update `kcl.mod` version
-    * Update Justfile commands
+    * Update `Justfile` commands
+    * Add `.github` test workflow and configuration
 
 # v3.1.0-draft - Initial v3.1.0 Draft
 
@@ -25,7 +28,7 @@ This document tracks the history and evolution of the **Enkinex ODCS Library** f
     * Quality Schemas
     * Server Schemas
 * Documentation
-    * README
+    * `README.md`
     * Schema Mapping and Architectural Decisions
     * Reference documentation generated from KCL
     * Tutorial

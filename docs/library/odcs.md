@@ -147,7 +147,7 @@ Additional metadata options to define the array type.
 |**uniqueItems**|bool|If set to true, all items in the array are unique.||
 ### DatetimeOptions
 
-Additional metadata options to define date, timestamp, and time types.
+Additional metadata options to define date, timestamp, and time types. The `timezone` and `defaultTimezone` options only apply to timestamp and time types.  Reference schema documenting the option set: `SchemaProperty.logicalTypeOptions` is typed `TypeOptions`, so authored values must be inline dicts that coerce into it (see the examples below) — a `DatetimeOptions` instance is not assignable.
 
 #### Attributes
 
@@ -166,7 +166,7 @@ Additional metadata options to define date, timestamp, and time types.
 dateOnly = SchemaProperty {
     name = "event_date"
     logicalType = "date"
-    logicalTypeOptions = DatetimeOptions {
+    logicalTypeOptions = {
       format = "yyyy-MM-dd"
     }
     examples = ["2024-07-10"]
@@ -175,7 +175,7 @@ dateOnly = SchemaProperty {
 dateAndTimeUTC = SchemaProperty {
     name = "created_at"
     logicalType = "timestamp"
-    logicalTypeOptions = DatetimeOptions {
+    logicalTypeOptions = {
         format = "yyyy-MM-ddTHH:mm:ssZ"
     }
     examples = ["2024-03-10T14:22:35Z"]
@@ -184,7 +184,7 @@ dateAndTimeUTC = SchemaProperty {
 dateAndTimeAustraliaSydney = SchemaProperty {
     name = "created_at_sydney"
     logicalType = "timestamp"
-    logicalTypeOptions = DatetimeOptions {
+    logicalTypeOptions = {
         format = "yyyy-MM-ddTHH:mm:ssZ"
         timezone = True
         defaultTimezone = "Australia/Sydney"
@@ -195,7 +195,7 @@ dateAndTimeAustraliaSydney = SchemaProperty {
 timeOnly = SchemaProperty {
     name = "event_start_time"
     logicalType = "time"
-    logicalTypeOptions = DatetimeOptions {
+    logicalTypeOptions = {
         format = "HH:mm:ss"
     }
     examples = ["08:30:00"]
@@ -205,7 +205,7 @@ physicalDateAndTimeUTC = SchemaProperty {
     name = "event_date"
     logicalType = "timestamp"
     physicalType = "DATETIME"
-    logicalTypeOptions = DatetimeOptions {
+    logicalTypeOptions = {
         format = "yyyy-MM-ddTHH:mm:ssZ"
     }
     examples = ["2024-03-10T14:22:35Z"]

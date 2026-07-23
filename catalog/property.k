@@ -114,10 +114,10 @@ schema SchemaProperty(element.SchemaElement):
     properties?: [SchemaProperty]
 
     check:
-        logicalType != "array" or items != Undefined, "'items' is only valid when logicalType is 'array'"
-        logicalType == "array" or items == Undefined, "array properties require 'items'"
-        logicalType != "object" or properties != Undefined, "'properties' is only valid when logicalType is 'object'"
-        logicalType == "object" or properties == Undefined, "object properties require 'properties'"
+        logicalType != "array" or items != Undefined, "array properties require 'items'"
+        logicalType == "array" or items == Undefined, "'items' is only valid when logicalType is 'array'"
+        logicalType != "object" or properties != Undefined, "object properties require 'properties'"
+        logicalType == "object" or properties == Undefined, "'properties' is only valid when logicalType is 'object'"
         not primaryKey or primaryKeyPosition >= 1, "primaryKeyPosition must be >= 1 when primaryKey is true"
         not partitioned or partitionKeyPosition >= 1, "partitionKeyPosition must be >= 1 when partitioned is true"
         # Per-type option validation: reject logicalTypeOptions keys that do not belong to the chosen logicalType
@@ -132,8 +132,8 @@ schema SchemaProperty(element.SchemaElement):
         logicalTypeOptions == Undefined or logicalTypeOptions.maxLength == Undefined or logicalType == "string", "maxLength is only valid for logicalType 'string'"
         logicalTypeOptions == Undefined or logicalTypeOptions.minLength == Undefined or logicalType == "string", "minLength is only valid for logicalType 'string'"
         logicalTypeOptions == Undefined or logicalTypeOptions.multipleOf == Undefined or logicalType in ["number", "integer"], "multipleOf is only valid for logicalType 'number' or 'integer'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.timezone == Undefined or logicalType in ["date", "timestamp", "time"], "timezone is only valid for date/timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.defaultTimezone == Undefined or logicalType in ["date", "timestamp", "time"], "defaultTimezone is only valid for date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.timezone == Undefined or logicalType in ["timestamp", "time"], "timezone is only valid for timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.defaultTimezone == Undefined or logicalType in ["timestamp", "time"], "defaultTimezone is only valid for timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.maximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "maximum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.minimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "minimum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMaximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "exclusiveMaximum is only valid for numeric or date/timestamp/time logicalType"

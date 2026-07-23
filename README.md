@@ -4,7 +4,7 @@
 
 [![Standard](https://img.shields.io/badge/ODCS-v3.1.0-blue)](https://github.com/bitol-io/open-data-contract-standard/tree/v3.1.0)
 [![KCL](https://img.shields.io/badge/KCL-%E2%89%A5%200.12.7-7B68EE)](https://www.kcl-lang.io/)
-[![Version](https://img.shields.io/badge/version-v3.1.0--rc1-orange)](./CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v3.1.0-green)](./CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](./LICENSE)
 
 > A modular [KCL](https://www.kcl-lang.io/) implementation of the
@@ -31,8 +31,9 @@ a code project, we are able to mitigate specific challenges:
 
 ---
 
-> [!IMPORTANT] **Backward Compatibility Disclaimer.**
-> - **Enkinex ODCS `v3.1.0`** implements the current **ODCS v3.1.0** does **not** aim to provide earlier ODCS versions.
+> [!IMPORTANT]
+> **Backward Compatibility Disclaimer.**
+> - **Enkinex ODCS `v3.1.0`** implements the current **ODCS v3.1.0** and does **not** aim to provide earlier ODCS versions.
 > - **Deprecated definitions are omitted** (e.g. `dataProduct`, `slaDefaultElement`).
 
 ---
@@ -158,4 +159,4 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) and the con
 
 ## License
 
-Licensed under the terms in [LICENSE](LICENSE).
+Licensed under the Apache License 2.0 — see [LICENSE](LICENSE).

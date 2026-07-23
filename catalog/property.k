@@ -94,10 +94,13 @@ schema SchemaProperty(element.SchemaElement):
     criticalDataElement?: bool = False
     relationships?: [relationship.RelationshipPropertyLevel]
     items?: SchemaPropertyItems
+    properties?: [SchemaProperty]
 
     check:
         logicalType != "array" or items != Undefined, "'items' is only valid when logicalType is 'array'"
         logicalType == "array" or items == Undefined, "array properties require 'items'"
+        logicalType != "object" or properties != Undefined, "'properties' is only valid when logicalType is 'object'"
+        logicalType == "object" or properties == Undefined, "object properties require 'properties'"
         not primaryKey or primaryKeyPosition >= 1, "primaryKeyPosition must be >= 1 when primaryKey is true"
         not partitioned or partitionKeyPosition >= 1, "partitionKeyPosition must be >= 1 when partitioned is true"
         # Per-type option validation: reject logicalTypeOptions keys that do not belong to the chosen logicalType

@@ -1,0 +1,67 @@
+# Test for the `contract` module: Description, Pricing,
+# ServiceLevelAgreement and Support, plus the root contract fundamentals.
+apiVersion: v3.1.0
+kind: DataContract
+id: c47a1e10-0003-4c00-8000-0000000000c3
+name: Contract Module Test
+version: 1.0.0
+status: active
+
+# Root fundamentals owned by odcs.k (optional metadata + ISO-8601 timestamp check)
+tenant: EnkinexOrg
+domain: sales
+contractCreatedTs: "2026-07-23T12:00:00Z"
+
+# Description with every direct field set
+description:
+  purpose: Curated sales orders for downstream analytics.
+  limitations: Not suitable for real-time decisioning.
+  usage: Refresh dashboards once a day, after the morning load.
+
+# Pricing with the optional stable id and a float amount
+price:
+  id: standard_pricing
+  priceAmount: 9.95
+  priceCurrency: USD
+  priceUnit: megabyte
+
+# SLA entries: minimal (property + value), complete (every optional field), then scalar value variations
+slaProperties:
+  - property: latency
+    value: 4
+
+  - id: sla_retention
+    property: retention
+    value: 3
+    valueExt: 6
+    unit: y
+    element: orders.order_ts
+    driver: regulatory
+    description: Orders are retained three years, extendable to six.
+    scheduler: cron
+    schedule: "0 20 * * *"
+
+  - property: generalAvailability
+    value: "2026-05-12T09:30:10-08:00"
+  - property: uptime
+    value: 99.9
+    unit: percent
+    driver: operational
+  - property: piiMasked
+    value: true
+    driver: analytics
+
+# Support channels: minimal (channel only) and complete (every optional field)
+support:
+  - channel: sales-data-help
+
+  - id: announcements_channel
+    channel: sales-data-announcements
+    url: https://enkinex.org/support/teams/sales-data-announcements
+    description: Announcement-only channel for contract consumers.
+    tool: teams
+    scope: announcements
+    invitationUrl: https://enkinex.org/support/teams/sales-data-announcements/invite
+    customProperties:
+      - property: serviceHours
+        value: 9-5 UTC

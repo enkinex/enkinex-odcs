@@ -49,17 +49,23 @@ schema SchemaProperty(element.SchemaElement):
     relationships: [relationship.RelationshipPropertyLevel], default is Undefined, optional.
         A list of relationships to other properties.
         When defined at property level, the 'from' field is implicit and should not be specified.
-    items: SchemaPropertyItems, default is Undefined, optional.
-        Descriptor for the items of an array property.
-        Only applicable when logicalType is "array".
+    items: SchemaItemProperty, default is Undefined, optional.
+        Descriptor for the items of an array property: a full property definition
+        (scalar items set their own logicalType; object items nest their own properties).
+        Required when logicalType is "array", forbidden otherwise.
+    properties: [SchemaProperty], default is Undefined, optional.
+        A list of nested properties describing the fields of an object property.
+        Required when logicalType is "object", forbidden otherwise.
 
     Examples
     --------
-    arrayProperty = SchemaProperty {
+    arrayOfObjects = SchemaProperty {
         id = "zip_array_property"
         name = "zip_array"
         logicalType = "array"
-        items = SchemaPropertyItems {
+        items = SchemaItemProperty {
+            name = "zip_entry"
+            logicalType = "object"
             properties = [
                 SchemaProperty {
                     id = "id_property"
@@ -74,6 +80,17 @@ schema SchemaProperty(element.SchemaElement):
                     physicalType = "VARCHAR(15)"
                 }
             ]
+        }
+    }
+
+    arrayOfScalars = SchemaProperty {
+        id = "delivery_notes_property"
+        name = "delivery_notes"
+        logicalType = "array"
+        items = SchemaItemProperty {
+            name = "note"
+            logicalType = "string"
+            physicalType = "VARCHAR(200)"
         }
     }
     """
@@ -93,7 +110,7 @@ schema SchemaProperty(element.SchemaElement):
     examples?: [any]
     criticalDataElement?: bool = False
     relationships?: [relationship.RelationshipPropertyLevel]
-    items?: SchemaPropertyItems
+    items?: SchemaItemProperty
     properties?: [SchemaProperty]
 
     check:
@@ -123,15 +140,4 @@ schema SchemaProperty(element.SchemaElement):
         logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMinimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "exclusiveMinimum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.format == Undefined or logicalType in ["string", "number", "integer", "date", "timestamp", "time"], "format is only valid for string/numeric/date/timestamp/time logicalType"
 
-schema SchemaPropertyItems:
-    """
-    Descriptor for the items of an array property.
-    Only applicable when the schema property logicalType is array.
-
-    Attributes
-    ----------
-    properties: [SchemaProperty], default is Undefined, optional.
-        A list of properties when each item is itself an object.
-    """
-    properties?: [SchemaProperty]
-
+type SchemaItemProperty = SchemaProperty

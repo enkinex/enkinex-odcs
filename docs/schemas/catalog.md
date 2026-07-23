@@ -12,7 +12,7 @@ options, and the relationships between them.
 | [`catalog/element.k`](../../catalog/element.k)           | `SchemaElement`                                                                                        | `$defs/SchemaElement` (shared base of objects & properties; also absorbs the duplicated `physicalName` / `quality` from `$defs/SchemaObject` and `$defs/SchemaBaseProperty`) |
 | [`catalog/object.k`](../../catalog/object.k)             | `SchemaObject`                                                                                         | `$defs/SchemaObject`                                                                                                                                                         |
 | [`catalog/property.k`](../../catalog/property.k)         | `SchemaProperty`                                                                                       | `$defs/SchemaProperty`, `$defs/SchemaBaseProperty`                                                                                                                           |
-| [`catalog/property.k`](../../catalog/property.k)         | `SchemaPropertyItems`                                                                                  | `$defs/SchemaItemProperty` (the `items` descriptor of an array property)                                                                                                     |
+| [`catalog/property.k`](../../catalog/property.k)         | `SchemaItemProperty` *(type alias of `SchemaProperty`)*                                                | `$defs/SchemaItemProperty` (the `items` descriptor of an array property — a full property definition)                                                                        |
 | [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipBase`                                                                                     | `$defs/RelationshipBase`                                                                                                                                                     |
 | [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipSchemaLevel`                                                                              | `$defs/RelationshipSchemaLevel`                                                                                                                                              |
 | [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipPropertyLevel`                                                                            | `$defs/RelationshipPropertyLevel`                                                                                                                                            |
@@ -47,6 +47,17 @@ options, and the relationships between them.
 - KCL uses one permissive `TypeOptions` schema plus cross-field `check`s on `SchemaProperty` that reject options that do
   not belong to the chosen `logicalType` (e.g. `maxItems` only for `array`, `pattern` only for `string`).
 - `items` is required iff `logicalType == "array"`.
+- `properties` (nested object fields) is required iff `logicalType == "object"` — stricter than the JSON, where the
+  `object` branch merely allows them, mirroring the items-iff-array rule.
+
+### `SchemaItemProperty` is a type alias, not a subschema
+
+- The JSON `$defs/SchemaItemProperty` is a full `SchemaBaseProperty`, so array items are complete property
+  descriptors: scalar items set their own `logicalType`, object items nest their own `properties`, and arrays of
+  arrays nest their own `items`.
+- KCL recovers this with `type SchemaItemProperty = SchemaProperty`. It cannot be a subschema
+  (`schema SchemaItemProperty(SchemaProperty)`): `kcl vet` panics ("RefCell already borrowed") whenever a schema
+  attribute references a subclass of its own schema, and `SchemaProperty.items` is exactly that shape.
 
 ### Relationships split by level
 
@@ -81,3 +92,11 @@ options, and the relationships between them.
 
 - Is enforced by an explicit list of `check`s on `SchemaProperty` rather than by the type system.
 - If ODCS adds new options or types, those checks must be extended by hand.
+
+### Remaining divergences from JSON `SchemaItemProperty`
+
+- `name` is required on `items` (inherited from `SchemaElement`); the JSON leaves every `SchemaItemProperty` field
+  optional. Authors must name the item descriptor (e.g. `line_item`, `note`).
+- Nested `properties` on `items` require an explicit `logicalType: object` (and nested `items` require
+  `logicalType: array`) per the iff-rules above; the JSON allows them without a declared `logicalType`.
+- Both are deliberate strictness, consistent with the library's closed-enum/required-discriminant posture.

@@ -15,7 +15,6 @@
   - [SchemaElement](#schemaelement)
   - [SchemaObject](#schemaobject)
   - [SchemaProperty](#schemaproperty)
-  - [SchemaPropertyItems](#schemapropertyitems)
   - [StringOptions](#stringoptions)
   - [TypeOptions](#typeoptions)
 - common
@@ -369,7 +368,9 @@ anotherObject = SchemaObject {
             id = "x_prop"
             name = "x"
             logicalType = "array"
-            items = SchemaPropertyItems {
+            items = SchemaItemProperty {
+                name = "x_entry"
+                logicalType = "object"
                 properties = [
                     SchemaProperty {
                         id = "id_field"
@@ -441,7 +442,7 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**items**|[SchemaPropertyItems](#schemapropertyitems)|Descriptor for the items of an array property.<br />Only applicable when logicalType is "array".||
+|**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Required when logicalType is "array", forbidden otherwise.||
 |**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
 |**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.||
 |**name** `required`|str|Name of the element.||
@@ -451,6 +452,7 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**primaryKey**|bool|Boolean value specifying whether the field is primary or not.|False|
 |**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1.<br />Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
+|**properties**|[[SchemaProperty](#schemaproperty)]|A list of nested properties describing the fields of an object property.<br />Required when logicalType is "object", forbidden otherwise.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
 |**relationships**|[[RelationshipPropertyLevel](#relationshippropertylevel)]|A list of relationships to other properties.<br />When defined at property level, the &#39;from&#39; field is implicit and should not be specified.||
 |**required**|bool|Indicates if the element may contain Null values.|False|
@@ -462,11 +464,13 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 #### Examples
 
 ```
-arrayProperty = SchemaProperty {
+arrayOfObjects = SchemaProperty {
     id = "zip_array_property"
     name = "zip_array"
     logicalType = "array"
-    items = SchemaPropertyItems {
+    items = SchemaItemProperty {
+        name = "zip_entry"
+        logicalType = "object"
         properties = [
             SchemaProperty {
                 id = "id_property"
@@ -483,17 +487,19 @@ arrayProperty = SchemaProperty {
         ]
     }
 }
+
+arrayOfScalars = SchemaProperty {
+    id = "delivery_notes_property"
+    name = "delivery_notes"
+    logicalType = "array"
+    items = SchemaItemProperty {
+        name = "note"
+        logicalType = "string"
+        physicalType = "VARCHAR(200)"
+    }
+}
 ```
 
-### SchemaPropertyItems
-
-Descriptor for the items of an array property. Only applicable when the schema property logicalType is array.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties when each item is itself an object.||
 ### StringOptions
 
 Additional metadata options to define the string type.

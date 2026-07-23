@@ -34,7 +34,9 @@ schema SchemaObject(element.SchemaElement):
                 id = "x_prop"
                 name = "x"
                 logicalType = "array"
-                items = SchemaPropertyItems {
+                items = SchemaItemProperty {
+                    name = "x_entry"
+                    logicalType = "object"
                     properties = [
                         SchemaProperty {
                             id = "id_field"

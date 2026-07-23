@@ -154,7 +154,7 @@ schema:
             logicalType: string
             physicalType: varchar(80)
 
-      # array + items descriptor + array options
+      # array of objects: items is a full property descriptor nesting its own fields
       - id: line_items_prop
         name: line_items
         logicalType: array
@@ -164,6 +164,8 @@ schema:
           maxItems: 100
           uniqueItems: true
         items:
+          name: line_item
+          logicalType: object
           properties:
             - id: line_item_sku_prop
               name: sku
@@ -173,6 +175,15 @@ schema:
               name: qty
               logicalType: integer
               physicalType: int
+
+      # array of scalars: items declares its own logicalType directly
+      - id: delivery_notes_prop
+        name: delivery_notes
+        logicalType: array
+        items:
+          name: note
+          logicalType: string
+          physicalType: varchar(200)
 
   # Referenced object backing the relationship targets
   - id: customers_obj

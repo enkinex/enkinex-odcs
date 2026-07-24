@@ -80,5 +80,5 @@ schema ServiceLevelAgreement(id.StableId):
     schedule?: str
 
     check:
-        value == None and value != Undefined, "value cannot be Undefined. Use None for null"
+        not (value == Undefined and value != None), "value cannot be Undefined. Use None for null"
 

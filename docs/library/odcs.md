@@ -939,7 +939,7 @@ This section describes the service-level agreements (SLA).
 |**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
 |**scheduler**|str|Name of the scheduler, can be cron or any tool your organization support.||
 |**unit**|str|Units use the ISO standard.<br />Examples: "**d**", "day", "days" for days."**y**", "yr", "years" for years.||
-|**value** `required`|str \| int \| float \| bool|Agreement value. The label will change based on the property itself.<br />A non-collection scalar (matches JSON anyOf string/number/integer/boolean/null).||
+|**value**|str \| int \| float \| bool|Agreement value. The label will change based on the property itself.<br />A non-collection scalar (matches JSON anyOf string/number/integer/boolean/null).||
 |**valueExt**|str \| int \| float \| bool|Extended agreement value. The label will change based on the property itself.<br />A non-collection scalar (matches JSON AnyNonCollectionType).||
 #### Examples
 

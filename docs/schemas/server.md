@@ -87,7 +87,5 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 
 ### Known divergences from JSON `ServerSource` v3.1.0
 
-- `kinesis.stream` is required in KCL following the prose docs (the JSON requires nothing for kinesis);
 - `postgresql` alias has no dedicated authoring subschema (`PostgresServer` freezes `$type = "postgres"`; use the
   general `Server` for the alias spelling).
-- Revisit when upstream aligns the JSON schema and the docs.

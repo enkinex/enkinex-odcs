@@ -6,7 +6,7 @@ schema KinesisServer(server.Server):
 
     Attributes
     ----------
-    stream: str, default is Undefined, required.
+    stream: str, default is Undefined, optional.
         The name of the Kinesis data stream.
     region: str, default is Undefined, optional.
         AWS region.
@@ -16,7 +16,7 @@ schema KinesisServer(server.Server):
         Examples: "json", "avro", "protobuf"
     """
     $type = "kinesis"
-    stream: str
+    stream?: str
     region?: str
     format?: str
 

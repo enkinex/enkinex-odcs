@@ -11,10 +11,10 @@ schema ServiceLevelAgreement(id.StableId):
     property: str, default is Undefined, required.
         Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1).
         May require units.
-    value: str | int | float | bool, default is Undefined, required.
+    value: str | int | float | bool | None, default is Undefined, required.
         Agreement value. The label will change based on the property itself.
         A non-collection scalar (matches JSON anyOf string/number/integer/boolean/null).
-    valueExt: str | int | float | bool, default is Undefined, optional.
+    valueExt: str | int | float | bool | None, default is Undefined, optional.
         Extended agreement value. The label will change based on the property itself.
         A non-collection scalar (matches JSON AnyNonCollectionType).
     unit: str, default is Undefined, optional.
@@ -70,7 +70,7 @@ schema ServiceLevelAgreement(id.StableId):
     }
     """
     property: str
-    value: str | int | float | bool
+    value?: str | int | float | bool
     valueExt?: str | int | float | bool
     unit?: str
     element?: str
@@ -79,3 +79,5 @@ schema ServiceLevelAgreement(id.StableId):
     scheduler?: str
     schedule?: str
 
+    check:
+        value == None and value != Undefined, "value cannot be Undefined. Use None for null"

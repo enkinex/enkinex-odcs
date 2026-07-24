@@ -725,7 +725,7 @@ createdAtSydney = SchemaProperty {
 
 ### TypeOptions
 
-Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).  Every per-type option schema (`ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions`) extends this schema, so an instance of any of them is assignable to `SchemaProperty.logicalTypeOptions` — the same design used by `Server` and its per-source subschemas.
+Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).  Every per-type option schema (`ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions`) extends this schema, so an instance of any of them is assignable to `SchemaProperty.logicalTypeOptions`.
 
 #### Attributes
 

@@ -15,8 +15,7 @@ schema TypeOptions:
     Every per-type option schema (`ArrayOptions`, `DateOptions`,
     `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`,
     `ObjectOptions`, `StringOptions`) extends this schema, so an instance of
-    any of them is assignable to `SchemaProperty.logicalTypeOptions` — the
-    same design used by `Server` and its per-source subschemas.
+    any of them is assignable to `SchemaProperty.logicalTypeOptions`.
 
     Attributes
     ----------

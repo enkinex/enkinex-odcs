@@ -94,8 +94,8 @@ full rationale behind each module):
 | **`server`**          | `BaseServer`, `CustomServer`,  `Server`, and subschemas (`BigQueryServer`, `PostgresServer`, …)                          |
 | **`odcs.k`** *(root)* | The root **`DataContract`** schema that composes every module above                                                      |
 
-Add a fixture under [`test/`](test) that exercises any new or changed field (either extend `full-standard.odcs.yaml` or
-add to the relevant `module-*.odcs.yaml` file), and run `just test` to confirm it validates.
+Add a fixture under [`test/`](test) that exercises any new or changed field (either extend `odcs.full.example.yaml` or
+the relevant `odcs.module.<module>.yaml` file), and run `just test` to confirm it validates.
 
 ## Docstrings and generated docs
 

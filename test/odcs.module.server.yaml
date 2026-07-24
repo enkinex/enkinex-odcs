@@ -1,0 +1,241 @@
+# Test for the `server` module: one server entry per ServerSource
+# subschema (mandatory fields only), the postgresql alias, one fully populated
+# server, and one CustomServer showcasing the optional superset.
+apiVersion: v3.1.0
+kind: DataContract
+id: c47a1e10-0006-4c00-8000-0000000000c6
+name: Server Module Test
+version: 1.0.0
+status: active
+
+servers:
+  # api: requires location
+  - server: srv-api
+    type: api
+    location: https://enkinex.org/api/v1
+
+  # athena: requires schema + stagingDir (catalog defaults to awsdatacatalog)
+  - server: srv-athena
+    type: athena
+    schema: sales
+    stagingDir: s3://enkinex-athena-results/sales
+
+  # azure: requires location + format
+  - server: srv-azure
+    type: azure
+    location: abfss://sales@enkinex.dfs.core.windows.net/orders/*.parquet
+    format: parquet
+
+  # bigquery: requires project + dataset
+  - server: srv-bigquery
+    type: bigquery
+    project: enkinex-analytics
+    dataset: sales
+
+  # clickhouse: requires host + port + database
+  - server: srv-clickhouse
+    type: clickhouse
+    host: clickhouse.enkinex.org
+    port: 8123
+    database: sales
+
+  # cloudsql: requires host + port + database + schema
+  - server: srv-cloudsql
+    type: cloudsql
+    host: cloudsql.enkinex.org
+    port: 5432
+    database: sales
+    schema: public
+
+  # databricks: requires catalog + schema
+  - server: srv-databricks
+    type: databricks
+    catalog: enkinex
+    schema: sales
+
+  # db2: requires host + port + database
+  - server: srv-db2
+    type: db2
+    host: db2.enkinex.org
+    port: 50000
+    database: sales
+
+  # denodo: requires host + port
+  - server: srv-denodo
+    type: denodo
+    host: denodo.enkinex.org
+    port: 9999
+
+  # dremio: requires host + port
+  - server: srv-dremio
+    type: dremio
+    host: dremio.enkinex.org
+    port: 9047
+
+  # duckdb: requires database
+  - server: srv-duckdb
+    type: duckdb
+    database: ./data/sales.duckdb
+
+  # glue: requires account + database
+  - server: srv-glue
+    type: glue
+    account: "123456789012"
+    database: sales
+
+  # hive: requires host + database (port defaults to 10000)
+  - server: srv-hive
+    type: hive
+    host: hive.enkinex.org
+    database: sales
+
+  # impala: requires host + database (port defaults to 21050)
+  - server: srv-impala
+    type: impala
+    host: impala.enkinex.org
+    database: sales
+
+  # informix: requires host + database (port defaults to 9088)
+  - server: srv-informix
+    type: informix
+    host: informix.enkinex.org
+    database: sales
+
+  # kafka: requires host (format defaults to json)
+  - server: srv-kafka
+    type: kafka
+    host: kafka.enkinex.org:9092
+
+  # kinesis: requires stream (KCL follows the ODCS prose docs; the JSON schema requires nothing)
+  - server: srv-kinesis
+    type: kinesis
+    stream: sales-orders
+    region: eu-west-1
+    format: json
+
+  # local: requires path + format
+  - server: srv-local
+    type: local
+    path: ./data/orders/*.parquet
+    format: parquet
+
+  # mysql: requires host + port + database
+  - server: srv-mysql
+    type: mysql
+    host: mysql.enkinex.org
+    port: 3306
+    database: sales
+
+  # oracle: requires host + port + serviceName
+  - server: srv-oracle
+    type: oracle
+    host: oracle.enkinex.org
+    port: 1521
+    serviceName: salespdb
+
+  # postgres: requires host + port + database + schema
+  - server: srv-postgres
+    type: postgres
+    host: postgres.enkinex.org
+    port: 5432
+    database: sales
+    schema: public
+
+  # postgresql alias: validated by the same rule as postgres
+  - server: srv-postgresql
+    type: postgresql
+    host: postgres.enkinex.org
+    port: 5432
+    database: sales
+    schema: history
+
+  # presto: requires host
+  - server: srv-presto
+    type: presto
+    host: presto.enkinex.org:8080
+
+  # pubsub: requires project
+  - server: srv-pubsub
+    type: pubsub
+    project: enkinex-analytics
+
+  # redshift: requires database + schema
+  - server: srv-redshift
+    type: redshift
+    database: sales
+    schema: public
+
+  # s3: requires location
+  - server: srv-s3
+    type: s3
+    location: s3://enkinex-sales/orders/*.json
+
+  # sftp: requires location
+  - server: srv-sftp
+    type: sftp
+    location: sftp://sftp.enkinex.org/orders/*.csv
+
+  # snowflake: requires account + database + schema — fully populated entry with roles and custom properties
+  - id: snowflake_full
+    server: srv-snowflake
+    type: snowflake
+    description: Snowflake warehouse holding the curated sales schema.
+    environment: prod
+    account: enkinex-eu-west-1
+    database: sales
+    schema: public
+    host: enkinex.snowflakecomputing.com
+    port: 443
+    warehouse: ANALYTICS_WH
+    roles:
+      - role: snowflake_reader
+        access: read
+    customProperties:
+      - property: costCenter
+        value: CC-1042
+
+  # sqlserver: requires host + database + schema (port defaults to 1433)
+  - server: srv-sqlserver
+    type: sqlserver
+    host: sqlserver.enkinex.org
+    database: sales
+    schema: dbo
+
+  # synapse: requires host + port + database
+  - server: srv-synapse
+    type: synapse
+    host: synapse.enkinex.org
+    port: 1433
+    database: sales
+
+  # trino: requires host + port + catalog + schema
+  - server: srv-trino
+    type: trino
+    host: trino.enkinex.org
+    port: 8080
+    catalog: hive
+    schema: sales
+
+  # vertica: requires host + port + database + schema
+  - server: srv-vertica
+    type: vertica
+    host: vertica.enkinex.org
+    port: 5433
+    database: sales
+    schema: public
+
+  # zen: host + database per the ZenServer subschema (port defaults to 1583)
+  - server: srv-zen
+    type: zen
+    host: zen.enkinex.org
+    database: sales
+
+  # custom: no required source fields, showcasing part of the optional superset
+  - server: srv-custom
+    type: custom
+    description: In-house storage engine reachable over a custom endpoint.
+    endpointUrl: https://enkinex.org/storage/api
+    account: enkinex-lab
+    path: /var/data/orders
+    format: parquet
+    delimiter: new_line

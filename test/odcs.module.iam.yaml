@@ -1,0 +1,58 @@
+# Test for the `iam` module: Role, Team and TeamMember,
+# including the StableIdDiscoverable tail (tags, authoritativeDefinitions, customProperties).
+apiVersion: v3.1.0
+kind: DataContract
+id: c47a1e10-0004-4c00-8000-0000000000c4
+name: IAM Module Test
+version: 1.0.0
+status: active
+
+# Team with the discoverable tail set, members go from minimal to complete
+team:
+  id: sales_data_team
+  name: Sales Data Team
+  description: Team owning the sales data contract.
+  tags:
+    - sales
+  authoritativeDefinitions:
+    - type: teamCharter
+      url: https://enkinex.org/teams/sales-data/charter
+  customProperties:
+    - property: costCenter
+      value: CC-1042
+
+  members:
+    # Minimal member: only the mandatory username
+    - username: aturing
+
+    # Complete member: every optional field, incl. replacement lifecycle (dateOut required with replacedByUsername)
+    - id: ghopper_member
+      username: ghopper
+      name: Grace Hopper
+      description: Original data steward, replaced after rotation.
+      role: Data Steward
+      dateIn: "2025-01-15"
+      dateOut: "2026-01-15"
+      replacedByUsername: aturing
+      tags:
+        - steward
+      authoritativeDefinitions:
+        - type: profile
+          url: https://enkinex.org/people/ghopper
+      customProperties:
+        - property: onCall
+          value: false
+
+# Roles: minimal (role only) and complete (every optional field)
+roles:
+  - role: sales_reader
+
+  - id: sales_writer_role
+    role: sales_writer
+    description: Write access to the sales dataset for pipeline operators.
+    access: write
+    firstLevelApprovers: Reporting Manager
+    secondLevelApprovers: Data Platform Lead
+    customProperties:
+      - property: expirationDays
+        value: 90

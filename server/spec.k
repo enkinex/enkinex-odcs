@@ -51,7 +51,6 @@ schema Server(custom_server.CustomServer):
         $type != "impala" or (host != Undefined and database != Undefined), "impala server requires 'host' and 'database'"
         $type != "informix" or (host != Undefined and database != Undefined), "informix server requires 'host' and 'database'"
         $type != "kafka" or host != Undefined, "kafka server requires 'host'"
-        $type != "kinesis" or stream != Undefined, "kinesis server requires 'stream'"
         $type != "local" or (path != Undefined and format != Undefined), "local server requires 'path' and 'format'"
         $type != "mysql" or (host != Undefined and port != Undefined and database != Undefined), "mysql server requires 'host', 'port' and 'database'"
         $type != "oracle" or (host != Undefined and port != Undefined and serviceName != Undefined), "oracle server requires 'host', 'port' and 'serviceName'"
@@ -66,4 +65,5 @@ schema Server(custom_server.CustomServer):
         $type != "synapse" or (host != Undefined and port != Undefined and database != Undefined), "synapse server requires 'host', 'port' and 'database'"
         $type != "trino" or (host != Undefined and port != Undefined and catalog != Undefined and $schema != Undefined), "trino server requires 'host', 'port', 'catalog' and 'schema'"
         $type != "vertica" or (host != Undefined and port != Undefined and database != Undefined and $schema != Undefined), "vertica server requires 'host', 'port', 'database' and 'schema'"
+        $type != "zen" or (host != Undefined and database != Undefined), "zen server requires 'host' and 'database'"
 

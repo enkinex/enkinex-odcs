@@ -1,0 +1,70 @@
+# Test for the `common` module: StableId, CustomProperty,
+# AuthoritativeDefinition and the four reuse bases (Customizable,
+# AuthoritativeCustomizable, StableIdCustomizable, StableIdDiscoverable).
+apiVersion: v3.1.0
+kind: DataContract
+id: c47a1e10-0002-4c00-8000-0000000000c2
+name: Common Module Test
+version: 1.0.0
+status: active
+
+# Root-level tags (TagsDiscoverable tail on DataContract)
+tags:
+  - common
+  - governance
+
+# Root authoritativeDefinitions: first entry is minimal (type + url), second is complete (id + description)
+authoritativeDefinitions:
+  - type: canonicalUrl
+    url: https://enkinex.org/contracts/common-module-test.odcs.yaml
+  - id: business_definition_ref
+    type: businessDefinition
+    url: https://enkinex.org/glossary/common-module
+    description: Business glossary entry for the common module test contract.
+
+# Root customProperties: one entry per AnyType value variation, last entry is complete (id + description)
+customProperties:
+  - property: stringValue
+    value: enkinex
+  - property: integerValue
+    value: 42
+  - property: numberValue
+    value: 2.5
+  - property: booleanValue
+    value: true
+  - property: arrayValue
+    value:
+      - first
+      - second
+  - property: objectValue
+    value:
+      nested: true
+      depth: 1
+  - id: documented_custom_property
+    property: documentedValue
+    value: carries an id and a description
+    description: Complete CustomProperty with every optional field set.
+
+# Description exercises the no-id AuthoritativeCustomizable base
+description:
+  purpose: Exercise the common module bases from a nested no-id object.
+  authoritativeDefinitions:
+    - type: privacyStatement
+      url: https://enkinex.org/legal/privacy-statement
+  customProperties:
+    - property: reviewedBy
+      value: governance-board
+
+# A schema element exercises the id-bearing StableIdDiscoverable base (stable id pattern: [A-Za-z0-9_-]+)
+schema:
+  - id: common_discoverable-01
+    name: common_object
+    tags:
+      - finance
+    authoritativeDefinitions:
+      - id: element_tutorial
+        type: tutorial
+        url: https://enkinex.org/tutorials/common-module
+    customProperties:
+      - property: sourceSystem
+        value: erp

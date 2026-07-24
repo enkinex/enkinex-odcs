@@ -37,8 +37,8 @@ service-level agreements, and support channels.
 
 ### Scalar unions for open value fields
 
-- `ServiceLevelAgreement.value` / `valueExt` are `str | int | float | bool`, matching the JSON `anyOf` non-collection
-  scalar.
+- `ServiceLevelAgreement.value` / `valueExt` are `str | int | float | bool` — the JSON `anyOf` non-collection scalar.
+  Its `null` alternative is validated by a check instead of a required property.
 
 ### Invariants as `check`s
 

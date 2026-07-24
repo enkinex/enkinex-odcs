@@ -21,6 +21,10 @@ schema SchemaProperty(element.SchemaElement):
         One of string, date, timestamp, time, number, integer, object, array or boolean.
     logicalTypeOptions: type_options.TypeOptions, default is Undefined, optional.
         Additional optional metadata to describe the logical type.
+        Accepts an inline dict coerced into `TypeOptions` or an instance of the
+        per-type option schema matching the `logicalType` (`StringOptions`,
+        `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,
+        `NumberOptions`, `ObjectOptions`, `ArrayOptions`).
     required: bool, default is False, optional.
         Indicates if the element may contain Null values.
     unique: bool, default is False, optional.
@@ -49,17 +53,23 @@ schema SchemaProperty(element.SchemaElement):
     relationships: [relationship.RelationshipPropertyLevel], default is Undefined, optional.
         A list of relationships to other properties.
         When defined at property level, the 'from' field is implicit and should not be specified.
-    items: SchemaPropertyItems, default is Undefined, optional.
-        Descriptor for the items of an array property.
-        Only applicable when logicalType is "array".
+    items: SchemaItemProperty, default is Undefined, optional.
+        Descriptor for the items of an array property: a full property definition
+        (scalar items set their own logicalType; object items nest their own properties).
+        Required when logicalType is "array", forbidden otherwise.
+    properties: [SchemaProperty], default is Undefined, optional.
+        A list of nested properties describing the fields of an object property.
+        Required when logicalType is "object", forbidden otherwise.
 
     Examples
     --------
-    arrayProperty = SchemaProperty {
+    arrayOfObjects = SchemaProperty {
         id = "zip_array_property"
         name = "zip_array"
         logicalType = "array"
-        items = SchemaPropertyItems {
+        items = SchemaItemProperty {
+            name = "zip_entry"
+            logicalType = "object"
             properties = [
                 SchemaProperty {
                     id = "id_property"
@@ -74,6 +84,17 @@ schema SchemaProperty(element.SchemaElement):
                     physicalType = "VARCHAR(15)"
                 }
             ]
+        }
+    }
+
+    arrayOfScalars = SchemaProperty {
+        id = "delivery_notes_property"
+        name = "delivery_notes"
+        logicalType = "array"
+        items = SchemaItemProperty {
+            name = "note"
+            logicalType = "string"
+            physicalType = "VARCHAR(200)"
         }
     }
     """
@@ -93,11 +114,14 @@ schema SchemaProperty(element.SchemaElement):
     examples?: [any]
     criticalDataElement?: bool = False
     relationships?: [relationship.RelationshipPropertyLevel]
-    items?: SchemaPropertyItems
+    items?: SchemaItemProperty
+    properties?: [SchemaProperty]
 
     check:
-        logicalType != "array" or items != Undefined, "'items' is only valid when logicalType is 'array'"
-        logicalType == "array" or items == Undefined, "array properties require 'items'"
+        logicalType != "array" or items != Undefined, "array properties require 'items'"
+        logicalType == "array" or items == Undefined, "'items' is only valid when logicalType is 'array'"
+        logicalType != "object" or properties != Undefined, "object properties require 'properties'"
+        logicalType == "object" or properties == Undefined, "'properties' is only valid when logicalType is 'object'"
         not primaryKey or primaryKeyPosition >= 1, "primaryKeyPosition must be >= 1 when primaryKey is true"
         not partitioned or partitionKeyPosition >= 1, "partitionKeyPosition must be >= 1 when partitioned is true"
         # Per-type option validation: reject logicalTypeOptions keys that do not belong to the chosen logicalType
@@ -112,23 +136,12 @@ schema SchemaProperty(element.SchemaElement):
         logicalTypeOptions == Undefined or logicalTypeOptions.maxLength == Undefined or logicalType == "string", "maxLength is only valid for logicalType 'string'"
         logicalTypeOptions == Undefined or logicalTypeOptions.minLength == Undefined or logicalType == "string", "minLength is only valid for logicalType 'string'"
         logicalTypeOptions == Undefined or logicalTypeOptions.multipleOf == Undefined or logicalType in ["number", "integer"], "multipleOf is only valid for logicalType 'number' or 'integer'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.timezone == Undefined or logicalType in ["date", "timestamp", "time"], "timezone is only valid for date/timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.defaultTimezone == Undefined or logicalType in ["date", "timestamp", "time"], "defaultTimezone is only valid for date/timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.timezone == Undefined or logicalType in ["timestamp", "time"], "timezone is only valid for timestamp/time logicalType"
+        logicalTypeOptions == Undefined or logicalTypeOptions.defaultTimezone == Undefined or logicalType in ["timestamp", "time"], "defaultTimezone is only valid for timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.maximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "maximum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.minimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "minimum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMaximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "exclusiveMaximum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMinimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "exclusiveMinimum is only valid for numeric or date/timestamp/time logicalType"
         logicalTypeOptions == Undefined or logicalTypeOptions.format == Undefined or logicalType in ["string", "number", "integer", "date", "timestamp", "time"], "format is only valid for string/numeric/date/timestamp/time logicalType"
 
-schema SchemaPropertyItems:
-    """
-    Descriptor for the items of an array property.
-    Only applicable when the schema property logicalType is array.
-
-    Attributes
-    ----------
-    properties: [SchemaProperty], default is Undefined, optional.
-        A list of properties when each item is itself an object.
-    """
-    properties?: [SchemaProperty]
-
+type SchemaItemProperty = SchemaProperty

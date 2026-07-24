@@ -48,7 +48,7 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 - It adds `$type: ServerSourceType = "custom"`.
 - Recovers the JSON `allOf` — the per-`type` `if`/`then` required-field conditionals — as one KCL `check` rule per type
   (e.g. `$type != "bigquery" or (project != Undefined and dataset != Undefined)`.
-- `postgres`/`postgresql` share a single rule; `custom` carries none).
+- `postgres`/`postgresql` share a single rule; `custom` carries none; every other type — including `zen` — has its own rule.
 - KCL cannot select a child schema from a sibling `type` value during parsing, but it *can* coerce raw YAML into
   `Server` (all fields are inherited, none mixed in) and fire the `check`s on that path.
 - `kcl vet contract.yaml odcs.k -s DataContract` validates servers with the same discrimination the JSON `allOf`
@@ -84,12 +84,6 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 - The duplication is now fail-safe rather than silent.
 - The subschemas inherit the `check`s, so a typed schema that disagrees with its rule fails at first construction.
 - `spec.k` remains the single validation authority.
-
-### `zen` has no `check` rule on `Server`
-
-- Even though the JSON `ServerSource/ZenServer` requires `host` + `database` (the `ZenServer` subschema does enforce
-  them on the authoring path).
-- A `type: zen` server arriving via raw YAML is currently not discriminated — rule to be added.
 
 ### Known divergences from JSON `ServerSource` v3.1.0
 

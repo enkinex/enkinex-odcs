@@ -1,0 +1,205 @@
+# Test for the `catalog` module: SchemaObject, SchemaProperty,
+# per-logicalType options and schema/property-level relationships.
+apiVersion: v3.1.0
+kind: DataContract
+id: c47a1e10-0001-4c00-8000-0000000000c1
+name: Catalog Module Test
+version: 1.0.0
+status: active
+
+schema:
+  # Complete object: every SchemaObject/SchemaElement field plus one property per logicalType
+  - id: orders_obj
+    name: orders
+    logicalType: object
+    physicalName: orders_v1
+    physicalType: table
+    businessName: Sales Orders
+    description: One row per confirmed sales order.
+    dataGranularityDescription: Aggregation on column order_id
+    tags:
+      - sales
+
+    # Schema-level relationships: single-column shorthand, then composite fully-qualified notation
+    relationships:
+      - type: foreignKey
+        from: orders.customer_id
+        to: customers.id
+      - from:
+          - schema/orders_obj/properties/customer_id_prop
+          - schema/orders_obj/properties/customer_region_prop
+        to:
+          - schema/customers_obj/properties/customer_id_pk
+          - schema/customers_obj/properties/customer_region_prop
+        customProperties:
+          - property: cardinality
+            value: many-to-one
+
+    properties:
+      # string + StringOptions branch, primary key with position
+      - id: order_id_prop
+        name: order_id
+        logicalType: string
+        physicalType: varchar(36)
+        primaryKey: true
+        primaryKeyPosition: 1
+        unique: true
+        required: true
+        classification: public
+        logicalTypeOptions:
+          format: uuid
+          pattern: "^[a-f0-9-]{36}$"
+          minLength: 36
+          maxLength: 36
+        examples:
+          - c47a1e10-0001-4c00-8000-00000000aaaa
+
+      # property-level relationship ('from' is implicit) + transform lineage fields
+      - id: customer_id_prop
+        name: customer_id
+        logicalType: string
+        physicalType: varchar(18)
+        required: true
+        transformSourceObjects:
+          - crm_customers
+        transformLogic: SELECT id FROM crm_customers WHERE active = true
+        transformDescription: Copied from the active CRM customer id.
+        relationships:
+          - to: customers.id
+            customProperties:
+              - property: description
+                value: Links to the customer master record.
+
+      - id: customer_region_prop
+        name: customer_region
+        logicalType: string
+        physicalType: varchar(2)
+
+      # integer + IntegerOptions branch
+      - id: quantity_prop
+        name: quantity
+        logicalType: integer
+        physicalType: int
+        logicalTypeOptions:
+          format: i64
+          minimum: 1
+          maximum: 1000
+          multipleOf: 1
+
+      # number + NumberOptions branch, critical data element with encrypted name
+      - id: amount_prop
+        name: amount
+        logicalType: number
+        physicalType: decimal(18,2)
+        criticalDataElement: true
+        classification: restricted
+        encryptedName: amount_encrypted
+        logicalTypeOptions:
+          format: f64
+          exclusiveMinimum: 0
+          maximum: 100000
+
+      # date + DateOptions branch, partition column with position
+      - id: order_date_prop
+        name: order_date
+        logicalType: date
+        physicalType: date
+        partitioned: true
+        partitionKeyPosition: 1
+        logicalTypeOptions:
+          format: yyyy-MM-dd
+          minimum: "2020-01-01"
+
+      # timestamp branch adds timezone options
+      - id: created_at_prop
+        name: created_at
+        logicalType: timestamp
+        physicalType: timestamptz
+        logicalTypeOptions:
+          format: yyyy-MM-ddTHH:mm:ssZ
+          timezone: true
+          defaultTimezone: Etc/UTC
+
+      # time branch
+      - id: pickup_time_prop
+        name: pickup_time
+        logicalType: time
+        logicalTypeOptions:
+          format: HH:mm:ss
+
+      # boolean takes no options
+      - id: is_gift_prop
+        name: is_gift
+        logicalType: boolean
+        physicalType: bool
+
+      # object + ObjectOptions branch, with the nested properties required for logicalType object
+      - id: shipping_address_prop
+        name: shipping_address
+        logicalType: object
+        physicalType: jsonb
+        logicalTypeOptions:
+          minProperties: 1
+          maxProperties: 10
+          required:
+            - street
+            - city
+        properties:
+          - id: shipping_street_prop
+            name: street
+            logicalType: string
+            physicalType: varchar(120)
+          - id: shipping_city_prop
+            name: city
+            logicalType: string
+            physicalType: varchar(80)
+
+      # array of objects: items is a full property descriptor nesting its own fields
+      - id: line_items_prop
+        name: line_items
+        logicalType: array
+        physicalType: jsonb
+        logicalTypeOptions:
+          minItems: 1
+          maxItems: 100
+          uniqueItems: true
+        items:
+          name: line_item
+          logicalType: object
+          properties:
+            - id: line_item_sku_prop
+              name: sku
+              logicalType: string
+              physicalType: varchar(40)
+            - id: line_item_qty_prop
+              name: qty
+              logicalType: integer
+              physicalType: int
+
+      # array of scalars: items declares its own logicalType directly
+      - id: delivery_notes_prop
+        name: delivery_notes
+        logicalType: array
+        items:
+          name: note
+          logicalType: string
+          physicalType: varchar(200)
+
+  # Referenced object backing the relationship targets
+  - id: customers_obj
+    name: customers
+    physicalType: table
+    properties:
+      - id: customer_id_pk
+        name: id
+        logicalType: string
+        physicalType: varchar(18)
+        primaryKey: true
+        primaryKeyPosition: 1
+      - id: customer_region_prop
+        name: region
+        logicalType: string
+        physicalType: varchar(2)
+
+  # Minimal object: only the mandatory name
+  - name: audit_log

@@ -32,6 +32,9 @@ Data-quality rules attached to schema elements (objects and properties), plus th
 
 - "At most one comparison operator per rule" is enforced by counting the non-`Undefined` operators.
 - `mustBeBetween` / `mustNotBeBetween` must be exactly two distinct numbers.
+- Deliberate relaxation of the JSON: the `DataQualityOperators` `oneOf` demands **exactly one** operator whenever the
+  `library`/`sql` branch applies, but the unified `DataQuality` schema serves `text` and `custom` rules too, which
+  legitimately set none — so KCL enforces *at most* one instead.
 
 ### Per-type requirements as cross-field `check`s
 
@@ -58,8 +61,10 @@ Data-quality rules attached to schema elements (objects and properties), plus th
 
 - Collapsing the four ODCS rule-type schemas into a single discriminated
   `DataQuality` keeps YAML coercion simple, but means the *valid field set for a given `type`* is enforced by `check`s
-  rather than by the type of the value — an author can set `sql`-only fields on a `library` rule and only learn it is
-  wrong when the (unrelated) required field is missing. Fully type-separated rules would be stricter but would
-  reintroduce the coercion/`oneOf` complexity this module deliberately avoids.
+  rather than by the type of the value — an author can set fields belonging to another rule type (`metric`/`arguments`
+  on a `sql` rule, `query` on a `library` rule, `engine`/`implementation` on either) and only learn it is wrong when
+  the (unrelated) required field is missing; the JSON rejects such leakage via `unevaluatedProperties: false`. Fully
+  type-separated rules would be stricter but would reintroduce the coercion/`oneOf` complexity this module
+  deliberately avoids.
 - `severity` and `businessImpact` are open strings (the standard only gives examples); a closed vocabulary could be
   adopted if ODCS closes those sets.

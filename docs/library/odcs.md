@@ -5,7 +5,7 @@
 - [DataContract](#datacontract)
 - catalog
   - [ArrayOptions](#arrayoptions)
-  - [DatetimeOptions](#datetimeoptions)
+  - [DateOptions](#dateoptions)
   - [IntegerOptions](#integeroptions)
   - [NumberOptions](#numberoptions)
   - [ObjectOptions](#objectoptions)
@@ -15,8 +15,9 @@
   - [SchemaElement](#schemaelement)
   - [SchemaObject](#schemaobject)
   - [SchemaProperty](#schemaproperty)
-  - [SchemaPropertyItems](#schemapropertyitems)
   - [StringOptions](#stringoptions)
+  - [TimeOptions](#timeoptions)
+  - [TimestampOptions](#timestampoptions)
   - [TypeOptions](#typeoptions)
 - common
   - [AuthoritativeCustomizable](#authoritativecustomizable)
@@ -137,121 +138,214 @@ contract = DataContract {
 
 ### ArrayOptions
 
-Additional metadata options to define the array type.
+Additional metadata options to define the array logical type. Complies with the `logicalType: array` branch of the ODCS JSON schema.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
 |**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str \| int \| float|Values are less than or equal to this value (values &lt;= maximum).||
 |**minItems**|int|Minimum number of items.||
-|**uniqueItems**|bool|If set to true, all items in the array are unique.||
-### DatetimeOptions
-
-Additional metadata options to define date, timestamp, and time types.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.|"Etc/UTC"|
-|**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
-|**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
-|**format**|str|Format of the date. Default value is using ISO 8601.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]|"YYYY-MM-DDTHH:mm:ss.SSSZ"|
-|**maximum**|str|All date values are less than or equal to this value (values &lt;= maximum).||
-|**minimum**|str|All date values are greater than or equal to this value (values &gt;= minimum).||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
+|**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
 #### Examples
 
 ```
-dateOnly = SchemaProperty {
+tags = SchemaProperty {
+    name = "tags"
+    logicalType = "array"
+    logicalTypeOptions = ArrayOptions {
+        minItems = 1
+        maxItems = 10
+        uniqueItems = True
+    }
+    items = SchemaItemProperty {
+        name = "tag"
+        logicalType = "string"
+    }
+}
+```
+
+### DateOptions
+
+Additional metadata options to define the date logical type. Complies with the `logicalType: date` branch of the ODCS JSON schema.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|str|Format of the date.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]||
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str|All date values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
+|**minimum**|str|All date values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+eventDate = SchemaProperty {
     name = "event_date"
     logicalType = "date"
-    logicalTypeOptions = DatetimeOptions {
-      format = "yyyy-MM-dd"
+    logicalTypeOptions = DateOptions {
+        format = "yyyy-MM-dd"
+        minimum = "2020-01-01"
     }
     examples = ["2024-07-10"]
-}
-
-dateAndTimeUTC = SchemaProperty {
-    name = "created_at"
-    logicalType = "timestamp"
-    logicalTypeOptions = DatetimeOptions {
-        format = "yyyy-MM-ddTHH:mm:ssZ"
-    }
-    examples = ["2024-03-10T14:22:35Z"]
-}
-
-dateAndTimeAustraliaSydney = SchemaProperty {
-    name = "created_at_sydney"
-    logicalType = "timestamp"
-    logicalTypeOptions = DatetimeOptions {
-        format = "yyyy-MM-ddTHH:mm:ssZ"
-        timezone = True
-        defaultTimezone = "Australia/Sydney"
-    }
-    examples = ["2024-03-10T14:22:35+10:00"]
-}
-
-timeOnly = SchemaProperty {
-    name = "event_start_time"
-    logicalType = "time"
-    logicalTypeOptions = DatetimeOptions {
-        format = "HH:mm:ss"
-    }
-    examples = ["08:30:00"]
-}
-
-physicalDateAndTimeUTC = SchemaProperty {
-    name = "event_date"
-    logicalType = "timestamp"
-    physicalType = "DATETIME"
-    logicalTypeOptions = DatetimeOptions {
-        format = "yyyy-MM-ddTHH:mm:ssZ"
-    }
-    examples = ["2024-03-10T14:22:35Z"]
 }
 ```
 
 ### IntegerOptions
 
-Additional metadata options to define the integer type.
+Additional metadata options to define the integer logical type. Complies with the `logicalType: integer` branch of the ODCS JSON schema.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
 |**exclusiveMaximum**|int|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|int|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|"i8" \| "i16" \| "i32" \| "i64" \| "i128" \| "u8" \| "u16" \| "u32" \| "u64" \| "u128"|Format of the value in terms of how many bits of space it can use and whether it is signed or unsigned.<br />Follows the Rust integer types.|"i32"|
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
 |**maximum**|int|All values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
 |**minimum**|int|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+quantity = SchemaProperty {
+    name = "quantity"
+    logicalType = "integer"
+    logicalTypeOptions = IntegerOptions {
+        format = "i64"
+        minimum = 1
+        maximum = 1000
+    }
+    examples = [1, 10, 1000]
+}
+```
+
 ### NumberOptions
 
-Additional metadata options to define the number type.
+Additional metadata options to define the number logical type. Complies with the `logicalType: number` branch of the ODCS JSON schema.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
 |**exclusiveMaximum**|int \| float|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|int \| float|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|"f32" \| "f64"|Format of the value in terms of floating-point precision.<br />Follows the Rust float types (f32, f64).||
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
 |**maximum**|int \| float|All values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
 |**minimum**|int \| float|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+totalAmount = SchemaProperty {
+    name = "total_amount"
+    logicalType = "number"
+    logicalTypeOptions = NumberOptions {
+        format = "f64"
+        exclusiveMinimum = 0
+        maximum = 100000
+    }
+    examples = [12.34, 250.0]
+}
+```
+
 ### ObjectOptions
 
-Additional metadata options to define the object type.
+Additional metadata options to define the object logical type. Complies with the `logicalType: object` branch of the ODCS JSON schema.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
 |**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str \| int \| float|Values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
 |**minProperties**|int|Minimum number of properties.||
+|**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+shippingAddress = SchemaProperty {
+    name = "shipping_address"
+    logicalType = "object"
+    logicalTypeOptions = ObjectOptions {
+        minProperties = 1
+        required = ["street", "city"]
+    }
+    properties = [
+        SchemaProperty {
+            name = "street"
+            logicalType = "string"
+        },
+        SchemaProperty {
+            name = "city"
+            logicalType = "string"
+        }
+    ]
+}
+```
+
 ### RelationshipBase
 
 Base definition for relationships between elements, typically for foreign key constraints.
@@ -369,7 +463,9 @@ anotherObject = SchemaObject {
             id = "x_prop"
             name = "x"
             logicalType = "array"
-            items = SchemaPropertyItems {
+            items = SchemaItemProperty {
+                name = "x_entry"
+                logicalType = "object"
                 properties = [
                     SchemaProperty {
                         id = "id_field"
@@ -441,9 +537,9 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
-|**items**|[SchemaPropertyItems](#schemapropertyitems)|Descriptor for the items of an array property.<br />Only applicable when logicalType is "array".||
+|**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Required when logicalType is "array", forbidden otherwise.||
 |**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
-|**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.||
+|**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.<br />Accepts an inline dict coerced into `TypeOptions` or an instance of the<br />per-type option schema matching the `logicalType` (`StringOptions`,<br />`DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,<br />`NumberOptions`, `ObjectOptions`, `ArrayOptions`).||
 |**name** `required`|str|Name of the element.||
 |**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1.<br />Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
 |**partitioned**|bool|Indicates if the element is partitioned.|False|
@@ -451,6 +547,7 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**primaryKey**|bool|Boolean value specifying whether the field is primary or not.|False|
 |**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1.<br />Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
+|**properties**|[[SchemaProperty](#schemaproperty)]|A list of nested properties describing the fields of an object property.<br />Required when logicalType is "object", forbidden otherwise.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
 |**relationships**|[[RelationshipPropertyLevel](#relationshippropertylevel)]|A list of relationships to other properties.<br />When defined at property level, the &#39;from&#39; field is implicit and should not be specified.||
 |**required**|bool|Indicates if the element may contain Null values.|False|
@@ -462,11 +559,13 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 #### Examples
 
 ```
-arrayProperty = SchemaProperty {
+arrayOfObjects = SchemaProperty {
     id = "zip_array_property"
     name = "zip_array"
     logicalType = "array"
-    items = SchemaPropertyItems {
+    items = SchemaItemProperty {
+        name = "zip_entry"
+        logicalType = "object"
         properties = [
             SchemaProperty {
                 id = "id_property"
@@ -483,32 +582,150 @@ arrayProperty = SchemaProperty {
         ]
     }
 }
+
+arrayOfScalars = SchemaProperty {
+    id = "delivery_notes_property"
+    name = "delivery_notes"
+    logicalType = "array"
+    items = SchemaItemProperty {
+        name = "note"
+        logicalType = "string"
+        physicalType = "VARCHAR(200)"
+    }
+}
 ```
 
-### SchemaPropertyItems
-
-Descriptor for the items of an array property. Only applicable when the schema property logicalType is array.
-
-#### Attributes
-
-| name | type | description | default value |
-| --- | --- | --- | --- |
-|**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties when each item is itself an object.||
 ### StringOptions
 
-Additional metadata options to define the string type.
+Additional metadata options to define the string logical type. Complies with the `logicalType: string` branch of the ODCS JSON schema.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Provides extra context about what format the string follows.<br />Examples: ["password", "byte", "binary", "email", "uuid", "uri", "hostname", "ipv4", "ipv6"]||
+|**maxItems**|int|Maximum number of items.||
 |**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str \| int \| float|Values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
 |**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
+|**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+orderId = SchemaProperty {
+    name = "order_id"
+    logicalType = "string"
+    logicalTypeOptions = StringOptions {
+        format = "uuid"
+        pattern = "^[a-f0-9-]{36}$"
+        minLength = 36
+        maxLength = 36
+    }
+    examples = ["c47a1e10-0001-4c00-8000-00000000aaaa"]
+}
+```
+
+### TimeOptions
+
+Additional metadata options to define the time logical type. Complies with the `logicalType: time` branch of the ODCS JSON schema (shared with timestamp, so it carries the same timezone options).
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the time.<br />If timezone is not defined, the default timezone Etc/UTC is used.|"Etc/UTC"|
+|**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|str|Format of the time.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["HH:mm:ss", "HH:mm"]||
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str|All values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
+|**minimum**|str|All values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the time defines the timezone or not.<br />If true, timezone information is included in the time.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+eventStartTime = SchemaProperty {
+    name = "event_start_time"
+    logicalType = "time"
+    logicalTypeOptions = TimeOptions {
+        format = "HH:mm:ss"
+    }
+    examples = ["08:30:00"]
+}
+```
+
+### TimestampOptions
+
+Additional metadata options to define the timestamp logical type. Complies with the `logicalType: timestamp` branch of the ODCS JSON schema.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.|"Etc/UTC"|
+|**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|str|Format of the timestamp.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]||
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str|All values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
+|**minimum**|str|All values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+createdAtUTC = SchemaProperty {
+    name = "created_at"
+    logicalType = "timestamp"
+    logicalTypeOptions = TimestampOptions {
+        format = "yyyy-MM-ddTHH:mm:ssZ"
+    }
+    examples = ["2024-03-10T14:22:35Z"]
+}
+
+createdAtSydney = SchemaProperty {
+    name = "created_at_sydney"
+    logicalType = "timestamp"
+    logicalTypeOptions = TimestampOptions {
+        format = "yyyy-MM-ddTHH:mm:ssZ"
+        timezone = True
+        defaultTimezone = "Australia/Sydney"
+    }
+    examples = ["2024-03-10T14:22:35+10:00"]
+}
+```
+
 ### TypeOptions
 
-Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).
+Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).  Every per-type option schema (`ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions`) extends this schema, so an instance of any of them is assignable to `SchemaProperty.logicalTypeOptions`.
 
 #### Attributes
 

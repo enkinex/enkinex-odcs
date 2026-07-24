@@ -1,0 +1,131 @@
+# Test for the `quality` module: one library rule per comparison
+# operator on a single table, then one rule per type (text, sql, custom engines).
+apiVersion: v3.1.0
+kind: DataContract
+id: c47a1e10-0005-4c00-8000-0000000000c5
+name: Quality Module Test
+version: 1.0.0
+status: active
+
+schema:
+  - id: orders_obj
+    name: orders
+    physicalType: table
+
+    properties:
+      # mustBe: equality operator on the nullValues metric
+      - id: order_id_prop
+        name: order_id
+        logicalType: string
+        physicalType: varchar(36)
+        quality:
+          - id: order_id_no_nulls
+            metric: nullValues
+            mustBe: 0
+            description: Order id must never be null.
+
+      # mustNotBe: inequality operator
+      - id: customer_id_prop
+        name: customer_id
+        logicalType: string
+        physicalType: varchar(18)
+        quality:
+          - metric: missingValues
+            mustNotBe: 100
+            unit: percent
+            description: The column cannot be entirely missing.
+
+      # mustBeLessThan: strict upper bound, with a complete rule (dimension, severity, scheduling)
+      - id: status_prop
+        name: status
+        logicalType: string
+        physicalType: varchar(20)
+        quality:
+          - id: status_invalid_values
+            name: Status validity
+            type: library
+            metric: invalidValues
+            arguments:
+              validValues:
+                - open
+                - shipped
+                - closed
+            mustBeLessThan: 1
+            unit: percent
+            dimension: conformity
+            severity: error
+            businessImpact: operational
+            scheduler: cron
+            schedule: "0 20 * * *"
+            description: Less than 1% of rows may carry an unknown status.
+
+      # mustBeLessOrEqualTo and mustNotBeBetween on the same property
+      - id: amount_prop
+        name: amount
+        logicalType: number
+        physicalType: decimal(18,2)
+        quality:
+          - metric: invalidValues
+            mustBeLessOrEqualTo: 5
+            unit: rows
+            description: At most five rows may fail the amount range check.
+          - metric: duplicateValues
+            mustNotBeBetween:
+              - 10
+              - 1000
+            unit: rows
+            description: Duplicate spikes between 10 and 1000 rows indicate a bad load.
+
+      # mustBeGreaterOrEqualTo: inclusive lower bound
+      - id: created_at_prop
+        name: created_at
+        logicalType: timestamp
+        quality:
+          - metric: rowCount
+            mustBeGreaterOrEqualTo: 1
+            description: The partition must contain at least one row.
+
+    # Object-level rules: remaining operators plus the non-library rule types
+    quality:
+      # mustBeGreaterThan: strict lower bound
+      - id: orders_min_volume
+        metric: rowCount
+        mustBeGreaterThan: 1000
+        dimension: completeness
+        description: Daily load must exceed one thousand orders.
+
+      # mustBeBetween: inclusive two-value range
+      - metric: rowCount
+        mustBeBetween:
+          - 1000
+          - 5000000
+        description: Volume must stay within the expected daily range.
+
+      # text rule: human-readable only, no operator required
+      - type: text
+        description: All order records reflect the state of the upstream OMS at 06:00 UTC.
+
+      # sql rule: engine-agnostic query compared with an operator
+      - type: sql
+        query: SELECT COUNT(*) FROM orders WHERE amount < 0
+        mustBe: 0
+        description: No order may have a negative amount.
+
+      # custom rule with the soda engine and a text implementation block
+      - type: custom
+        engine: soda
+        implementation: |
+          type: duplicate_percent
+          columns:
+            - order_id
+          must_be_less_than: 1.0
+        description: Soda duplicate check on the business key.
+
+      # custom rule with a structured (map) implementation for great-expectations
+      - type: custom
+        engine: great-expectations
+        implementation:
+          expectation_type: expect_column_values_to_not_be_null
+          kwargs:
+            column: order_id
+        description: Great Expectations null check on the business key.

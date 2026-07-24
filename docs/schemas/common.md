@@ -49,9 +49,9 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 - `CustomProperty` / `AuthoritativeDefinition` are the item objects.
 - The `customProperties` / `authoritativeDefinitions` *arrays* live on the base classes above.
 
-### Guarded `id` regex.** `StableId.id`
+### Guarded `StableId.id` regex
 
-- Is validated against `^[A-Za-z0-9_-]+$` only when present (`... if id`).
+- `StableId.id` is validated against `^[A-Za-z0-9_-]+$` only when present (`... if id`).
 - Any element carrying an optional `id` can still be constructed without one, while a malformed `id` is rejected.
 
 ---

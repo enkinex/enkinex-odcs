@@ -7,17 +7,17 @@ options, and the relationships between them.
 
 ## Schema Mapping
 
-| Module Path                                              | KCL schema                                                                                             | ODCS JSON Schema entity                                                                                                                                                      | 
-|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`catalog/element.k`](../../catalog/element.k)           | `SchemaElement`                                                                                        | `$defs/SchemaElement` (shared base of objects & properties; also absorbs the duplicated `physicalName` / `quality` from `$defs/SchemaObject` and `$defs/SchemaBaseProperty`) |
-| [`catalog/object.k`](../../catalog/object.k)             | `SchemaObject`                                                                                         | `$defs/SchemaObject`                                                                                                                                                         |
-| [`catalog/property.k`](../../catalog/property.k)         | `SchemaProperty`                                                                                       | `$defs/SchemaProperty`, `$defs/SchemaBaseProperty`                                                                                                                           |
-| [`catalog/property.k`](../../catalog/property.k)         | `SchemaItemProperty` *(type alias of `SchemaProperty`)*                                                | `$defs/SchemaItemProperty` (the `items` descriptor of an array property — a full property definition)                                                                        |
-| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipBase`                                                                                     | `$defs/RelationshipBase`                                                                                                                                                     |
-| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipSchemaLevel`                                                                              | `$defs/RelationshipSchemaLevel`                                                                                                                                              |
-| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipPropertyLevel`                                                                            | `$defs/RelationshipPropertyLevel`                                                                                                                                            |
-| [`catalog/type_options.k`](../../catalog/type_options.k) | `TypeOptions`                                                                                          | `$defs/*LogicalTypeOptions` (the permissive union of every per-type option branch)                                                                                           |
-| [`catalog/type_options.k`](../../catalog/type_options.k) | `ArrayOptions`, `DatetimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions` | `logicalTypeOptions` branches (`array`, `date`/`timestamp`/`time`, `integer`, `number`, `object`, `string`)                                                                  |
+| Module Path                                              | KCL schema                                                                                                                                                         | ODCS JSON Schema entity                                                                                                                                                      | 
+|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`catalog/element.k`](../../catalog/element.k)           | `SchemaElement`                                                                                                                                                    | `$defs/SchemaElement` (shared base of objects & properties; also absorbs the duplicated `physicalName` / `quality` from `$defs/SchemaObject` and `$defs/SchemaBaseProperty`) |
+| [`catalog/object.k`](../../catalog/object.k)             | `SchemaObject`                                                                                                                                                     | `$defs/SchemaObject`                                                                                                                                                         |
+| [`catalog/property.k`](../../catalog/property.k)         | `SchemaProperty`                                                                                                                                                   | `$defs/SchemaProperty`, `$defs/SchemaBaseProperty`                                                                                                                           |
+| [`catalog/property.k`](../../catalog/property.k)         | `SchemaItemProperty` *(type alias of `SchemaProperty`)*                                                                                                            | `$defs/SchemaItemProperty` (the `items` descriptor of an array property — a full property definition)                                                                        |
+| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipBase`                                                                                                                                                 | `$defs/RelationshipBase`                                                                                                                                                     |
+| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipSchemaLevel`                                                                                                                                          | `$defs/RelationshipSchemaLevel`                                                                                                                                              |
+| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipPropertyLevel`                                                                                                                                        | `$defs/RelationshipPropertyLevel`                                                                                                                                            |
+| [`catalog/type_options.k`](../../catalog/type_options.k) | `TypeOptions`                                                                                                                                                      | `$defs/*LogicalTypeOptions` (the permissive union of every per-type option branch)                                                                                           |
+| [`catalog/type_options.k`](../../catalog/type_options.k) | `ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions` *(all extend `TypeOptions`)* | `logicalTypeOptions` branches (`array`, `date`, `timestamp`, `time`, `integer`, `number`, `object`, `string`)                                                                |
 
 ---
 
@@ -52,9 +52,9 @@ options, and the relationships between them.
 
 ### `SchemaItemProperty` is a type alias, not a subschema
 
-- The JSON `$defs/SchemaItemProperty` is a full `SchemaBaseProperty`, so array items are complete property
-  descriptors: scalar items set their own `logicalType`, object items nest their own `properties`, and arrays of
-  arrays nest their own `items`.
+- The JSON `$defs/SchemaItemProperty` is a full `SchemaBaseProperty`, so array items are complete property descriptors:
+  scalar items set their own `logicalType`, object items nest their own `properties`, and arrays of arrays nest their
+  own `items`.
 - KCL recovers this with `type SchemaItemProperty = SchemaProperty`. It cannot be a subschema
   (`schema SchemaItemProperty(SchemaProperty)`): `kcl vet` panics ("RefCell already borrowed") whenever a schema
   attribute references a subclass of its own schema, and `SchemaProperty.items` is exactly that shape.
@@ -76,17 +76,27 @@ options, and the relationships between them.
 - `TypeOptions` is the coercion target for `logicalTypeOptions`, its fields are declared directly (not via mixins)
   and carry no defaults, so an unset option reads back as `Undefined` for the per-type checks.
 
+### Per-type option schemas extend `TypeOptions`
+
+- Mirrors the `server` module design (`Server` and its per-source subschemas): each specialized schema (`ArrayOptions`,
+  `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`,
+  `ObjectOptions`, `StringOptions`) extends `TypeOptions` and narrows its branch's attributes to the types of the
+  matching JSON conditional (e.g. `IntegerOptions.maximum: int`, `DateOptions.maximum: str`,
+  `IntegerOptions.format: IntegerFormatEnum`).
+- Because they are subtypes, their instances are directly assignable to `SchemaProperty.logicalTypeOptions` —
+  hand-authored KCL gets precise, self-documenting types, while YAML keeps coercing inline dicts into the permissive
+  `TypeOptions` base.
+- Spec-declared defaults are carried where they belong to the branch (`IntegerOptions.format = "i32"`,
+  `defaultTimezone = "Etc/UTC"` on `TimestampOptions`/`TimeOptions`).
+- `date` and `timestamp`/`time` are split into `DateOptions`, `TimestampOptions`, and `TimeOptions` (replacing the
+  former merged `DatetimeOptions`): the JSON `date` branch has no timezone options, while the shared
+  `timestamp`/`time` branch carries `timezone`/`defaultTimezone`.
+- Using the wrong subschema for a `logicalType` still fails: the per-type `check`s on `SchemaProperty` reject any set
+  option that does not belong to the declared type.
+
 ---
 
 ## Open Questions
-
-### The generic `TypeOptions` union vs. the specialized per-type option schemas
-
-- Is the same two-way-parsing trade-off seen in the `server` module.
-- The permissive union is what YAML coerces into and what the `SchemaProperty` `check`s validate, while
-  `StringOptions` / `IntegerOptions` / … give precise, self-documenting types for hand-authored KCL.
-- Both validate correctly, but maintaining the union *and* the per-type schemas is a workaround rather than a single
-  source of truth.
 
 ### Per-type option validity
 

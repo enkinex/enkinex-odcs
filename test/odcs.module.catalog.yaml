@@ -99,7 +99,7 @@ schema:
           exclusiveMinimum: 0
           maximum: 100000
 
-      # date + DatetimeOptions branch, partition column with position
+      # date + DateOptions branch, partition column with position
       - id: order_date_prop
         name: order_date
         logicalType: date

@@ -10,7 +10,8 @@ This document tracks the history and evolution of the **Enkinex ODCS Library** f
     * Add nested `properties` to `SchemaProperty` (required iff `logicalType: object`)
     * Make array `items` a full property descriptor via the `SchemaItemProperty` type alias (replaces `SchemaPropertyItems`)
     * Correct the swapped `items`/`properties` check failure messages
-    * Fix the `DatetimeOptions` docstring examples to use inline dict options (per-type option schemas are not assignable to `logicalTypeOptions`)
+    * Refactor the per-type option schemas to extend `TypeOptions` (server-module design), making their instances assignable to `logicalTypeOptions`
+    * Replace `DatetimeOptions` with `DateOptions`, `TimestampOptions`, and `TimeOptions`, matching the ODCS JSON schema `date` and `timestamp`/`time` branches
 * Documentation
     * Fix the README backward-compatibility disclaimer rendering and release badge
     * Update `docs/schemas/*` — catalog item/object rules and divergences, quality operator semantics, server `zen` rule

@@ -21,6 +21,10 @@ schema SchemaProperty(element.SchemaElement):
         One of string, date, timestamp, time, number, integer, object, array or boolean.
     logicalTypeOptions: type_options.TypeOptions, default is Undefined, optional.
         Additional optional metadata to describe the logical type.
+        Accepts an inline dict coerced into `TypeOptions` or an instance of the
+        per-type option schema matching the `logicalType` (`StringOptions`,
+        `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,
+        `NumberOptions`, `ObjectOptions`, `ArrayOptions`).
     required: bool, default is False, optional.
         Indicates if the element may contain Null values.
     unique: bool, default is False, optional.

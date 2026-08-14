@@ -20,4 +20,3 @@ schema OracleServer(server.Server):
     host: str
     port: int
     serviceName: str
-

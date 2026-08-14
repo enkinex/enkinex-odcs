@@ -21,4 +21,3 @@ schema BaseServer(custom.StableIdCustomizable):
     description?: str
     environment?: str
     roles?: [role.Role]
-

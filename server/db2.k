@@ -20,4 +20,3 @@ schema IBMDB2Server(server.Server):
     port: int
     database: str
     $schema?: str
-

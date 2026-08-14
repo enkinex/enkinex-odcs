@@ -24,4 +24,3 @@ schema RedshiftServer(server.Server):
     host?: str
     region?: str
     account?: str
-

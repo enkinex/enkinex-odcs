@@ -12,4 +12,3 @@ schema ApiServer(server.Server):
     """
     $type = "api"
     location: str
-

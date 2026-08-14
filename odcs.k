@@ -109,4 +109,3 @@ schema DataContract(discovery.TagsDiscoverable):
         len(version) > 0, "version must not be empty"
         len(id) > 0, "id must not be empty"
         regex.match(contractCreatedTs, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$") if contractCreatedTs, "contractCreatedTs must be an ISO-8601 timestamp"
-

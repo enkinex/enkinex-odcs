@@ -16,4 +16,3 @@ schema LocalServer(server.Server):
     $type = "local"
     path: str
     format: str
-

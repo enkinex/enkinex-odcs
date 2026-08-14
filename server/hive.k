@@ -17,4 +17,3 @@ schema HiveServer(server.Server):
     host: str
     database: str
     port?: int = 10000
-

@@ -18,4 +18,3 @@ schema DatabricksServer(server.Server):
     catalog: str
     $schema: str
     host?: str
-

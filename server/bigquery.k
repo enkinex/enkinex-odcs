@@ -14,4 +14,3 @@ schema BigQueryServer(server.Server):
     $type = "bigquery"
     project: str
     dataset: str
-

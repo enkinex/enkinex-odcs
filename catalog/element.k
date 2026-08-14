@@ -30,4 +30,3 @@ schema SchemaElement(discovery.StableIdDiscoverable):
     description?: str
     businessName?: str
     quality?: [rule.DataQuality]
-

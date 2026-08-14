@@ -17,4 +17,3 @@ schema SynapseServer(server.Server):
     host: str
     port: int
     database: str
-

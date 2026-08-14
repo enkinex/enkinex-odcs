@@ -17,4 +17,3 @@ schema DremioServer(server.Server):
     host: str
     port: int
     $schema?: str
-

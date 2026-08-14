@@ -22,4 +22,3 @@ schema AthenaServer(server.Server):
     stagingDir: str
     catalog?: str = "awsdatacatalog"
     regionName?: str
-

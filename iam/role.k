@@ -40,4 +40,3 @@ schema Role(custom.StableIdCustomizable):
     access?: str
     firstLevelApprovers?: str
     secondLevelApprovers?: str
-

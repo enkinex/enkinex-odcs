@@ -56,4 +56,3 @@ schema Support(custom.StableIdCustomizable):
     tool?: SupportTool
     scope?: SupportScope
     invitationUrl?: str
-

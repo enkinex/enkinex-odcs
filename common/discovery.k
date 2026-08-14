@@ -32,4 +32,3 @@ schema TagsDiscoverable(custom.AuthoritativeCustomizable):
         Examples: "finance", "sensitive", "employee_record"
     """
     tags?: [str]
-

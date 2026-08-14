@@ -35,4 +35,3 @@ schema StableIdCustomizable(id.StableId):
         A list of key/value pairs for custom properties.
     """
     customProperties?: [property.CustomProperty]
-

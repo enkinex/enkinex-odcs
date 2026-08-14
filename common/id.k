@@ -17,4 +17,3 @@ schema StableId:
 
     check:
         regex.match(id, stableIdPattern) if id, "id must match ${stableIdPattern}"
-

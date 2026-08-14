@@ -11,4 +11,3 @@ schema PubSubServer(server.Server):
     """
     $type = "pubsub"
     project: str
-

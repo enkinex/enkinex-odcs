@@ -24,4 +24,3 @@ schema SqlserverServer(server.Server):
     database: str
     $schema: str
     port?: int = 1433
-

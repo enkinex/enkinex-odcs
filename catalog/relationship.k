@@ -91,4 +91,3 @@ schema RelationshipPropertyLevel(RelationshipBase):
         RelationshipPropertyLevel { to = "accounts.owner_id" }
     ]
     """
-

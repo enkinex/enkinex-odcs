@@ -17,4 +17,3 @@ schema ImpalaServer(server.Server):
     host: str
     database: str
     port?: int = 21050
-

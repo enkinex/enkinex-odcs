@@ -25,4 +25,3 @@ schema S3Server(server.Server):
     endpointUrl?: str
     format?: str
     delimiter?: str
-

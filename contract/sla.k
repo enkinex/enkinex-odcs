@@ -81,4 +81,3 @@ schema ServiceLevelAgreement(id.StableId):
 
     check:
         not (value == Undefined and value != None), "value cannot be Undefined. Use None for null"
-

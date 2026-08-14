@@ -66,4 +66,3 @@ schema Server(custom_server.CustomServer):
         $type != "trino" or (host != Undefined and port != Undefined and catalog != Undefined and $schema != Undefined), "trino server requires 'host', 'port', 'catalog' and 'schema'"
         $type != "vertica" or (host != Undefined and port != Undefined and database != Undefined and $schema != Undefined), "vertica server requires 'host', 'port', 'database' and 'schema'"
         $type != "zen" or (host != Undefined and database != Undefined), "zen server requires 'host' and 'database'"
-

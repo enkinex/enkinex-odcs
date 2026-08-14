@@ -32,4 +32,3 @@ schema CustomProperty(id.StableId):
     property: str
     value: any
     description?: str
-

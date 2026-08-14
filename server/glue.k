@@ -24,4 +24,3 @@ schema GlueServer(server.Server):
     database: str
     location?: str
     format?: str
-

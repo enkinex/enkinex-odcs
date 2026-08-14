@@ -19,4 +19,3 @@ schema KinesisServer(server.Server):
     stream?: str
     region?: str
     format?: str
-

@@ -85,4 +85,3 @@ schema Team(discovery.StableIdDiscoverable):
     name?: str
     description?: str
     members?: [TeamMember]
-

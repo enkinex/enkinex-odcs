@@ -26,4 +26,3 @@ schema SnowflakeServer(server.Server):
     host?: str
     port?: int
     warehouse?: str
-

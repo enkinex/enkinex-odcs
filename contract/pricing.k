@@ -28,4 +28,3 @@ schema Pricing(id.StableId):
 
     check:
         priceAmount == Undefined or priceAmount >= 0, "priceAmount must be non-negative"
-

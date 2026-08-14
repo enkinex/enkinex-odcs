@@ -21,4 +21,3 @@ schema SftpServer(server.Server):
     location: str
     format?: str
     delimiter?: str
-

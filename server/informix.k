@@ -17,4 +17,3 @@ schema InformixServer(server.Server):
     host: str
     database: str
     port?: int = 9088
-

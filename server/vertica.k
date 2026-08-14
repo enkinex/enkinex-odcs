@@ -20,4 +20,3 @@ schema VerticaServer(server.Server):
     port: int
     database: str
     $schema: str
-

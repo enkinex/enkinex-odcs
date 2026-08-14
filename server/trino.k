@@ -23,4 +23,3 @@ schema TrinoServer(server.Server):
     port: int
     catalog: str
     $schema: str
-

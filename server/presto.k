@@ -20,4 +20,3 @@ schema PrestoServer(server.Server):
     host: str
     catalog?: str
     $schema?: str
-

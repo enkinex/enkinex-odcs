@@ -20,4 +20,3 @@ schema GoogleCloudSqlServer(server.Server):
     port: int
     database: str
     $schema: str
-

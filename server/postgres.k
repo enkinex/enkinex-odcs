@@ -30,4 +30,3 @@ schema PostgresServer(server.Server):
     port: int
     database: str
     $schema: str
-

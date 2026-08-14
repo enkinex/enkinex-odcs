@@ -432,4 +432,3 @@ schema StringOptions(TypeOptions):
     pattern?: str
     maxLength?: int
     minLength?: int
-

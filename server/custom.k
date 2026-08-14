@@ -64,4 +64,3 @@ schema CustomServer(base_server.BaseServer):
     stagingDir?: str
     stream?: str
     warehouse?: str
-

@@ -93,4 +93,3 @@ schema DataQuality(operator.DataQualityOperators):
         $type != "library" or metric != Undefined, "library rules require 'metric'"
         $type != "sql" or query != Undefined, "sql rules require 'query'"
         $type != "custom" or (engine != Undefined and implementation != Undefined), "custom rules require 'engine' and 'implementation'"
-

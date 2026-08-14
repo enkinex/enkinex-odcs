@@ -14,4 +14,3 @@ schema DuckdbServer(server.Server):
     $type = "duckdb"
     database: str
     $schema?: str
-

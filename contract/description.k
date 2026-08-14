@@ -30,4 +30,3 @@ schema Description(custom.AuthoritativeCustomizable):
     purpose?: str
     limitations?: str
     usage?: str
-

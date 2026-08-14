@@ -37,4 +37,3 @@ schema DataQualityOperators(discovery.StableIdDiscoverable):
         mustBeBetween == Undefined or (len(mustBeBetween) == 2 and mustBeBetween[0] != mustBeBetween[1]), "mustBeBetween must have exactly two distinct numbers"
         mustNotBeBetween == Undefined or (len(mustNotBeBetween) == 2 and mustNotBeBetween[0] != mustNotBeBetween[1]), "mustNotBeBetween must have exactly two distinct numbers"
         len([o for o in [mustBe, mustNotBe, mustBeGreaterThan, mustBeGreaterOrEqualTo, mustBeLessThan, mustBeLessOrEqualTo, mustBeBetween, mustNotBeBetween] if o != Undefined]) <= 1, "at most one comparison operator may be set per rule"
-

@@ -17,4 +17,3 @@ schema ClickHouseServer(server.Server):
     host: str
     port: int
     database: str
-

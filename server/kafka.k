@@ -23,4 +23,3 @@ schema KafkaServer(server.Server):
     $type = "kafka"
     host: str
     format?: str = "json"
-

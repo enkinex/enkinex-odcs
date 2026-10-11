@@ -10,7 +10,7 @@ fmt:
     kcl fmt ./...
 
 lint:
-    set -e; for d in . catalog common contract iam quality server; do (cd "$d" && kcl lint .); done
+    kcl lint ./...
 
 docs:
     kcl doc generate --escape-html --target docs/library

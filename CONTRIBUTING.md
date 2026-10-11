@@ -6,7 +6,7 @@ everything you need to build, validate, and submit changes.
 
 ## Prerequisites
 
-- [KCL Language CLI](https://www.kcl-lang.io/docs/user_docs/getting-started/install) `>= 0.12.8`
+- [KCL Language CLI](https://www.kcl-lang.io/docs/user_docs/getting-started/install) `>= 0.13.1`
 - [`just` Command Runner](https://github.com/casey/just).
 
 Check both are on your `PATH`:
@@ -35,7 +35,7 @@ All day-to-day tasks are `just` recipes defined in the [`Justfile`](Justfile):
 |--------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | `just init`  | Syncs module dependencies (`kcl mod update`).                                                                                                  |
 | `just fmt`   | Formats every `.k` file in the project (`kcl fmt ./...`).                                                                                      |
-| `just lint`  | Runs `kcl lint` against the root package and every module directory.                                                                           |
+| `just lint`  | Runs `kcl lint ./...`: the root package and every module directory in one invocation (needs KCL >= 0.13).                                      |
 | `just test`  | Validates every fixture under [`test/`](test) against `odcs.k` with `kcl vet`, failing loudly on the first error.                              |
 | `just docs`  | Regenerates the auto-generated schema reference from schema docstrings.                                                                        |
 | `just check` | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint` and `test`. Run this before opening a PR. |

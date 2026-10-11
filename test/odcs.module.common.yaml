@@ -55,7 +55,8 @@ description:
     - property: reviewedBy
       value: governance-board
 
-# A schema element exercises the id-bearing StableIdDiscoverable base (stable id pattern: [A-Za-z0-9_-]+)
+# A schema element exercises the id-bearing StableIdDiscoverable base. Stable ids follow the
+# RFC-0026a denylist (no . # / \ @ ! % & ^ or whitespace), so namespaced ids are valid.
 schema:
   - id: common_discoverable-01
     name: common_object
@@ -65,6 +66,12 @@ schema:
       - id: element_tutorial
         type: tutorial
         url: https://enkinex.org/tutorials/common-module
+      - id: fdir:ISU:TAD
+        type: businessDefinition
+        url: https://enkinex.org/glossary/fdir
     customProperties:
       - property: sourceSystem
         value: erp
+      - id: urn:uuid:c47a1e10-0002-4c00-8000-0000000000c2
+        property: lineageKey
+        value: erp-orders

@@ -20,11 +20,16 @@ schema:
     tags:
       - sales
 
-    # Schema-level relationships: single-column shorthand, then composite fully-qualified notation
+    # Schema-level relationships: single-column shorthand (with a stable id, RFC 0047), a nested
+    # hyphenated shorthand, then composite fully-qualified notation
     relationships:
-      - type: foreignKey
+      - id: fk_orders_customer
+        type: foreignKey
         from: orders.customer_id
         to: customers.id
+      - id: fk:orders:billing-address
+        from: orders.billing-address.street
+        to: customers.address.street
       - from:
           - schema/orders_obj/properties/customer_id_prop
           - schema/orders_obj/properties/customer_region_prop
@@ -65,7 +70,8 @@ schema:
         transformLogic: SELECT id FROM crm_customers WHERE active = true
         transformDescription: Copied from the active CRM customer id.
         relationships:
-          - to: customers.id
+          - id: fk_customer_master
+            to: customers.id
             customProperties:
               - property: description
                 value: Links to the customer master record.

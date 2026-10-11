@@ -79,7 +79,6 @@
   expect: Cannot add member 'from'
 - test: relationship-schema-level-missing-from-to.odcs.yaml
   expect: of RelationshipSchemaLevel is required
-  pending: ODCS-04
 - test: schema-property-invalid-logicaltype.odcs.yaml
   expect: got str(binary)
 - test: schema-property-missing-name.odcs.yaml

@@ -63,13 +63,21 @@ options, and the relationships between them.
 
 - `RelationshipSchemaLevel` requires both `from` and `to`.
 - `RelationshipPropertyLevel` omits `from` (it is the current property).
+- Both carry an optional stable `id` (RFC 0047): `RelationshipBase` extends `StableIdCustomizable`. The JSON types
+  `id` as a plain string and states the denylist in prose only; the library enforces it, a deliberate strictness.
 - KCL's **closed schemas** naturally forbid `from` at property level, recovering the JSON `not: {required: [from]}` for
   free.
 
 ### Reference-notation validation
 
-- `to`/`from` accept `str | [str]` and each token is validated against a shorthand (`a.b`) or fully-qualified pattern.
+- `to`/`from` accept `str | [str]` and each token is validated against the JSON `ShorthandReference` or
+  `FullyQualifiedReference` pattern, copied verbatim:
+    - shorthand: dot-separated names of any depth, hyphens allowed (`accounts.address.street`, `my-table.col-1`);
+    - fully qualified: `section/id[/properties/id…]` whose id segments follow the StableId denylist, optionally prefixed
+      with an external `file.yaml#` or `file.yml#`.
 - Composite keys must be equal-length arrays of matching kind (both strings or both arrays).
+- Every reference check is guarded on its attribute being set, so a missing `from` or `to` reports the missing
+  attribute rather than failing inside the check.
 
 ### Type-options coercion
 
@@ -110,3 +118,8 @@ options, and the relationships between them.
 - Nested `properties` on `items` require an explicit `logicalType: object` (and nested `items` require
   `logicalType: array`) per the iff-rules above; the JSON allows them without a declared `logicalType`.
 - Both are deliberate strictness, consistent with the library's closed-enum/required-discriminant posture.
+
+### Relationship id uniqueness
+
+- RFC 0047 says a relationship `id` is unique within its containing array. Like every other StableId uniqueness rule,
+  it is stated in prose and not enforced: KCL could check it, but the library enforces no id uniqueness anywhere yet.

@@ -51,8 +51,12 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 
 ### Guarded `StableId.id` regex
 
-- `StableId.id` is validated against `^[A-Za-z0-9_-]+$` only when present (`... if id`).
+- `StableId.id` is validated only when present (`... if id`), against the RFC-0026a **denylist** copied verbatim from
+  the JSON `StableId` pattern: `^[^\s.#/\\@!%&^]+$`. An id cannot contain `.`, `#`, `/`, `\`, `@`, `!`, `%`, `&`, `^`
+  or whitespace; everything else is allowed, so namespaced ids (`fdir:ISU:TAD`, `urn:uuid:…`) are valid.
+- ODCS v3.1.0 used the allowlist `^[A-Za-z0-9_-]+$`, which rejected those ids.
 - Any element carrying an optional `id` can still be constructed without one, while a malformed `id` is rejected.
+- Every `StableId` subschema inherits the pattern, including relationships (RFC 0047, see `catalog.md`).
 
 ---
 

@@ -348,14 +348,15 @@ shippingAddress = SchemaProperty {
 
 ### RelationshipBase
 
-Base definition for relationships between elements, typically for foreign key constraints.
+Base definition for relationships between elements, typically for foreign key constraints. Inherited via StableIdCustomizable: id, customProperties.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.<br />Shorthand: dot-separated names of any depth, hyphens allowed (`accounts.address.street`, `my-table.col-1`).<br />Fully qualified: `section/id[/properties/id...]`, ids following the StableId denylist, optionally prefixed by `file.yaml#` or `file.yml#`.||
 |**type** `readOnly`|"foreignKey"|The type of relationship.|"foreignKey"|
 ### RelationshipPropertyLevel
 
@@ -366,7 +367,8 @@ Relationship definition at property level, where &#39;from&#39; is implicitly th
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.<br />Shorthand: dot-separated names of any depth, hyphens allowed (`accounts.address.street`, `my-table.col-1`).<br />Fully qualified: `section/id[/properties/id...]`, ids following the StableId denylist, optionally prefixed by `file.yaml#` or `file.yml#`.||
 |**type** `readOnly`|"foreignKey"|The type of relationship.|"foreignKey"|
 ### RelationshipSchemaLevel
 
@@ -378,7 +380,8 @@ Relationship definition at schema level, requiring both &#39;from&#39; and &#39;
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**from** `required`|str \| [str]|Source object reference using fully qualified or shorthand notation; Or an array of source objects for composite keys.||
-|**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**to** `required`|str \| [str]|Target element reference using fully qualified or shorthand notation; Or an array of target elements for composite keys.<br />Shorthand: dot-separated names of any depth, hyphens allowed (`accounts.address.street`, `my-table.col-1`).<br />Fully qualified: `section/id[/properties/id...]`, ids following the StableId denylist, optionally prefixed by `file.yaml#` or `file.yml#`.||
 |**type** `readOnly`|"foreignKey"|The type of relationship.|"foreignKey"|
 #### Examples
 
@@ -390,6 +393,7 @@ usersRelationships = [
         to = "schema/accounts_tbl/properties/acct_id_pk"
     }
     RelationshipSchemaLevel {
+        id = "fk_users_account"
         $type = "foreignKey"
         from = "users.account_id"
         to = "accounts.id"
@@ -423,7 +427,7 @@ Schema element to be cataloged. Applicable to either Objects or Properties Inher
 |**businessName**|str|The business name of the element.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**name** `required`|str|Name of the element.||
 |**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
@@ -442,7 +446,7 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dataGranularityDescription**|str|Granular level of the data in the object.<br />Examples: "Aggregation by country"||
 |**description**|str|Description of the element.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**logicalType** `readOnly`|"object"|The logical object data type. Always "object".|"object"|
 |**name** `required`|str|Name of the element.||
 |**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
@@ -536,7 +540,7 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**description**|str|Description of the element.||
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Required when logicalType is "array", forbidden otherwise.||
 |**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
 |**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.<br />Accepts an inline dict coerced into `TypeOptions` or an instance of the<br />per-type option schema matching the `logicalType` (`StringOptions`,<br />`DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,<br />`NumberOptions`, `ObjectOptions`, `ArrayOptions`).||
@@ -767,7 +771,7 @@ Authoritative Definitions are an essential part of the contract. They allow to d
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**description**|str|Optional description.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**type** `required`|str|Type of definition for authority.<br />At the root level, a type can also be canonicalUrl to indicate a reference to the data contract&#39;s latest version.<br />Examples: "businessDefinition", "transformationImplementation", "videoTutorial", "tutorial", "implementation".||
 |**url** `required`|str|URL to the authority.||
 #### Examples
@@ -801,7 +805,7 @@ This section covers custom properties you can use to add non-standard properties
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**description**|str|Description for humans.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**property** `required`|str|The name of the key.||
 |**value** `required`|any|The value of the key. It can be an array.||
 #### Examples
@@ -838,7 +842,7 @@ Base object carrying the optional stable `id` property.
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 ### StableIdCustomizable
 
 Base object carrying the optional stable `id` and `customProperties` properties.
@@ -848,7 +852,7 @@ Base object carrying the optional stable `id` and `customProperties` properties.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 ### StableIdDiscoverable
 
 Base object carrying the optional properties shared by discoverable elements with an stable &#39;id&#39;.
@@ -859,7 +863,7 @@ Base object carrying the optional properties shared by discoverable elements wit
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### TagsDiscoverable
 
@@ -909,7 +913,7 @@ This section covers pricing when you bill your customer for using this data prod
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**priceAmount**|int \| float|Subscription price per unit of measure in `priceUnit`.||
 |**priceCurrency**|str|Currency of the subscription price in `price.priceAmount`.||
 |**priceUnit**|str|The unit of measure for calculating cost.<br />Examples: "megabyte", "gigabyte".||
@@ -934,7 +938,7 @@ This section describes the service-level agreements (SLA).
 |**description**|str|Description of the SLA for humans.||
 |**driver**|"regulatory" \| "analytics" \| "operational"|Describes the importance of the SLA.<br />One of "regulatory", "analytics", "operational".||
 |**element**|str|Element(s) to check on.<br />Multiple elements should be extremely rare and, if so, separated by commas.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**property** `required`|str|Specific property in SLA, check the [Data QoS periodic table](https://medium.com/data-mesh-learning/what-is-data-qos-and-why-is-it-critical-c524b81e3cc1).<br />May require units.||
 |**schedule**|str|Configuration information for the scheduling tool.<br />Examples: "0 20 * * *" for cron.||
 |**scheduler**|str|Name of the scheduler, can be cron or any tool your organization support.||
@@ -989,7 +993,7 @@ Support and communication channels help consumers find help regarding their use 
 |**channel** `required`|str|Channel name or identifier.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the channel, free text.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**invitationUrl**|str|Some tools uses invitation URL for requesting or subscribing. Follows the [URL scheme](https://en.wikipedia.org/wiki/URL#Syntax).||
 |**scope**|"interactive" \| "announcements" \| "issues" \| "notifications"|The channel scope.<br />One of "interactive", "announcements", "issues", "notifications".||
 |**tool**|"email" \| "slack" \| "teams" \| "discord" \| "ticket" \| "googlechat" \| "other"|Name of the tool.<br />One of "email", "slack", "teams", "discord", "ticket", "googlechat", "other".||
@@ -1034,7 +1038,7 @@ Role that a consumer may need to access the dataset, depending on the type of ac
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the IAM role and its permissions.||
 |**firstLevelApprovers**|str|The name(s) of the first-level approver(s) of the role.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**role** `required`|str|Name of the IAM role that provides access to the dataset.||
 |**secondLevelApprovers**|str|The name(s) of the second-level approver(s) of the role.||
 #### Examples
@@ -1068,7 +1072,7 @@ Team information.
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Team description.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**members**|[[TeamMember](#teammember)]|List of members.||
 |**name**|str|Team name.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
@@ -1118,7 +1122,7 @@ Team member.
 |**dateIn**|str|The date when the user joined the team.||
 |**dateOut**|str|The date when the user ceased to be part of the team.||
 |**description**|str|The user&#39;s description.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**name**|str|The user&#39;s name.||
 |**replacedByUsername**|str|The username of the user who replaced the previous user.||
 |**role**|str|The user&#39;s job role; Examples might be owner, data steward. There is no limit on the role.||
@@ -1139,7 +1143,7 @@ Data quality rule with all the relevant information for setup and execution.
 |**description**|str|Describe the quality check to be completed.||
 |**dimension**|"accuracy" \| "completeness" \| "conformity" \| "consistency" \| "coverage" \| "timeliness" \| "uniqueness"|The key performance indicator (KPI) or dimension for data quality.<br />Examples: "accuracy", "completeness", "conformity", "consistency", "coverage", "timeliness", "uniqueness"||
 |**engine**|str|Required for `custom` DQ rule: name of the engine which executes the data quality checks.<br />Examples: "soda", "great-expectations", "monte-carlo", "dbt"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**implementation**|str \| {str:}|A text (non-parsed) block of code required for the third-party DQ engine to run.||
 |**method**|str|Values are open.<br />Examples: "reconciliation"||
 |**metric**|"nullValues" \| "missingValues" \| "invalidValues" \| "duplicateValues" \| "rowCount"|Define a data quality check based on the predefined metrics as per ODCS.<br />Examples: "nullValues", "missingValues", "invalidValues", "duplicateValues", "rowCount"||
@@ -1188,7 +1192,7 @@ Base object carrying the eight data-quality comparison operators and the ODCS `o
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**mustBe**|any|Must be equal to the value to be valid. When using numbers, it is equivalent to &#39;=&#39;.||
 |**mustBeBetween**|[int \| float]|Must be between the two numbers to be valid. Smallest number first in the array.||
 |**mustBeGreaterOrEqualTo**|int \| float|Must be greater than or equal to the value to be valid. It is equivalent to &#39;&gt;=&#39;.||
@@ -1217,7 +1221,7 @@ API Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|The URL to the API.<br />Examples: "https://api.example.com/v1"||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1251,7 +1255,7 @@ AWS Athena Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1285,7 +1289,7 @@ Azure Blob Storage Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv".||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1321,7 +1325,7 @@ Base server object carrying the server properties common to every server type.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the server.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**roles**|[[Role](#role)]|List of roles that have access to the server.||
 |**server** `required`|str|Identifier of the server.||
 ### BigQueryServer
@@ -1343,7 +1347,7 @@ Google BigQuery Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1377,7 +1381,7 @@ ClickHouse Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the ClickHouse server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the ClickHouse server.||
@@ -1411,7 +1415,7 @@ Defines the CustomServer source with all properties shared by all types of sourc
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1444,7 +1448,7 @@ Databricks Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The Databricks host.<br />Examples: "dbc-abcdefgh-1234.cloud.databricks.com"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1478,7 +1482,7 @@ Denodo Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the Denodo server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the Denodo server.||
@@ -1512,7 +1516,7 @@ Dremio Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the Dremio server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the Dremio server.||
@@ -1546,7 +1550,7 @@ DuckDB Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1580,7 +1584,7 @@ AWS Glue Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the files.<br />Examples: "parquet", "csv", "json", "delta"||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|The AWS S3 path. Must be in the form of a URL.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}"||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1614,7 +1618,7 @@ Google Cloud Sql Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the Google Cloud Sql server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the Google Cloud Sql server.||
@@ -1648,7 +1652,7 @@ Apache Hive Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the Hive server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Hive server.|10000|
@@ -1682,7 +1686,7 @@ IBM DB2 Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the IBM DB2 server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the IBM DB2 server.||
@@ -1716,7 +1720,7 @@ Apache Impala Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the Impala server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Impala server.|21050|
@@ -1750,7 +1754,7 @@ IBM Informix Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the Informix server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Informix server.|9088|
@@ -1784,7 +1788,7 @@ Apache Kafka Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the messages.<br />Examples: "json", "avro", "protobuf", "xml"|"json"|
 |**host**|str|The bootstrap server of the kafka cluster.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1828,7 +1832,7 @@ AWS Kinesis Data Streams Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the record.<br />Examples: "json", "avro", "protobuf"||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1862,7 +1866,7 @@ Local File Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the file(s).<br />Examples: "json", "parquet", "delta", "csv"||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|The relative or absolute path to the data file(s).<br />Examples: "./folder/data.parquet", "./folder/*.parquet"||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -1896,7 +1900,7 @@ MySQL Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the MySql server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the MySql server.||
@@ -1930,7 +1934,7 @@ Oracle Database Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the oracle server.<br />Examples: "localhost"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the oracle server.<br />Examples: "1523"||
@@ -1964,7 +1968,7 @@ PostgreSQL Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the Postgres server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Postgres server.||
@@ -2010,7 +2014,7 @@ Presto Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the Presto server.<br />Examples: "localhost:8080"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -2044,7 +2048,7 @@ Google Cloud Pub/Sub Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -2078,7 +2082,7 @@ Amazon Redshift Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|An optional string describing the server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -2112,7 +2116,7 @@ Amazon S3 Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|S3 URL, starting with `s3://`.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}/*.json"||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -2146,7 +2150,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -2203,7 +2207,7 @@ SFTP Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
 |**host**|str|Host name or IP address.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|SFTP URL, starting with `sftp://`.<br />Examples: "sftp://123.123.12.123/{model}/*.json"||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Port to the server. No default value is assumed for custom servers.||
@@ -2237,7 +2241,7 @@ Snowflake Data Warehouse Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the Snowflake server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the Snowflake server.||
@@ -2271,7 +2275,7 @@ Microsoft SQL Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host to the database server.<br />Examples: "localhost"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port to the database server.<br />Examples: "1433"|1433|
@@ -2305,7 +2309,7 @@ Azure Synapse Analytics Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the Synapse server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the Synapse server.||
@@ -2339,7 +2343,7 @@ Trino Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The Trino host URL.<br />Examples: "localhost"||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The Trino port.||
@@ -2373,7 +2377,7 @@ Vertica Database Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|The host of the Vertica server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|The port of the Vertica server.||
@@ -2407,7 +2411,7 @@ Zen Server.
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
 |**host**|str|Hostname or IP address of the Zen server.||
-|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Cannot contain special characters (&#39;-&#39;, &#39;_&#39; allowed).||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int|Zen server SQL connections port.|1583|

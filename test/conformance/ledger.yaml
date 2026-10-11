@@ -33,8 +33,6 @@
   expect: Failed to Load YAML
 - example: quality/column-validity.odcs.yaml
   reason: ODCS-07
-- example: references/relationships.odcs.yaml
-  reason: ODCS-04
 - example: roles/service-and-operational-roles.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]
@@ -55,9 +53,11 @@
 - example: schema/measures-and-dimensions.odcs.yaml
   reason: ODCS-08
 - example: schema/relationships.odcs.yaml
-  reason: ODCS-04
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: schema/stable-id-special-characters.odcs.yaml
-  reason: ODCS-04
+  reason: D5, the deprecated array form of team is omitted
+  normalize: [team]
 - example: schema/table-column.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]

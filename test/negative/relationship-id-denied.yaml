@@ -1,0 +1,11 @@
+# expect: id must match
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+schema:
+  - name: orders
+    relationships:
+      - id: fk/orders
+        from: orders.customer_id
+        to: customers.id

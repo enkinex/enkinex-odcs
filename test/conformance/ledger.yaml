@@ -55,22 +55,12 @@
 - example: schema/table-columns-with-partition.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]
-- example: server/actian-servers.odcs.yaml
-  reason: ODCS-11
 - example: server/azure-server.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
-- example: server/exasol-server.odcs.yaml
-  reason: ODCS-11
-- example: server/hana-server.odcs.yaml
-  reason: ODCS-11
-- example: server/iceberg-server.odcs.yaml
-  reason: ODCS-11
 - example: server/kafka-server.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
-- example: server/teradata-server.odcs.yaml
-  reason: ODCS-11
 - example: sla/database-table-sla.odcs.yaml
   reason: D5, the deprecated dataProduct is omitted
   normalize: [dataProduct]

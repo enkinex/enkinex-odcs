@@ -240,6 +240,50 @@ servers:
     host: zen.enkinex.org
     database: sales
 
+  # ODCS v3.2.0 sources (RFC 0045, 0049, 0057-0059), each with its required fields only
+  - server: srv-exasol
+    type: exasol
+    host: n11..14.exasol.enkinex.org
+  - server: srv-hana
+    type: hana
+    host: hana.enkinex.org
+    port: 30015
+    database: HXE
+    schema: SALES
+  - server: srv-iceberg
+    type: iceberg
+    catalog: sales_catalog
+    catalogUrl: https://polaris.enkinex.org/api/catalog
+    namespace: sales.orders
+    warehouse: s3://enkinex-lake/warehouse/sales/
+  - server: srv-ingres
+    type: ingres
+    host: ingres.enkinex.org
+    database: sales
+  - server: srv-poet
+    type: poet
+    database: parts_catalog
+  - server: srv-teradata
+    type: teradata
+    host: teradata.enkinex.org
+  - server: srv-vectorwise
+    type: vectorwise
+    host: analytics.enkinex.org
+    database: warehouse
+  - server: srv-versant
+    type: versant
+    database: policies
+
+  # synonyms: btrieve is validated as zen, fastobjects as poet
+  - server: srv-btrieve
+    type: btrieve
+    host: btrieve.enkinex.org
+    database: sales
+  - server: srv-fastobjects
+    type: fastobjects
+    database: parts_catalog
+    host: LOCAL
+
   # custom: no required source fields, showcasing part of the optional superset
   - server: srv-custom
     type: custom

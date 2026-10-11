@@ -2,7 +2,7 @@ import .spec as server
 
 schema ZenServer(server.Server):
     """
-    Zen Server.
+    Actian Zen (formerly Btrieve) Server. `type: btrieve` is a synonym validated by the same rule.
 
     Attributes
     ----------

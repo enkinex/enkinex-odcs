@@ -14,7 +14,6 @@
   expect: Cannot add member 'unknownRootField'
 - test: btrieve-missing-host.odcs.yaml
   expect: zen server requires 'host' and 'database'
-  pending: ODCS-11
 - test: deprecated-wrong-type.odcs.yaml
   expect: got str(maybe)
 - test: enum-duplicate-values.odcs.yaml
@@ -25,19 +24,14 @@
   expect: enum value is required
 - test: exasol-missing-host.odcs.yaml
   expect: exasol server requires 'host'
-  pending: ODCS-11
 - test: fastobjects-missing-database.odcs.yaml
   expect: poet server requires 'database'
-  pending: ODCS-11
 - test: hana-missing-host.odcs.yaml
   expect: hana server requires 'host'
-  pending: ODCS-11
 - test: iceberg-missing-catalogurl.odcs.yaml
   expect: iceberg server requires 'catalog' and 'catalogUrl'
-  pending: ODCS-11
 - test: ingres-missing-host.odcs.yaml
   expect: ingres server requires 'host' and 'database'
-  pending: ODCS-11
 - test: invalid-api-version.odcs.yaml
   expect: got str(v4.0.0)
 - test: invalid-kind.odcs.yaml
@@ -94,16 +88,13 @@
   expect: attribute 'synonym' of Synonym is required
 - test: teradata-missing-host.odcs.yaml
   expect: teradata server requires 'host'
-  pending: ODCS-11
 - test: variables-in-integer-field.odcs.yaml
   expect: got str(${KEY_POS})
 - test: vector-missing-dimensions.odcs.yaml
   expect: logicalType 'vector' requires logicalTypeOptions.dimensions
 - test: vectorwise-missing-database.odcs.yaml
   expect: vectorwise server requires 'host' and 'database'
-  pending: ODCS-11
 - test: vendor-wrong-type.odcs.yaml
   expect: got int(12345)
 - test: versant-missing-database.odcs.yaml
   expect: versant server requires 'database'
-  pending: ODCS-11

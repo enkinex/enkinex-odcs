@@ -27,6 +27,8 @@ schema CustomServer(base_server.BaseServer):
         Account used by the server.
     catalog: str, default is Undefined, optional.
         Name of the catalog.
+    catalogUrl: str, default is Undefined, optional.
+        URL of an Iceberg REST catalog service. Only valid for iceberg servers.
     database: str, default is Undefined, optional.
         Name of the database.
     dataset: str, default is Undefined, optional.
@@ -44,6 +46,8 @@ schema CustomServer(base_server.BaseServer):
         Host name or IP address.
     location: str, default is Undefined, optional.
         A URL to a location.
+    namespace: str, default is Undefined, optional.
+        Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.
     path: str, default is Undefined, optional.
         Relative or absolute path to the data file(s).
     port: Port, default is Undefined, optional.
@@ -71,6 +75,7 @@ schema CustomServer(base_server.BaseServer):
     """
     account?: str
     catalog?: str
+    catalogUrl?: str
     database?: str
     dataset?: str
     delimiter?: str
@@ -79,6 +84,7 @@ schema CustomServer(base_server.BaseServer):
     format?: str
     host?: str
     location?: str
+    namespace?: str
     path?: str
     port?: Port
     project?: str

@@ -60,17 +60,22 @@
   - [DenodoServer](#denodoserver)
   - [DremioServer](#dremioserver)
   - [DuckdbServer](#duckdbserver)
+  - [ExasolServer](#exasolserver)
   - [GlueServer](#glueserver)
   - [GoogleCloudSqlServer](#googlecloudsqlserver)
+  - [HanaServer](#hanaserver)
   - [HiveServer](#hiveserver)
   - [IBMDB2Server](#ibmdb2server)
+  - [IcebergServer](#icebergserver)
   - [ImpalaServer](#impalaserver)
   - [InformixServer](#informixserver)
+  - [IngresServer](#ingresserver)
   - [KafkaServer](#kafkaserver)
   - [KinesisServer](#kinesisserver)
   - [LocalServer](#localserver)
   - [MySqlServer](#mysqlserver)
   - [OracleServer](#oracleserver)
+  - [PoetServer](#poetserver)
   - [PostgresServer](#postgresserver)
   - [PrestoServer](#prestoserver)
   - [PubSubServer](#pubsubserver)
@@ -81,7 +86,10 @@
   - [SnowflakeServer](#snowflakeserver)
   - [SqlserverServer](#sqlserverserver)
   - [SynapseServer](#synapseserver)
+  - [TeradataServer](#teradataserver)
   - [TrinoServer](#trinoserver)
+  - [VectorwiseServer](#vectorwiseserver)
+  - [VersantServer](#versantserver)
   - [VerticaServer](#verticaserver)
   - [ZenServer](#zenserver)
 
@@ -1528,6 +1536,7 @@ API Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1540,6 +1549,7 @@ API Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|The URL to the API.<br />Examples: "https://api.example.com/v1"||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -1551,7 +1561,7 @@ API Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1573,6 +1583,7 @@ AWS Athena Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Identify the name of the Data Source, also referred to as a Catalog.|"awsdatacatalog"|
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1585,6 +1596,7 @@ AWS Athena Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -1596,7 +1608,7 @@ AWS Athena Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Optional since ODCS v3.2.0: a workgroup can set the result location instead.<br />Examples: "s3://my_storage_account_name/my_container/path"||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|The Athena workgroup that runs the queries; it may define the query result location.<br />Examples: "primary", "analytics"||
 #### Examples
@@ -1620,6 +1632,7 @@ Azure Blob Storage Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1632,6 +1645,7 @@ Azure Blob Storage Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -1643,7 +1657,7 @@ Azure Blob Storage Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 ### BaseServer
@@ -1670,6 +1684,7 @@ Google BigQuery Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|The GCP dataset name.||
@@ -1682,6 +1697,7 @@ Google BigQuery Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|The GCP project name.||
@@ -1693,7 +1709,7 @@ Google BigQuery Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1716,6 +1732,7 @@ ClickHouse Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1728,6 +1745,7 @@ ClickHouse Server.
 |**host**|str|The host of the ClickHouse server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the ClickHouse server.||
 |**project**|str|Project name.||
@@ -1739,7 +1757,7 @@ ClickHouse Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1763,6 +1781,7 @@ Defines the CustomServer source with all properties shared by all types of sourc
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1775,6 +1794,7 @@ Defines the CustomServer source with all properties shared by all types of sourc
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -1798,6 +1818,7 @@ Databricks Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|The name of the Hive or Unity catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1810,6 +1831,7 @@ Databricks Server.
 |**host**|str|The Databricks host.<br />Examples: "dbc-abcdefgh-1234.cloud.databricks.com"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -1821,7 +1843,7 @@ Databricks Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1845,6 +1867,7 @@ Denodo Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1857,6 +1880,7 @@ Denodo Server.
 |**host**|str|The host of the Denodo server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the Denodo server.||
 |**project**|str|Project name.||
@@ -1868,7 +1892,7 @@ Denodo Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1892,6 +1916,7 @@ Dremio Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -1904,6 +1929,7 @@ Dremio Server.
 |**host**|str|The host of the Dremio server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the Dremio server.||
 |**project**|str|Project name.||
@@ -1915,7 +1941,7 @@ Dremio Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1939,6 +1965,7 @@ DuckDB Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Path to duckdb database file.||
 |**dataset**|str|Name of the dataset.||
@@ -1951,6 +1978,7 @@ DuckDB Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -1962,7 +1990,7 @@ DuckDB Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -1972,6 +2000,54 @@ duckdb = DuckdbServer {
     server = "duckdb-local"
     database = "/data/sales.duckdb"
     $schema = "main"
+}
+```
+
+### ExasolServer
+
+Exasol Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host of the Exasol server. May be a cluster connection range.<br />Examples: "exasol.acme.com", "n11..14.acme.com"||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Port of the Exasol server.|8563|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+exasol = ExasolServer {
+    server = "exasol-analytics"
+    host = "exasol.acme.com"
+    $schema = "sales"
 }
 ```
 
@@ -1985,6 +2061,7 @@ AWS Glue Server.
 | --- | --- | --- | --- |
 |**account**|str|The AWS Glue account.<br />Examples: "1234-5678-9012"||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The AWS Glue database name.<br />Examples: "my_database"||
 |**dataset**|str|Name of the dataset.||
@@ -1997,6 +2074,7 @@ AWS Glue Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|The AWS S3 path. Must be in the form of a URL.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}"||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2008,7 +2086,7 @@ AWS Glue Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2033,6 +2111,7 @@ Google Cloud Sql Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2045,6 +2124,7 @@ Google Cloud Sql Server.
 |**host**|str|The host of the Google Cloud Sql server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the Google Cloud Sql server.||
 |**project**|str|Project name.||
@@ -2056,7 +2136,7 @@ Google Cloud Sql Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2071,6 +2151,56 @@ cloudsql = GoogleCloudSqlServer {
 }
 ```
 
+### HanaServer
+
+SAP HANA Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database (tenant).||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host of the HANA server.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Port of the HANA server.||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+hana = HanaServer {
+    server = "hana-erp"
+    host = "hana.acme.com"
+    port = 30015
+    database = "HXE"
+    $schema = "SALES"
+}
+```
+
 ### HiveServer
 
 Apache Hive Server.
@@ -2081,6 +2211,7 @@ Apache Hive Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the Hive database.||
 |**dataset**|str|Name of the dataset.||
@@ -2093,6 +2224,7 @@ Apache Hive Server.
 |**host**|str|The host to the Hive server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the Hive server.|10000|
 |**project**|str|Project name.||
@@ -2104,7 +2236,7 @@ Apache Hive Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2127,6 +2259,7 @@ IBM DB2 Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2139,6 +2272,7 @@ IBM DB2 Server.
 |**host**|str|The host of the IBM DB2 server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the IBM DB2 server.||
 |**project**|str|Project name.||
@@ -2150,7 +2284,7 @@ IBM DB2 Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2165,6 +2299,56 @@ db2 = IBMDB2Server {
 }
 ```
 
+### IcebergServer
+
+Apache Iceberg REST catalog.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Catalog name as registered in the query engine or catalog service.<br />Examples: "my_catalog"||
+|**catalogUrl**|str|URL of the Iceberg compatible REST catalog service (Polaris, S3 Tables, Nessie, Unity Catalog, Glue, etc.).<br />Examples: "https://my-catalog-service.com"||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host name or IP address.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace or schema path within the catalog.<br />Examples: "db.schema", "db"||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Logical catalog or base location for the catalog to use.<br />Examples: "s3://my-bucket/warehouse/sales/", "production"||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+iceberg = IcebergServer {
+    server = "iceberg-lakehouse"
+    catalog = "sales_catalog"
+    catalogUrl = "https://polaris.acme.com/api/catalog"
+    namespace = "sales.orders"
+    warehouse = "s3://acme-lake/warehouse/sales/"
+}
+```
+
 ### ImpalaServer
 
 Apache Impala Server.
@@ -2175,6 +2359,7 @@ Apache Impala Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the Impala database.||
 |**dataset**|str|Name of the dataset.||
@@ -2187,6 +2372,7 @@ Apache Impala Server.
 |**host**|str|The host to the Impala server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the Impala server.|21050|
 |**project**|str|Project name.||
@@ -2198,7 +2384,7 @@ Apache Impala Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2221,6 +2407,7 @@ IBM Informix Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2233,6 +2420,7 @@ IBM Informix Server.
 |**host**|str|The host to the Informix server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the Informix server.|9088|
 |**project**|str|Project name.||
@@ -2244,7 +2432,7 @@ IBM Informix Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2253,6 +2441,54 @@ IBM Informix Server.
 informix = InformixServer {
     server = "informix-sales"
     host = "informix.acme.internal"
+    database = "sales"
+}
+```
+
+### IngresServer
+
+Actian Ingres Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Database name to connect to on the Ingres instance.<br />Examples: "sales"||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Hostname or IP address of the Ingres server.<br />Examples: "ingres.acme.com"||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Connection port for the Ingres Data Access Server (DAS) / SQL connections.|21064|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+ingres = IngresServer {
+    server = "ingres-sales"
+    host = "ingres.acme.com"
     database = "sales"
 }
 ```
@@ -2267,6 +2503,7 @@ Apache Kafka Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2279,6 +2516,7 @@ Apache Kafka Server.
 |**host**|str|The bootstrap server of the kafka cluster.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2290,7 +2528,7 @@ Apache Kafka Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 ### KinesisServer
@@ -2303,6 +2541,7 @@ AWS Kinesis Data Streams Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2315,6 +2554,7 @@ AWS Kinesis Data Streams Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2326,7 +2566,7 @@ AWS Kinesis Data Streams Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|The name of the Kinesis data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2350,6 +2590,7 @@ Local File Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2362,6 +2603,7 @@ Local File Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|The relative or absolute path to the data file(s).<br />Examples: "./folder/data.parquet", "./folder/*.parquet"||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2373,7 +2615,7 @@ Local File Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2396,6 +2638,7 @@ MySQL Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2408,6 +2651,7 @@ MySQL Server.
 |**host**|str|The host of the MySql server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the MySql server.||
 |**project**|str|Project name.||
@@ -2419,7 +2663,7 @@ MySQL Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2443,6 +2687,7 @@ Oracle Database Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2455,6 +2700,7 @@ Oracle Database Server.
 |**host**|str|The host to the oracle server.<br />Examples: "localhost"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the oracle server.<br />Examples: "1523"||
 |**project**|str|Project name.||
@@ -2466,7 +2712,7 @@ Oracle Database Server.
 |**serviceName**|str|The name of the service.<br />Examples: "service"||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2480,6 +2726,54 @@ oracle = OracleServer {
 }
 ```
 
+### PoetServer
+
+Actian NoSQL FastObjects (POET) Server. `type: fastobjects` is a synonym validated by the same rule.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Database name to connect to on the FastObjects instance.<br />Examples: "parts_catalog"||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Hostname or IP address of the FastObjects server. The literal LOCAL selects the in-process embedded engine.<br />Examples: "LOCAL", "fastobjects02.acme.com"|"LOCAL"|
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Connection port for FastObjects connections.|6001|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+poet = PoetServer {
+    server = "poet-parts"
+    database = "parts_catalog"
+    host = "fastobjects02.acme.com"
+}
+```
+
 ### PostgresServer
 
 PostgreSQL Server.
@@ -2490,6 +2784,7 @@ PostgreSQL Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2502,6 +2797,7 @@ PostgreSQL Server.
 |**host**|str|The host to the Postgres server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the Postgres server.||
 |**project**|str|Project name.||
@@ -2513,7 +2809,7 @@ PostgreSQL Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2538,6 +2834,7 @@ Presto Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|The name of the catalog.<br />Examples: "postgres"||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2550,6 +2847,7 @@ Presto Server.
 |**host**|str|The host to the Presto server.<br />Examples: "localhost:8080"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2561,7 +2859,7 @@ Presto Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2585,6 +2883,7 @@ Google Cloud Pub/Sub Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2597,6 +2896,7 @@ Google Cloud Pub/Sub Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|The GCP project name.||
@@ -2608,7 +2908,7 @@ Google Cloud Pub/Sub Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2630,6 +2930,7 @@ Amazon Redshift Server.
 | --- | --- | --- | --- |
 |**account**|str|The account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2642,6 +2943,7 @@ Amazon Redshift Server.
 |**host**|str|An optional string describing the server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2653,7 +2955,7 @@ Amazon Redshift Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2678,6 +2980,7 @@ Amazon S3 Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2690,6 +2993,7 @@ Amazon S3 Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|S3 URL, starting with `s3://`.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}/*.json"||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2701,7 +3005,7 @@ Amazon S3 Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2724,6 +3028,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2736,6 +3041,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2747,7 +3053,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2783,6 +3089,7 @@ SFTP Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2795,6 +3102,7 @@ SFTP Server.
 |**host**|str|Host name or IP address.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|SFTP URL, starting with `sftp://`.<br />Examples: "sftp://123.123.12.123/{model}/*.json"||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
@@ -2806,7 +3114,7 @@ SFTP Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2831,6 +3139,7 @@ Snowflake Data Warehouse Server.
 | --- | --- | --- | --- |
 |**account**|str|The Snowflake account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2843,6 +3152,7 @@ Snowflake Data Warehouse Server.
 |**host**|str|The host to the Snowflake server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the Snowflake server.||
 |**project**|str|Project name.||
@@ -2854,7 +3164,7 @@ Snowflake Data Warehouse Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|The name of the cluster of resources that is a Snowflake virtual warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2879,6 +3189,7 @@ Microsoft SQL Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.<br />Examples: "database"||
 |**dataset**|str|Name of the dataset.||
@@ -2891,6 +3202,7 @@ Microsoft SQL Server.
 |**host**|str|The host to the database server.<br />Examples: "localhost"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port to the database server.<br />Examples: "1433"|1433|
 |**project**|str|Project name.||
@@ -2902,7 +3214,7 @@ Microsoft SQL Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2926,6 +3238,7 @@ Azure Synapse Analytics Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2938,6 +3251,7 @@ Azure Synapse Analytics Server.
 |**host**|str|The host of the Synapse server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the Synapse server.||
 |**project**|str|Project name.||
@@ -2949,7 +3263,7 @@ Azure Synapse Analytics Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -2959,6 +3273,54 @@ synapse = SynapseServer {
     server = "synapse-sales"
     host = "acme.sql.azuresynapse.net"
     port = 1433
+    database = "sales"
+}
+```
+
+### TeradataServer
+
+Teradata Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Name of the database.||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Host of the Teradata server.<br />Examples: "teradata.acme.com"||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Port of the Teradata server.|1025|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+teradata = TeradataServer {
+    server = "teradata-edw"
+    host = "teradata.acme.com"
     database = "sales"
 }
 ```
@@ -2973,6 +3335,7 @@ Trino Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|The name of the catalog.<br />Examples: "hive"||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -2985,6 +3348,7 @@ Trino Server.
 |**host**|str|The Trino host URL.<br />Examples: "localhost"||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The Trino port.||
 |**project**|str|Project name.||
@@ -2996,7 +3360,7 @@ Trino Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -3011,6 +3375,102 @@ trino = TrinoServer {
 }
 ```
 
+### VectorwiseServer
+
+Actian Vector (Vectorwise) Analytics Engine Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Database name to connect to on the Analytics Engine server.<br />Examples: "warehouse"||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Hostname or IP address of the Analytics Engine server.<br />Examples: "analytics.acme.com"||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Connection port for the Data Access Server (DAS) / SQL connections.|21064|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+vectorwise = VectorwiseServer {
+    server = "vectorwise-analytics"
+    host = "analytics.acme.com"
+    database = "warehouse"
+}
+```
+
+### VersantServer
+
+Actian NoSQL Database (Versant) Server.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**account**|str|Account used by the server.||
+|**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**database**|str|Database name to connect to on the NoSQL Database instance.<br />Examples: "policies"||
+|**dataset**|str|Name of the dataset.||
+|**delimiter**|str|Delimiter.||
+|**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
+|**endpointUrl**|str|Server endpoint.||
+|**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
+|**format**|str|File format.||
+|**host**|str|Hostname or IP address of the NoSQL Database server.<br />Examples: "nosql.acme.com"|"localhost"|
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
+|**path**|str|Relative or absolute path to the data file(s).||
+|**port**|int \| str|Connection port for Actian NoSQL Database connections.|5019|
+|**project**|str|Project name.||
+|**region**|str|Cloud region.||
+|**regionName**|str|Region name.||
+|**roles**|[[Role](#role)]|List of roles that have access to the server.||
+|**schema**|str|Name of the schema.||
+|**server** `required`|str|Identifier of the server.||
+|**serviceName**|str|Name of the service.||
+|**stagingDir**|str|Staging directory.||
+|**stream**|str|Name of the data stream.||
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+versant = VersantServer {
+    server = "versant-policies"
+    database = "policies"
+    host = "nosql.acme.com"
+}
+```
+
 ### VerticaServer
 
 Vertica Database Server.
@@ -3021,6 +3481,7 @@ Vertica Database Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|The name of the database.||
 |**dataset**|str|Name of the dataset.||
@@ -3033,6 +3494,7 @@ Vertica Database Server.
 |**host**|str|The host of the Vertica server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|The port of the Vertica server.||
 |**project**|str|Project name.||
@@ -3044,7 +3506,7 @@ Vertica Database Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
@@ -3061,7 +3523,7 @@ vertica = VerticaServer {
 
 ### ZenServer
 
-Zen Server.
+Actian Zen (formerly Btrieve) Server. `type: btrieve` is a synonym validated by the same rule.
 
 #### Attributes
 
@@ -3069,6 +3531,7 @@ Zen Server.
 | --- | --- | --- | --- |
 |**account**|str|Account used by the server.||
 |**catalog**|str|Name of the catalog.||
+|**catalogUrl**|str|URL of an Iceberg REST catalog service. Only valid for iceberg servers.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Database name to connect to on the Zen server.||
 |**dataset**|str|Name of the dataset.||
@@ -3081,6 +3544,7 @@ Zen Server.
 |**host**|str|Hostname or IP address of the Zen server.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
+|**namespace**|str|Dot-separated namespace within an Iceberg catalog. Only valid for iceberg servers.||
 |**path**|str|Relative or absolute path to the data file(s).||
 |**port**|int \| str|Zen server SQL connections port.|1583|
 |**project**|str|Project name.||
@@ -3092,7 +3556,7 @@ Zen Server.
 |**serviceName**|str|Name of the service.||
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
-|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
+|**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "btrieve" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "exasol" \| "fastobjects" \| "glue" \| "hana" \| "cloudsql" \| "db2" \| "hive" \| "iceberg" \| "impala" \| "informix" \| "ingres" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "poet" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "teradata" \| "trino" \| "vectorwise" \| "versant" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
 |**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples

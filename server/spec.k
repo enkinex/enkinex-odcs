@@ -3,7 +3,7 @@ import .custom as custom_server
 # Re-exported for the typed servers, which import this module only.
 type Port = custom_server.Port
 
-type ServerSourceType = "api" | "athena" | "azure" | "bigquery" | "clickhouse" | "databricks" | "denodo" | "dremio" | "duckdb" | "glue" | "cloudsql" | "db2" | "hive" | "impala" | "informix" | "kafka" | "kinesis" | "local" | "mysql" | "oracle" | "postgresql" | "postgres" | "presto" | "pubsub" | "redshift" | "s3" | "sftp" | "snowflake" | "sqlserver" | "synapse" | "trino" | "vertica" | "zen" | "custom"
+type ServerSourceType = "api" | "athena" | "azure" | "bigquery" | "btrieve" | "clickhouse" | "databricks" | "denodo" | "dremio" | "duckdb" | "exasol" | "fastobjects" | "glue" | "hana" | "cloudsql" | "db2" | "hive" | "iceberg" | "impala" | "informix" | "ingres" | "kafka" | "kinesis" | "local" | "mysql" | "oracle" | "poet" | "postgresql" | "postgres" | "presto" | "pubsub" | "redshift" | "s3" | "sftp" | "snowflake" | "sqlserver" | "synapse" | "teradata" | "trino" | "vectorwise" | "versant" | "vertica" | "zen" | "custom"
 
 schema Server(custom_server.CustomServer):
     """
@@ -68,6 +68,16 @@ schema Server(custom_server.CustomServer):
         $type != "synapse" or (host != Undefined and port != Undefined and database != Undefined), "synapse server requires 'host', 'port' and 'database'"
         $type != "trino" or (host != Undefined and port != Undefined and catalog != Undefined and $schema != Undefined), "trino server requires 'host', 'port', 'catalog' and 'schema'"
         $type != "vertica" or (host != Undefined and port != Undefined and database != Undefined and $schema != Undefined), "vertica server requires 'host', 'port', 'database' and 'schema'"
-        $type != "zen" or (host != Undefined and database != Undefined), "zen server requires 'host' and 'database'"
+        $type not in ["zen", "btrieve"] or (host != Undefined and database != Undefined), "zen server requires 'host' and 'database'"
+        $type != "exasol" or host != Undefined, "exasol server requires 'host'"
+        $type != "hana" or host != Undefined, "hana server requires 'host'"
+        $type != "iceberg" or (catalog != Undefined and catalogUrl != Undefined), "iceberg server requires 'catalog' and 'catalogUrl'"
+        $type != "ingres" or (host != Undefined and database != Undefined), "ingres server requires 'host' and 'database'"
+        $type not in ["poet", "fastobjects"] or database != Undefined, "poet server requires 'database'"
+        $type != "teradata" or host != Undefined, "teradata server requires 'host'"
+        $type != "vectorwise" or (host != Undefined and database != Undefined), "vectorwise server requires 'host' and 'database'"
+        $type != "versant" or database != Undefined, "versant server requires 'database'"
         # Fields the JSON allows on one type only, while the KCL superset declares them for parsing (D12).
         workgroup == Undefined or $type == "athena", "'workgroup' is only valid for athena servers"
+        catalogUrl == Undefined or $type == "iceberg", "'catalogUrl' is only valid for iceberg servers"
+        namespace == Undefined or $type == "iceberg", "'namespace' is only valid for iceberg servers"

@@ -25,6 +25,7 @@
   - [CustomProperty](#customproperty)
   - [Customizable](#customizable)
   - [StableId](#stableid)
+  - [StableIdAuthoritativeCustomizable](#stableidauthoritativecustomizable)
   - [StableIdCustomizable](#stableidcustomizable)
   - [StableIdDiscoverable](#stableiddiscoverable)
   - [TagsDiscoverable](#tagsdiscoverable)
@@ -772,7 +773,7 @@ Authoritative Definitions are an essential part of the contract. They allow to d
 | --- | --- | --- | --- |
 |**description**|str|Optional description.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
-|**type** `required`|str|Type of definition for authority.<br />At the root level, a type can also be canonicalUrl to indicate a reference to the data contract&#39;s latest version.<br />Examples: "businessDefinition", "transformationImplementation", "videoTutorial", "tutorial", "implementation".||
+|**type** `required`|str|Type of definition for authority.<br />At the root level, a type can also be canonicalUrl to indicate a reference to the data contract&#39;s latest version.<br />Examples: "businessDefinition", "canonicalUrl", "glossary", "implementation", "ontology", "taxonomy",<br />"transformationImplementation", "tutorial", "videoTutorial".||
 |**url** `required`|str|URL to the authority.||
 #### Examples
 
@@ -808,6 +809,7 @@ This section covers custom properties you can use to add non-standard properties
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**property** `required`|str|The name of the key.||
 |**value** `required`|any|The value of the key. It can be an array.||
+|**vendor**|str|The vendor, provider, or external system associated with this custom property (RFC 0035).<br />SHOULD be a stable lowercase identifier matching ^[a-z0-9][a-z0-9-]*$; not enforced,<br />because tools MUST preserve unknown vendor values.<br />Examples: "confluent", "zeenea", "atlan", "soda".||
 #### Examples
 
 ```
@@ -822,6 +824,12 @@ dnsOptions = CustomProperty {
     property = "clusterDnsOptions"
     value = [ "1.1.1.1", "8.8.8.8" ]
     description = "Cluster DNS options"
+}
+
+schemaRegistrySubject = CustomProperty {
+    property = "schemaRegistrySubject"
+    value = "orders-value"
+    vendor = "confluent"
 }
 ```
 
@@ -843,6 +851,17 @@ Base object carrying the optional stable `id` property.
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+### StableIdAuthoritativeCustomizable
+
+Base object carrying the optional stable `id`, `customProperties` and `authoritativeDefinitions` properties. The id-bearing counterpart of `AuthoritativeCustomizable`: what an element needs to be described and extended, without tags.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 ### StableIdCustomizable
 
 Base object carrying the optional stable `id` and `customProperties` properties.
@@ -855,7 +874,7 @@ Base object carrying the optional stable `id` and `customProperties` properties.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 ### StableIdDiscoverable
 
-Base object carrying the optional properties shared by discoverable elements with an stable &#39;id&#39;.
+Base object carrying the optional properties shared by discoverable elements with a stable &#39;id&#39;. Inherited via StableIdAuthoritativeCustomizable: id, customProperties, authoritativeDefinitions.
 
 #### Attributes
 
@@ -867,7 +886,7 @@ Base object carrying the optional properties shared by discoverable elements wit
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### TagsDiscoverable
 
-Base object carrying the optional properties shared by discoverable elements.
+Base object carrying the optional properties shared by discoverable elements without a stable &#39;id&#39;. Inherited via AuthoritativeCustomizable: customProperties, authoritativeDefinitions.
 
 #### Attributes
 
@@ -929,12 +948,14 @@ price = Pricing {
 
 ### ServiceLevelAgreement
 
-This section describes the service-level agreements (SLA).
+This section describes the service-level agreements (SLA). Inherited via StableIdAuthoritativeCustomizable: id, customProperties, authoritativeDefinitions (RFC 0046).
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the SLA for humans.||
 |**driver**|"regulatory" \| "analytics" \| "operational"|Describes the importance of the SLA.<br />One of "regulatory", "analytics", "operational".||
 |**element**|str|Element(s) to check on.<br />Multiple elements should be extremely rare and, if so, separated by commas.||
@@ -979,6 +1000,24 @@ analytics = ServiceLevelAgreement {
     value = "08:00-08:00"
     element = "tab1.txn_ref_dt"
     driver = "analytics"
+}
+
+availabilityWithPolicy = ServiceLevelAgreement {
+    property = "availability"
+    value = 99.9
+    unit = "%"
+    authoritativeDefinitions = [
+        AuthoritativeDefinition {
+            url = "https://wiki.acme.com/sla/availability"
+            $type = "businessDefinition"
+        }
+    ]
+    customProperties = [
+        CustomProperty {
+            property = "alertPolicyId"
+            value = "pol-123"
+        }
+    ]
 }
 ```
 

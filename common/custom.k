@@ -35,3 +35,16 @@ schema StableIdCustomizable(id.StableId):
         A list of key/value pairs for custom properties.
     """
     customProperties?: [property.CustomProperty]
+
+schema StableIdAuthoritativeCustomizable(StableIdCustomizable):
+    """
+    Base object carrying the optional stable `id`, `customProperties` and `authoritativeDefinitions` properties.
+    The id-bearing counterpart of `AuthoritativeCustomizable`: what an element needs to be described and extended, without tags.
+
+    Attributes
+    ----------
+    authoritativeDefinitions: [authoritative.AuthoritativeDefinition], default is Undefined, optional.
+        List of links to sources that provide more details on the element.
+        Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.
+    """
+    authoritativeDefinitions?: [authoritative.AuthoritativeDefinition]

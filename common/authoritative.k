@@ -11,7 +11,8 @@ schema AuthoritativeDefinition(id.StableId):
     type: str, default is Undefined, required.
         Type of definition for authority.
         At the root level, a type can also be canonicalUrl to indicate a reference to the data contract's latest version.
-        Examples: "businessDefinition", "transformationImplementation", "videoTutorial", "tutorial", "implementation".
+        Examples: "businessDefinition", "canonicalUrl", "glossary", "implementation", "ontology", "taxonomy",
+        "transformationImplementation", "tutorial", "videoTutorial".
     url: str, default is Undefined, required.
         URL to the authority.
     description: str, default is Undefined, optional.

@@ -94,8 +94,7 @@
 - test: server-missing-required-fields.odcs.yaml
   expect: attribute 'server' of Server is required
 - test: sla-authoritativedefinition-missing-type.odcs.yaml
-  expect: of AuthoritativeDefinition is required
-  pending: ODCS-05
+  expect: attribute 'type' of AuthoritativeDefinition is required
 - test: sla-missing-required-value.odcs.yaml
   expect: value cannot be Undefined
 - test: stable-id-denied-characters.odcs.yaml
@@ -116,7 +115,6 @@
   pending: ODCS-11
 - test: vendor-wrong-type.odcs.yaml
   expect: got int(12345)
-  pending: ODCS-05
 - test: versant-missing-database.odcs.yaml
   expect: versant server requires 'database'
   pending: ODCS-11

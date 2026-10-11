@@ -17,8 +17,6 @@
   reason: ODCS-08
 - example: all/postgresql-adventureworks-contract.odcs.yaml
   reason: ODCS-07
-- example: custom-other-properties/vendor.odcs.yaml
-  reason: ODCS-05
 - example: data-types/all-data-types.odcs.yaml
   reason: ODCS-07
 - example: fundamentals/table-column-description.odcs.yaml
@@ -87,8 +85,6 @@
 - example: sla/database-table-sla.odcs.yaml
   reason: D5, the deprecated dataProduct is omitted
   normalize: [dataProduct]
-- example: sla/sla-extensions.odcs.yaml
-  reason: ODCS-05
 - example: stakeholders/basic-four-dpo.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]

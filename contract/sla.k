@@ -1,10 +1,11 @@
-import ..common.id
+import ..common.custom
 
 type SlaDriver = "regulatory" | "analytics" | "operational"
 
-schema ServiceLevelAgreement(id.StableId):
+schema ServiceLevelAgreement(custom.StableIdAuthoritativeCustomizable):
     """
     This section describes the service-level agreements (SLA).
+    Inherited via StableIdAuthoritativeCustomizable: id, customProperties, authoritativeDefinitions (RFC 0046).
 
     Attributes
     ----------
@@ -67,6 +68,24 @@ schema ServiceLevelAgreement(id.StableId):
         value = "08:00-08:00"
         element = "tab1.txn_ref_dt"
         driver = "analytics"
+    }
+
+    availabilityWithPolicy = ServiceLevelAgreement {
+        property = "availability"
+        value = 99.9
+        unit = "%"
+        authoritativeDefinitions = [
+            AuthoritativeDefinition {
+                url = "https://wiki.acme.com/sla/availability"
+                $type = "businessDefinition"
+            }
+        ]
+        customProperties = [
+            CustomProperty {
+                property = "alertPolicyId"
+                value = "pol-123"
+            }
+        ]
     }
     """
     property: str

@@ -16,6 +16,7 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 | [`common/custom.k`](../../common/custom.k)               | `Customizable`              | `$defs/CustomProperties` (array wrapper)                                                   |
 | [`common/custom.k`](../../common/custom.k)               | `AuthoritativeCustomizable` | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`                                 |
 | [`common/custom.k`](../../common/custom.k)               | `StableIdCustomizable`      | `$defs/StableId`, `$defs/CustomProperties`                                                 |
+| [`common/custom.k`](../../common/custom.k)               | `StableIdAuthoritativeCustomizable` | `$defs/StableId`, `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`       |
 | [`common/discovery.k`](../../common/discovery.k)         | `StableIdDiscoverable`      | `$defs/StableId`, `$defs/CustomProperties`, `$defs/Tags`, `$defs/AuthoritativeDefinitions` |
 | [`common/discovery.k`](../../common/discovery.k)         | `TagsDiscoverable`          | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`, `$defs/Tags`                   |
 
@@ -31,16 +32,39 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 
 ### Two parallel inheritance chains, forked over the stable `id`
 
-- KCL allows a single base class per schema, so the shared concerns are arranged as two supersets:
+- KCL allows a single base class per schema, so the shared concerns are arranged as two symmetric chains, each node
+  adding one attribute:
     - **id-bearing:** `StableId (id?)` → `StableIdCustomizable (+customProperties?)` →
-      `StableIdDiscoverable (+tags?, +authoritativeDefinitions?)`.
+      `StableIdAuthoritativeCustomizable (+authoritativeDefinitions?)` → `StableIdDiscoverable (+tags?)`.
     - **no-id:** `Customizable (customProperties?)` → `AuthoritativeCustomizable (+authoritativeDefinitions?)` →
       `TagsDiscoverable (+tags?)`.
+- `StableIdAuthoritativeCustomizable` arrived with ODCS v3.2.0, whose SLA entries (RFC 0046) need an id,
+  `customProperties` and `authoritativeDefinitions` but no `tags`. `StableIdDiscoverable` now inherits
+  `authoritativeDefinitions` instead of declaring it, so every schema below it keeps the same attributes.
+
+```mermaid
+flowchart TB
+  subgraph idb["id-bearing chain"]
+    SI["StableId<br/>id?"] --> SIC["StableIdCustomizable<br/>+customProperties?"]
+    SIC --> SIAC["StableIdAuthoritativeCustomizable<br/>+authoritativeDefinitions?"]
+    SIAC --> SID["StableIdDiscoverable<br/>+tags?"]
+  end
+  subgraph noid["no-id chain"]
+    C["Customizable<br/>customProperties?"] --> AC["AuthoritativeCustomizable<br/>+authoritativeDefinitions?"]
+    AC --> TD["TagsDiscoverable<br/>+tags?"]
+  end
+  SI -.-> CustomProperty & AuthoritativeDefinition & Pricing
+  SIC -.-> Support & Role & BaseServer & RelationshipBase
+  SIAC -.-> ServiceLevelAgreement
+  SID -.-> SchemaElement & TeamMember & Team & DataQualityOperators
+  AC -.-> Description
+  TD -.-> DataContract
+```
 
 ### Deliberate, minimal duplication
 
-- `customProperties` is declared on both `Customizable` and `StableIdCustomizable` (and `tags` on both discoverable
-  tails) because the two chains cannot share a node without multiple inheritance.
+- `customProperties`, `authoritativeDefinitions` and `tags` are each declared once per chain because the two chains
+  cannot share a node without multiple inheritance.
 - This is one-attribute duplication and the accepted cost of serving both the "has stable id" and "free/no id" families
   through inheritance.
 
@@ -48,6 +72,11 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 
 - `CustomProperty` / `AuthoritativeDefinition` are the item objects.
 - The `customProperties` / `authoritativeDefinitions` *arrays* live on the base classes above.
+
+### `CustomProperty.vendor` is free text
+
+- RFC 0035 adds `vendor`, which SHOULD match `^[a-z0-9][a-z0-9-]*$` but MUST be preserved when unknown. The library
+  types it as `str` and adds no pattern check, so `Unknown-Vendor` validates while a non-string is rejected.
 
 ### Guarded `StableId.id` regex
 

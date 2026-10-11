@@ -30,6 +30,18 @@ slaProperties:
   - property: latency
     value: 4
 
+  # RFC 0046: SLA entries carry authoritativeDefinitions and customProperties
+  - id: sla_availability
+    property: availability
+    value: 99.5
+    unit: "%"
+    authoritativeDefinitions:
+      - type: businessDefinition
+        url: https://enkinex.org/sla/availability
+    customProperties:
+      - property: alertPolicyId
+        value: pol-123
+
   - id: sla_retention
     property: retention
     value: 3

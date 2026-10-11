@@ -44,6 +44,11 @@ customProperties:
     property: documentedValue
     value: carries an id and a description
     description: Complete CustomProperty with every optional field set.
+    vendor: enkinex
+  # RFC 0035: vendor is free text; tools must preserve values outside the lowercase convention
+  - property: catalogAssetId
+    value: asset-42
+    vendor: Unknown-Vendor
 
 # Description exercises the no-id AuthoritativeCustomizable base
 description:

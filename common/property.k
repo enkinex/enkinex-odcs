@@ -13,6 +13,11 @@ schema CustomProperty(id.StableId):
         The value of the key. It can be an array.
     description: str, default is Undefined, optional.
         Description for humans.
+    vendor: str, default is Undefined, optional.
+        The vendor, provider, or external system associated with this custom property (RFC 0035).
+        SHOULD be a stable lowercase identifier matching ^[a-z0-9][a-z0-9-]*$; not enforced,
+        because tools MUST preserve unknown vendor values.
+        Examples: "confluent", "zeenea", "atlan", "soda".
 
     Examples
     --------
@@ -28,7 +33,14 @@ schema CustomProperty(id.StableId):
         value = [ "1.1.1.1", "8.8.8.8" ]
         description = "Cluster DNS options"
     }
+
+    schemaRegistrySubject = CustomProperty {
+        property = "schemaRegistrySubject"
+        value = "orders-value"
+        vendor = "confluent"
+    }
     """
     property: str
     value: any
     description?: str
+    vendor?: str

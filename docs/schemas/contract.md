@@ -27,8 +27,10 @@ service-level agreements, and support channels.
 
 - Each schema extends the appropriate `common` base rather than re-declaring shared fields:
     - `Description` → `AuthoritativeCustomizable` (gets `authoritativeDefinitions` + `customProperties`, no `id`).
-    - `Pricing` and `ServiceLevelAgreement` → `StableId` (get the optional stable `id`).
+    - `Pricing` → `StableId` (gets the optional stable `id`).
     - `Support` → `StableIdCustomizable` (gets `id` + `customProperties`).
+    - `ServiceLevelAgreement` → `StableIdAuthoritativeCustomizable` (gets `id` + `customProperties` +
+      `authoritativeDefinitions`, RFC 0046). It extended `StableId` until ODCS v3.2.0.
 
 ### Closed enums where ODCS closes them
 

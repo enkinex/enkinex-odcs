@@ -1,6 +1,7 @@
 import regex
 
 import ..common.discovery
+import ..common.variable
 
 isoDatePattern = r"^\d{4}-\d{2}-\d{2}$"
 
@@ -20,8 +21,10 @@ schema TeamMember(discovery.StableIdDiscoverable):
         The user's job role; Examples might be owner, data steward. There is no limit on the role.
     dateIn: str, default is Undefined, optional.
         The date when the user joined the team.
+        ISO-8601 date (YYYY-MM-DD), or a whole variable reference (RFC 0050).
     dateOut: str, default is Undefined, optional.
         The date when the user ceased to be part of the team.
+        ISO-8601 date (YYYY-MM-DD), or a whole variable reference (RFC 0050).
     replacedByUsername: str, default is Undefined, optional.
         The username of the user who replaced the previous user.
     """
@@ -34,8 +37,8 @@ schema TeamMember(discovery.StableIdDiscoverable):
     replacedByUsername?: str
 
     check:
-        regex.match(dateIn, isoDatePattern) if dateIn, "dateIn must be an ISO-8601 date (YYYY-MM-DD)"
-        regex.match(dateOut, isoDatePattern) if dateOut, "dateOut must be an ISO-8601 date (YYYY-MM-DD)"
+        regex.match(dateIn, isoDatePattern) or variable.isVariable(dateIn) if dateIn, "dateIn must be an ISO-8601 date (YYYY-MM-DD) or a variable reference"
+        regex.match(dateOut, isoDatePattern) or variable.isVariable(dateOut) if dateOut, "dateOut must be an ISO-8601 date (YYYY-MM-DD) or a variable reference"
         replacedByUsername == Undefined or dateOut != Undefined, "dateOut should be set when replacedByUsername is provided"
 
 schema Team(discovery.StableIdDiscoverable):

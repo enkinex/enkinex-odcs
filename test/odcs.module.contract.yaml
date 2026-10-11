@@ -10,11 +10,12 @@ status: in development # open since ODCS v3.2.0: any string
 # Root fundamentals owned by odcs.k (optional metadata + ISO-8601 timestamp check)
 tenant: EnkinexOrg
 domain: sales
-contractCreatedTs: "2026-07-23T12:00:00Z"
+# RFC 0050: a whole variable reference passes the timestamp check, resolved downstream
+contractCreatedTs: ${CONTRACT_CREATED_AT}
 
 # Description with every direct field set
 description:
-  purpose: Curated sales orders for downstream analytics.
+  purpose: Curated sales orders for downstream analytics in ${ENVIRONMENT:-production}.
   limitations: Not suitable for real-time decisioning.
   usage: Refresh dashboards once a day, after the morning load.
 

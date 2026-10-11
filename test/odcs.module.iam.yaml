@@ -43,6 +43,11 @@ team:
         - property: onCall
           value: false
 
+    # Variable references (RFC 0050): string values resolved downstream; whole-value dates pass the date check
+    - username: ${ONCALL_USERNAME}
+      role: On-call Steward
+      dateIn: ${ONCALL_START_DATE}
+
 # Roles: minimal (role only) and complete (every optional field)
 roles:
   - role: sales_reader

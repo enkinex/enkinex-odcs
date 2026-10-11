@@ -107,7 +107,7 @@ schema:
 
       # sql rule: engine-agnostic query compared with an operator
       - type: sql
-        query: SELECT COUNT(*) FROM orders WHERE amount < 0
+        query: SELECT COUNT(*) FROM ${ORDERS_TABLE:-orders} WHERE amount < 0
         mustBe: 0
         description: No order may have a negative amount.
 

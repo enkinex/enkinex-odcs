@@ -90,7 +90,7 @@ A data contract defines the agreement between a data producer and consumers. Thi
 | --- | --- | --- | --- |
 |**apiVersion** `required` `readOnly`|"v3.2.0"|Version of the standard used to build data contract.<br />Only "v3.2.0" is accepted: install the library release tagged for another version.|"v3.2.0"|
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
-|**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.||
+|**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.<br />May also be a whole variable reference resolved by downstream tools (RFC 0050), e.g. "${CREATED_AT}".||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|[Description](#description)|Object containing the descriptions.||
 |**domain**|str|Name of the logical data domain.<br />Examples: "imdb_ds_aggregate", "receiver_profile_out", "transaction_profile_out"||
@@ -1158,8 +1158,8 @@ Team member.
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
-|**dateIn**|str|The date when the user joined the team.||
-|**dateOut**|str|The date when the user ceased to be part of the team.||
+|**dateIn**|str|The date when the user joined the team.<br />ISO-8601 date (YYYY-MM-DD), or a whole variable reference (RFC 0050).||
+|**dateOut**|str|The date when the user ceased to be part of the team.<br />ISO-8601 date (YYYY-MM-DD), or a whole variable reference (RFC 0050).||
 |**description**|str|The user&#39;s description.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**name**|str|The user&#39;s name.||

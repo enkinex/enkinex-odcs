@@ -19,6 +19,7 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 | [`common/custom.k`](../../common/custom.k)               | `StableIdAuthoritativeCustomizable` | `$defs/StableId`, `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`       |
 | [`common/discovery.k`](../../common/discovery.k)         | `StableIdDiscoverable`      | `$defs/StableId`, `$defs/CustomProperties`, `$defs/Tags`, `$defs/AuthoritativeDefinitions` |
 | [`common/discovery.k`](../../common/discovery.k)         | `TagsDiscoverable`          | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`, `$defs/Tags`                   |
+| [`common/variable.k`](../../common/variable.k)           | `variableReferencePattern`, `isVariable`, `hasVariable`, `variable` | no `$defs` entry: RFC 0050 variables, defined in prose (`docs/variables.md`) |
 
 ---
 
@@ -72,6 +73,30 @@ flowchart TB
 
 - `CustomProperty` / `AuthoritativeDefinition` are the item objects.
 - The `customProperties` / `authoritativeDefinitions` *arrays* live on the base classes above.
+
+### Variables: tokens pass through, KCL source needs a helper
+
+RFC 0050 lets any string value hold `${NAME}` or `${NAME:-default}`, resolved by the tool that uses the contract.
+
+- **The data path needs nothing.** `kcl vet` and `kcl run` keep tokens in YAML verbatim, which is what the RFC requires
+  ("MUST preserve unresolved tokens verbatim"). Interpolation applies to string fields only, so a token in an integer
+  field such as `primaryKeyPosition` is rejected by its type. `port` is the one exception (`server.md`).
+- **Format checks accept a whole reference** where a token is plausible: `contractCreatedTs`, `TeamMember.dateIn` and
+  `dateOut` pass when they are exactly one reference (`isVariable`). Id and reference patterns stay strict; a token
+  passes the StableId denylist anyway.
+- **The source path is a trap.** KCL interpolates `${…}` in ordinary strings, so `"${DB_HOST}"` does not compile and
+  `$$` is not an escape. `variable("DB_HOST")` builds the token by concatenation; raw strings (`r"${DB_HOST}"`) and
+  `"\${DB_HOST}"` also work.
+- **`option()` is KCL's build-time resolver**, and pairs with `variable()`: one source exports a portable token or the
+  value supplied with `kcl run -D`.
+
+```
+host = option("db_host") or variable("DB_HOST")          # ${DB_HOST}, or the -D value
+port = option("db_port", type="int") or variable("DB_PORT", "5432")
+```
+
+The library never resolves variables itself. Every name in `common/variable.k` is unprefixed, so it stays importable
+under KCL 0.13's rule that `_`-prefixed names are private to their module.
 
 ### `CustomProperty.vendor` is free text
 

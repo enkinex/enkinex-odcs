@@ -6,6 +6,7 @@ import .contract.pricing
 import .contract.sla
 import .contract.support
 import .common.discovery
+import .common.variable
 import .iam.role
 import .iam.team
 import .server.spec as server
@@ -69,6 +70,7 @@ schema DataContract(discovery.TagsDiscoverable):
         There is no limit on the type of properties.
     contractCreatedTs: str, default is Undefined, optional.
         Timestamp in UTC of when the data contract was created, using ISO 8601.
+        May also be a whole variable reference resolved by downstream tools (RFC 0050), e.g. "${CREATED_AT}".
 
     Examples
     --------
@@ -118,4 +120,4 @@ schema DataContract(discovery.TagsDiscoverable):
     check:
         len(version) > 0, "version must not be empty"
         len(id) > 0, "id must not be empty"
-        regex.match(contractCreatedTs, timestampPattern) if contractCreatedTs, "contractCreatedTs must be an ISO-8601 timestamp"
+        regex.match(contractCreatedTs, timestampPattern) or variable.isVariable(contractCreatedTs) if contractCreatedTs, "contractCreatedTs must be an ISO-8601 timestamp or a variable reference"

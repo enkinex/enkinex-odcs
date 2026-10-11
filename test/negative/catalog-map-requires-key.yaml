@@ -1,0 +1,13 @@
+# expect: attribute 'key' of MapDefinition is required
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+schema:
+  - name: orders
+    properties:
+      - name: attrs
+        logicalType: map
+        map:
+          value:
+            logicalType: string

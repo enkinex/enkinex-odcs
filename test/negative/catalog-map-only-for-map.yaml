@@ -1,0 +1,15 @@
+# expect: 'map' is only valid when logicalType is 'map'
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+schema:
+  - name: orders
+    properties:
+      - name: attrs
+        logicalType: string
+        map:
+          key:
+            logicalType: string
+          value:
+            logicalType: string

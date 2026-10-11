@@ -238,6 +238,53 @@ schema:
           logicalType: string
           physicalType: varchar(200)
 
+      # map (RFC 0030): string to string; key and value descriptors need no name
+      - name: order_attributes
+        logicalType: map
+        physicalType: MAP<STRING, STRING>
+        map:
+          key:
+            logicalType: string
+            description: Attribute name.
+          value:
+            logicalType: string
+            logicalTypeOptions:
+              maxLength: 255
+
+      # map of maps of objects: descriptors nest every property field, enum included
+      - name: regional_prices
+        logicalType: map
+        map:
+          key:
+            logicalType: string
+            enum:
+              - value: EU
+              - value: US
+          value:
+            logicalType: map
+            map:
+              key:
+                logicalType: string
+              value:
+                logicalType: object
+                properties:
+                  - name: amount
+                    logicalType: number
+                  - name: currency
+                    logicalType: string
+
+      # vector (RFC 0042) with every option
+      - name: description_embedding
+        logicalType: vector
+        physicalType: VECTOR(1536)
+        logicalTypeOptions:
+          dimensions: 1536
+          elementType: float16
+          distanceMetric: cosine
+          normalized: true
+          embeddingModel: openai/text-embedding-3-small
+          embeddingModelVersion: "2024-01"
+
       # an array may omit items, and an object may omit properties (neither is required by ODCS)
       - name: raw_payloads
         logicalType: array

@@ -1,5 +1,41 @@
 type IntegerFormatEnum = "i8" | "i16" | "i32" | "i64" | "i128" | "u8" | "u16" | "u32" | "u64" | "u128"
 type NumberFormatEnum = "f32" | "f64"
+type VectorElementType = "bfloat16" | "binary" | "float16" | "float32" | "float64" | "int8" | "uint8"
+type VectorDistanceMetric = "cosine" | "dotProduct" | "euclidean" | "hamming" | "manhattan"
+
+# Where each option is valid: the single registry behind `SchemaProperty`'s option-placement rule (D15).
+# It recovers the `additionalProperties: false` of each per-logicalType branch of the JSON schema.
+# A new option is declared on `TypeOptions` and registered here; a unit test keeps the two in step.
+optionLogicalTypes: {str:[str]} = {
+    format = ["string", "number", "integer", "date", "timestamp", "time"]
+    exclusiveMaximum = ["number", "integer", "date", "timestamp", "time"]
+    exclusiveMinimum = ["number", "integer", "date", "timestamp", "time"]
+    maximum = ["number", "integer", "date", "timestamp", "time"]
+    minimum = ["number", "integer", "date", "timestamp", "time"]
+    maxItems = ["array"]
+    minItems = ["array"]
+    uniqueItems = ["array"]
+    defaultTimezone = ["timestamp", "time"]
+    timezone = ["timestamp", "time"]
+    multipleOf = ["number", "integer"]
+    maxProperties = ["object"]
+    minProperties = ["object"]
+    required = ["object"]
+    pattern = ["string"]
+    maxLength = ["string"]
+    minLength = ["string"]
+    dimensions = ["vector"]
+    elementType = ["vector"]
+    distanceMetric = ["vector"]
+    normalized = ["vector"]
+    embeddingModel = ["vector"]
+    embeddingModelVersion = ["vector"]
+}
+
+# misplacedOptions(options, logicalType): the options set on `options` that `logicalType` does not accept.
+misplacedOptions = lambda options: TypeOptions, logicalType: str -> [str] {
+    [k for k, types in optionLogicalTypes if options[k] != Undefined and logicalType not in types] if options else []
+}
 
 schema TypeOptions:
     """
@@ -14,8 +50,9 @@ schema TypeOptions:
 
     Every per-type option schema (`ArrayOptions`, `DateOptions`,
     `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`,
-    `ObjectOptions`, `StringOptions`) extends this schema, so an instance of
-    any of them is assignable to `SchemaProperty.logicalTypeOptions`.
+    `ObjectOptions`, `StringOptions`, `VectorOptions`) extends this schema, so an
+    instance of any of them is assignable to `SchemaProperty.logicalTypeOptions`.
+    Which options each logicalType accepts is registered in `optionLogicalTypes`.
 
     Attributes
     ----------
@@ -59,6 +96,18 @@ schema TypeOptions:
         Maximum length of the string.
     minLength: int, default is Undefined, optional.
         Minimum length of the string.
+    dimensions: int, default is Undefined, optional.
+        The fixed length of the vector. At least 1.
+    elementType: VectorElementType, default is Undefined, optional.
+        Numeric type of each vector element.
+    distanceMetric: VectorDistanceMetric, default is Undefined, optional.
+        Intended similarity metric. Advisory.
+    normalized: bool, default is Undefined, optional.
+        True if vectors are L2-normalized before storage.
+    embeddingModel: str, default is Undefined, optional.
+        Identifier of the model used to produce the vectors.
+    embeddingModelVersion: str, default is Undefined, optional.
+        Version or revision of the embedding model.
     """
     format?: str
     exclusiveMaximum?: str | int | float
@@ -77,9 +126,16 @@ schema TypeOptions:
     pattern?: str
     maxLength?: int
     minLength?: int
+    dimensions?: int
+    elementType?: VectorElementType
+    distanceMetric?: VectorDistanceMetric
+    normalized?: bool
+    embeddingModel?: str
+    embeddingModelVersion?: str
 
     check:
         multipleOf == Undefined or multipleOf > 0, "multipleOf must be positive"
+        dimensions == Undefined or dimensions >= 1, "dimensions must be >= 1"
         minLength == Undefined or minLength >= 0, "minLength must be >= 0"
         maxLength == Undefined or maxLength >= 0, "maxLength must be >= 0"
         minLength == Undefined or maxLength == Undefined or minLength <= maxLength, "minLength must be <= maxLength"
@@ -432,3 +488,46 @@ schema StringOptions(TypeOptions):
     pattern?: str
     maxLength?: int
     minLength?: int
+
+schema VectorOptions(TypeOptions):
+    """
+    Additional metadata options to define the vector logical type (RFC 0042).
+    Complies with the `logicalType: vector` branch of the ODCS JSON schema.
+
+    Attributes
+    ----------
+    dimensions: int, default is Undefined, required.
+        The fixed length of the vector. At least 1.
+        Examples: 384, 768, 1024, 1536, 3072
+    elementType: VectorElementType, default is "float32", optional.
+        Numeric type of each vector element. "binary" means one bit per element (binary-quantized vectors).
+    distanceMetric: VectorDistanceMetric, default is Undefined, optional.
+        Intended similarity metric. Advisory: the physical index may differ.
+    normalized: bool, default is False, optional.
+        True if vectors are L2-normalized before storage, which makes cosine and dotProduct equivalent.
+    embeddingModel: str, default is Undefined, optional.
+        Identifier of the model used to produce the vectors.
+        Examples: "openai/text-embedding-3-small", "cohere/embed-english-v3.0"
+    embeddingModelVersion: str, default is Undefined, optional.
+        Version or revision of the embedding model, when the model identifier does not already carry one.
+
+    Examples
+    --------
+    embedding = SchemaProperty {
+        name = "description_embedding"
+        logicalType = "vector"
+        physicalType = "VECTOR(1536)"
+        logicalTypeOptions = VectorOptions {
+            dimensions = 1536
+            distanceMetric = "cosine"
+            normalized = True
+            embeddingModel = "openai/text-embedding-3-small"
+        }
+    }
+    """
+    dimensions: int
+    elementType?: VectorElementType = "float32"
+    distanceMetric?: VectorDistanceMetric
+    normalized?: bool = False
+    embeddingModel?: str
+    embeddingModelVersion?: str

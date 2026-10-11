@@ -8,6 +8,7 @@
   - [DateOptions](#dateoptions)
   - [EnumValue](#enumvalue)
   - [IntegerOptions](#integeroptions)
+  - [MapDefinition](#mapdefinition)
   - [NumberOptions](#numberoptions)
   - [ObjectOptions](#objectoptions)
   - [RelationshipBase](#relationshipbase)
@@ -21,6 +22,7 @@
   - [TimeOptions](#timeoptions)
   - [TimestampOptions](#timestampoptions)
   - [TypeOptions](#typeoptions)
+  - [VectorOptions](#vectoroptions)
 - common
   - [AuthoritativeCustomizable](#authoritativecustomizable)
   - [AuthoritativeDefinition](#authoritativedefinition)
@@ -152,6 +154,11 @@ Additional metadata options to define the array logical type. Complies with the 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
@@ -164,6 +171,7 @@ Additional metadata options to define the array logical type. Complies with the 
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -195,6 +203,11 @@ Additional metadata options to define the date logical type. Complies with the `
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format of the date.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]||
@@ -207,6 +220,7 @@ Additional metadata options to define the date logical type. Complies with the `
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str|All date values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -276,6 +290,11 @@ Additional metadata options to define the integer logical type. Complies with th
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|int|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|int|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|"i8" \| "i16" \| "i32" \| "i64" \| "i128" \| "u8" \| "u16" \| "u32" \| "u64" \| "u128"|Format of the value in terms of how many bits of space it can use and whether it is signed or unsigned.<br />Follows the Rust integer types.|"i32"|
@@ -288,6 +307,7 @@ Additional metadata options to define the integer logical type. Complies with th
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|int|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -307,6 +327,34 @@ quantity = SchemaProperty {
 }
 ```
 
+### MapDefinition
+
+Key/value definition of a map property (RFC 0030), the `map` attribute of `SchemaProperty`. It sits in this file, beside `SchemaItemProperty`, because a separate file would import `property.k` in a cycle.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**key** `required`|[SchemaProperty](#schemaproperty)|Definition of the map&#39;s key: a full item descriptor, which needs no `name`.||
+|**value** `required`|[SchemaProperty](#schemaproperty)|Definition of the map&#39;s value: a full item descriptor, nesting allowed (a map of maps, a map of objects).||
+#### Examples
+
+```
+receiverAttributes = SchemaProperty {
+    name = "receiver_attributes"
+    logicalType = "map"
+    physicalType = "MAP<STRING, STRING>"
+    $map = MapDefinition {
+        key = SchemaItemProperty {
+            logicalType = "string"
+        }
+        value = SchemaItemProperty {
+            logicalType = "string"
+        }
+    }
+}
+```
+
 ### NumberOptions
 
 Additional metadata options to define the number logical type. Complies with the `logicalType: number` branch of the ODCS JSON schema.
@@ -316,6 +364,11 @@ Additional metadata options to define the number logical type. Complies with the
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|int \| float|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|int \| float|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|"f32" \| "f64"|Format of the value in terms of floating-point precision.<br />Follows the Rust float types (f32, f64).||
@@ -328,6 +381,7 @@ Additional metadata options to define the number logical type. Complies with the
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|int \| float|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -356,6 +410,11 @@ Additional metadata options to define the object logical type. Complies with the
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
@@ -368,6 +427,7 @@ Additional metadata options to define the object logical type. Complies with the
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -598,8 +658,9 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Only valid when logicalType is "array"; an array may omit it. Needs no `name`.||
-|**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
-|**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.<br />Accepts an inline dict coerced into `TypeOptions` or an instance of the<br />per-type option schema matching the `logicalType` (`StringOptions`,<br />`DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,<br />`NumberOptions`, `ObjectOptions`, `ArrayOptions`).||
+|**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean" \| "map" \| "vector"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array, boolean, map or vector.||
+|**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.<br />Accepts an inline dict coerced into `TypeOptions` or an instance of the<br />per-type option schema matching the `logicalType` (`StringOptions`,<br />`DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,<br />`NumberOptions`, `ObjectOptions`, `ArrayOptions`, `VectorOptions`).<br />Each option is only valid for the logical types registered in `optionLogicalTypes`.<br />A vector requires `dimensions`.||
+|**map**|[MapDefinition](#mapdefinition)|Key/value definition of a map property (RFC 0030). Written `$map` in KCL, because `map` is a keyword.<br />Required when logicalType is "map", and only valid then.||
 |**name**|str|Name of the element.<br />Required on schema objects and on every entry of a `properties` list (checked by the container);<br />optional on item descriptors (`items`, `map.key`, `map.value`), as in the JSON `SchemaItemProperty`.||
 |**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1; -1 means unset.<br />Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
 |**partitioned**|bool|Indicates if the element is partitioned.|False|
@@ -665,6 +726,11 @@ Additional metadata options to define the string logical type. Complies with the
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Provides extra context about what format the string follows.<br />Examples: ["password", "byte", "binary", "email", "uuid", "uri", "hostname", "ipv4", "ipv6"]||
@@ -677,6 +743,7 @@ Additional metadata options to define the string logical type. Complies with the
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -737,6 +804,11 @@ Additional metadata options to define the time logical type. Complies with the `
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the time.<br />If timezone is not defined, the default timezone Etc/UTC is used.|"Etc/UTC"|
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format of the time.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["HH:mm:ss", "HH:mm"]||
@@ -749,6 +821,7 @@ Additional metadata options to define the time logical type. Complies with the `
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the time defines the timezone or not.<br />If true, timezone information is included in the time.||
@@ -775,6 +848,11 @@ Additional metadata options to define the timestamp logical type. Complies with 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.|"Etc/UTC"|
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str|All values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str|All values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format of the timestamp.<br />Follows the format as prescribed by [JDK DateTimeFormatter](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html).<br />Examples: ["yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "HH:mm:ss"]||
@@ -787,6 +865,7 @@ Additional metadata options to define the timestamp logical type. Complies with 
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str|All values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
@@ -817,13 +896,18 @@ createdAtSydney = SchemaProperty {
 
 ### TypeOptions
 
-Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).  Every per-type option schema (`ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions`) extends this schema, so an instance of any of them is assignable to `SchemaProperty.logicalTypeOptions`.
+Base type for every logical type options.  The union of every logical-type option. This is the type of `SchemaProperty.logicalTypeOptions`, so its attributes are declared directly (not via mixins) to be recognized by KCL dict→schema coercion. Being the permissive superset, no attribute carries a default (an unset option must read back as `Undefined` so the per-type validation on `SchemaProperty` can tell which keys were actually supplied).  Every per-type option schema (`ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions`, `VectorOptions`) extends this schema, so an instance of any of them is assignable to `SchemaProperty.logicalTypeOptions`. Which options each logicalType accepts is registered in `optionLogicalTypes`.
 
 #### Attributes
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
 |**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element.||
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.||
+|**embeddingModelVersion**|str|Version or revision of the embedding model.||
 |**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
 |**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
 |**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
@@ -836,10 +920,58 @@ Base type for every logical type options.  The union of every logical-type optio
 |**minProperties**|int|Minimum number of properties.||
 |**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
 |**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage.||
 |**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
 |**required**|[str]|Property names that are required to exist in the object.||
 |**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
 |**uniqueItems**|bool|If set to true, all items in the array are unique.||
+### VectorOptions
+
+Additional metadata options to define the vector logical type (RFC 0042). Complies with the `logicalType: vector` branch of the ODCS JSON schema.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**defaultTimezone**|str|The default timezone of the timestamp.<br />If timezone is not defined, the default timezone Etc/UTC is used.||
+|**dimensions**|int|The fixed length of the vector. At least 1.<br />Examples: 384, 768, 1024, 1536, 3072||
+|**distanceMetric**|"cosine" \| "dotProduct" \| "euclidean" \| "hamming" \| "manhattan"|Intended similarity metric. Advisory: the physical index may differ.||
+|**elementType**|"bfloat16" \| "binary" \| "float16" \| "float32" \| "float64" \| "int8" \| "uint8"|Numeric type of each vector element. "binary" means one bit per element (binary-quantized vectors).|"float32"|
+|**embeddingModel**|str|Identifier of the model used to produce the vectors.<br />Examples: "openai/text-embedding-3-small", "cohere/embed-english-v3.0"||
+|**embeddingModelVersion**|str|Version or revision of the embedding model, when the model identifier does not already carry one.||
+|**exclusiveMaximum**|str \| int \| float|Values must be strictly less than this value (values &lt; exclusiveMaximum).||
+|**exclusiveMinimum**|str \| int \| float|Values must be strictly greater than this value (values &gt; exclusiveMinimum).||
+|**format**|str|Format for date, number or string.<br />Examples: ISO 8601 date "yyyy-MM-dd", zero-padding number "{:05}", string "email".||
+|**maxItems**|int|Maximum number of items.||
+|**maxLength**|int|Maximum length of the string.||
+|**maxProperties**|int|Maximum number of properties.||
+|**maximum**|str \| int \| float|Values are less than or equal to this value (values &lt;= maximum).||
+|**minItems**|int|Minimum number of items.||
+|**minLength**|int|Minimum length of the string.||
+|**minProperties**|int|Minimum number of properties.||
+|**minimum**|str \| int \| float|Values are greater than or equal to this value (values &gt;= minimum).||
+|**multipleOf**|int \| float|Values must be multiples of this number.<br />Examples: multiple of 5 has valid values 0, 5, 10, -5.||
+|**normalized**|bool|True if vectors are L2-normalized before storage, which makes cosine and dotProduct equivalent.|False|
+|**pattern**|str|Regular expression pattern to define valid value.<br />Follows regular expression syntax from ECMA-262.<br />See also: https://262.ecma-international.org/5.1/#sec-15.10.1.||
+|**required**|[str]|Property names that are required to exist in the object.||
+|**timezone**|bool|Whether the timestamp defines the timezone or not.<br />If true, timezone information is included in the timestamp.||
+|**uniqueItems**|bool|If set to true, all items in the array are unique.||
+#### Examples
+
+```
+embedding = SchemaProperty {
+    name = "description_embedding"
+    logicalType = "vector"
+    physicalType = "VECTOR(1536)"
+    logicalTypeOptions = VectorOptions {
+        dimensions = 1536
+        distanceMetric = "cosine"
+        normalized = True
+        embeddingModel = "openai/text-embedding-3-small"
+    }
+}
+```
+
 ### AuthoritativeCustomizable
 
 Base object carrying the optional `authoritativeDefinitions` and `customProperties` properties.

@@ -1,4 +1,4 @@
-# expect: maxLength is only valid for logicalType 'string'
+# expect: logicalTypeOptions [maxLength] not valid for logicalType 'integer'
 apiVersion: v3.2.0
 kind: DataContract
 id: negative-fixture

@@ -3,7 +3,7 @@ import .enum
 import .relationship
 import .type_options
 
-type LogicalType = "string" | "date" | "timestamp" | "time" | "number" | "integer" | "object" | "array" | "boolean"
+type LogicalType = "string" | "date" | "timestamp" | "time" | "number" | "integer" | "object" | "array" | "boolean" | "map" | "vector"
 type SemanticType = "column" | "measure" | "dimension"
 
 # enumValueFits(value, logicalType): an enum value is compatible with the property's logicalType (D8).
@@ -32,7 +32,7 @@ schema SchemaProperty(element.SchemaElement):
         Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.
     logicalType: LogicalType, default is Undefined, optional.
         The logical property data type.
-        One of string, date, timestamp, time, number, integer, object, array or boolean.
+        One of string, date, timestamp, time, number, integer, object, array, boolean, map or vector.
     semanticType: SemanticType, default is "column", optional.
         The semantic role the property plays in the data model (RFC 0034).
         "column" is a physical column; "measure" an aggregated value whose expression is held in `transformLogic`;
@@ -46,7 +46,9 @@ schema SchemaProperty(element.SchemaElement):
         Accepts an inline dict coerced into `TypeOptions` or an instance of the
         per-type option schema matching the `logicalType` (`StringOptions`,
         `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,
-        `NumberOptions`, `ObjectOptions`, `ArrayOptions`).
+        `NumberOptions`, `ObjectOptions`, `ArrayOptions`, `VectorOptions`).
+        Each option is only valid for the logical types registered in `optionLogicalTypes`.
+        A vector requires `dimensions`.
     required: bool, default is False, optional.
         Indicates if the element may contain Null values.
     unique: bool, default is False, optional.
@@ -82,6 +84,9 @@ schema SchemaProperty(element.SchemaElement):
     properties: [SchemaProperty], default is Undefined, optional.
         A list of nested properties describing the fields of an object property.
         Only valid when logicalType is "object"; an object may omit it. Every entry requires a `name`.
+    map: MapDefinition, default is Undefined, optional.
+        Key/value definition of a map property (RFC 0030). Written `$map` in KCL, because `map` is a keyword.
+        Required when logicalType is "map", and only valid then.
 
     Examples
     --------
@@ -139,6 +144,7 @@ schema SchemaProperty(element.SchemaElement):
     relationships?: [relationship.RelationshipPropertyLevel]
     items?: SchemaItemProperty
     properties?: [SchemaProperty]
+    $map?: MapDefinition
 
     check:
         logicalType == "array" or items == Undefined, "'items' is only valid when logicalType is 'array'"
@@ -150,24 +156,40 @@ schema SchemaProperty(element.SchemaElement):
         enum == Undefined or len(enum) >= 1, "enum must not be empty"
         enum == Undefined or len(enum) == len({str(e.value): e for e in enum}), "enum values must be unique"
         enum == Undefined or all e in enum {enumValueFits(e.value, logicalType)}, "each enum value must be compatible with the property's logicalType"
-        # Per-type option validation: reject logicalTypeOptions keys that do not belong to the chosen logicalType
-        # Recovers the JSON additionalProperties:false strictness of each conditional branch).
-        logicalTypeOptions == Undefined or logicalTypeOptions.maxItems == Undefined or logicalType == "array", "maxItems is only valid for logicalType 'array'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.minItems == Undefined or logicalType == "array", "minItems is only valid for logicalType 'array'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.uniqueItems == Undefined or logicalType == "array", "uniqueItems is only valid for logicalType 'array'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.maxProperties == Undefined or logicalType == "object", "maxProperties is only valid for logicalType 'object'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.minProperties == Undefined or logicalType == "object", "minProperties is only valid for logicalType 'object'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.required == Undefined or logicalType == "object", "required is only valid for logicalType 'object'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.pattern == Undefined or logicalType == "string", "pattern is only valid for logicalType 'string'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.maxLength == Undefined or logicalType == "string", "maxLength is only valid for logicalType 'string'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.minLength == Undefined or logicalType == "string", "minLength is only valid for logicalType 'string'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.multipleOf == Undefined or logicalType in ["number", "integer"], "multipleOf is only valid for logicalType 'number' or 'integer'"
-        logicalTypeOptions == Undefined or logicalTypeOptions.timezone == Undefined or logicalType in ["timestamp", "time"], "timezone is only valid for timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.defaultTimezone == Undefined or logicalType in ["timestamp", "time"], "defaultTimezone is only valid for timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.maximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "maximum is only valid for numeric or date/timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.minimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "minimum is only valid for numeric or date/timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMaximum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "exclusiveMaximum is only valid for numeric or date/timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.exclusiveMinimum == Undefined or logicalType in ["number", "integer", "date", "timestamp", "time"], "exclusiveMinimum is only valid for numeric or date/timestamp/time logicalType"
-        logicalTypeOptions == Undefined or logicalTypeOptions.format == Undefined or logicalType in ["string", "number", "integer", "date", "timestamp", "time"], "format is only valid for string/numeric/date/timestamp/time logicalType"
+        logicalType != "map" or $map != Undefined, "logicalType 'map' requires 'map'"
+        logicalType == "map" or $map == Undefined, "'map' is only valid when logicalType is 'map'"
+        logicalType != "vector" or (logicalTypeOptions != Undefined and logicalTypeOptions.dimensions != Undefined), "logicalType 'vector' requires logicalTypeOptions.dimensions"
+        not type_options.misplacedOptions(logicalTypeOptions, logicalType), "logicalTypeOptions ${type_options.misplacedOptions(logicalTypeOptions, logicalType)} not valid for logicalType '${logicalType}'"
+
+schema MapDefinition:
+    """
+    Key/value definition of a map property (RFC 0030), the `map` attribute of `SchemaProperty`.
+    It sits in this file, beside `SchemaItemProperty`, because a separate file would import `property.k` in a cycle.
+
+    Attributes
+    ----------
+    key: SchemaItemProperty, default is Undefined, required.
+        Definition of the map's key: a full item descriptor, which needs no `name`.
+    value: SchemaItemProperty, default is Undefined, required.
+        Definition of the map's value: a full item descriptor, nesting allowed (a map of maps, a map of objects).
+
+    Examples
+    --------
+    receiverAttributes = SchemaProperty {
+        name = "receiver_attributes"
+        logicalType = "map"
+        physicalType = "MAP<STRING, STRING>"
+        $map = MapDefinition {
+            key = SchemaItemProperty {
+                logicalType = "string"
+            }
+            value = SchemaItemProperty {
+                logicalType = "string"
+            }
+        }
+    }
+    """
+    key: SchemaItemProperty
+    value: SchemaItemProperty
 
 type SchemaItemProperty = SchemaProperty

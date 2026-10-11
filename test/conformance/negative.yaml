@@ -50,13 +50,10 @@
   expect: got str(unknown)
 - test: map-missing-block.odcs.yaml
   expect: logicalType 'map' requires 'map'
-  pending: ODCS-09
 - test: map-missing-key.odcs.yaml
   expect: attribute 'key' of MapDefinition is required
-  pending: ODCS-09
 - test: map-missing-value.odcs.yaml
   expect: attribute 'value' of MapDefinition is required
-  pending: ODCS-09
 - test: missing-required-fields.odcs.yaml
   expect: attribute 'id' of DataContract is required
 - test: quality-custom-missing-implementation.odcs.yaml
@@ -103,7 +100,6 @@
   expect: got str(${KEY_POS})
 - test: vector-missing-dimensions.odcs.yaml
   expect: logicalType 'vector' requires logicalTypeOptions.dimensions
-  pending: ODCS-09
 - test: vectorwise-missing-database.odcs.yaml
   expect: vectorwise server requires 'host' and 'database'
   pending: ODCS-11

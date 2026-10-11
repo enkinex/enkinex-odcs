@@ -14,7 +14,7 @@
 # criterion caps what may remain: D2 and D5 entries and upstream-kcl defects.
 
 - example: all/full-example.odcs.yaml
-  reason: ODCS-09
+  reason: ODCS-07, a null customProperties value is valid AnyType but rejected
 - example: all/postgresql-adventureworks-contract.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
@@ -44,8 +44,6 @@
 - example: schema/kafka-schemaregistry.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
-- example: schema/map.odcs.yaml
-  reason: ODCS-09
 - example: schema/relationships.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
@@ -58,8 +56,6 @@
 - example: schema/table-columns-with-partition.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]
-- example: schema/vector.odcs.yaml
-  reason: ODCS-09
 - example: server/actian-servers.odcs.yaml
   reason: ODCS-11
 - example: server/azure-server.odcs.yaml

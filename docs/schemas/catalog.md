@@ -7,20 +7,21 @@ options, and the relationships between them.
 
 ## Schema Mapping
 
-| Module Path                                              | KCL schema                                                                                                                                                         | ODCS JSON Schema entity                                                                                                                                                      |
-|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`catalog/element.k`](../../catalog/element.k)           | `SchemaElement`                                                                                                                                                    | `$defs/SchemaElement` (shared base of objects & properties; also absorbs the duplicated `physicalName` / `quality` from `$defs/SchemaObject` and `$defs/SchemaBaseProperty`) |
-| [`catalog/object.k`](../../catalog/object.k)             | `SchemaObject`                                                                                                                                                     | `$defs/SchemaObject`                                                                                                                                                         |
-| [`catalog/property.k`](../../catalog/property.k)         | `SchemaProperty`                                                                                                                                                   | `$defs/SchemaProperty`, `$defs/SchemaBaseProperty`                                                                                                                           |
-| [`catalog/property.k`](../../catalog/property.k)         | `SchemaItemProperty` *(type alias of `SchemaProperty`)*                                                                                                            | `$defs/SchemaItemProperty` (the `items` descriptor of an array property — a full property definition)                                                                        |
-| [`catalog/property.k`](../../catalog/property.k)         | `SemanticType`                                                                                                                                                     | `SchemaBaseProperty.semanticType` (enum `column` / `measure` / `dimension`)                                                                                                  |
-| [`catalog/enum.k`](../../catalog/enum.k)                 | `EnumValue`                                                                                                                                                        | `$defs/EnumValue` (items of `SchemaBaseProperty.enum`)                                                                                                                       |
-| [`catalog/synonym.k`](../../catalog/synonym.k)           | `Synonym`                                                                                                                                                          | `$defs/Synonym` (items of `$defs/Synonyms`)                                                                                                                                  |
-| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipBase`                                                                                                                                                 | `$defs/RelationshipBase`                                                                                                                                                     |
-| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipSchemaLevel`                                                                                                                                          | `$defs/RelationshipSchemaLevel`                                                                                                                                              |
-| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipPropertyLevel`                                                                                                                                        | `$defs/RelationshipPropertyLevel`                                                                                                                                            |
-| [`catalog/type_options.k`](../../catalog/type_options.k) | `TypeOptions`                                                                                                                                                      | `$defs/*LogicalTypeOptions` (the permissive union of every per-type option branch)                                                                                           |
-| [`catalog/type_options.k`](../../catalog/type_options.k) | `ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions` *(all extend `TypeOptions`)* | `logicalTypeOptions` branches (`array`, `date`, `timestamp`, `time`, `integer`, `number`, `object`, `string`)                                                                |
+| Module Path                                              | KCL schema                                                                                                                                                                          | ODCS JSON Schema entity                                                                                                                                                      |
+|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`catalog/element.k`](../../catalog/element.k)           | `SchemaElement`                                                                                                                                                                     | `$defs/SchemaElement` (shared base of objects & properties; also absorbs the duplicated `physicalName` / `quality` from `$defs/SchemaObject` and `$defs/SchemaBaseProperty`) |
+| [`catalog/object.k`](../../catalog/object.k)             | `SchemaObject`                                                                                                                                                                      | `$defs/SchemaObject`                                                                                                                                                         |
+| [`catalog/property.k`](../../catalog/property.k)         | `SchemaProperty`                                                                                                                                                                    | `$defs/SchemaProperty`, `$defs/SchemaBaseProperty`                                                                                                                           |
+| [`catalog/property.k`](../../catalog/property.k)         | `SchemaItemProperty` *(type alias of `SchemaProperty`)*                                                                                                                             | `$defs/SchemaItemProperty` (the `items` descriptor of an array property — a full property definition)                                                                        |
+| [`catalog/property.k`](../../catalog/property.k)         | `SemanticType`                                                                                                                                                                      | `SchemaBaseProperty.semanticType` (enum `column` / `measure` / `dimension`)                                                                                                  |
+| [`catalog/property.k`](../../catalog/property.k)         | `MapDefinition`                                                                                                                                                                     | the `map` object of the `logicalType: map` branch (RFC 0030)                                                                                                                 |
+| [`catalog/enum.k`](../../catalog/enum.k)                 | `EnumValue`                                                                                                                                                                         | `$defs/EnumValue` (items of `SchemaBaseProperty.enum`)                                                                                                                       |
+| [`catalog/synonym.k`](../../catalog/synonym.k)           | `Synonym`                                                                                                                                                                           | `$defs/Synonym` (items of `$defs/Synonyms`)                                                                                                                                  |
+| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipBase`                                                                                                                                                                  | `$defs/RelationshipBase`                                                                                                                                                     |
+| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipSchemaLevel`                                                                                                                                                           | `$defs/RelationshipSchemaLevel`                                                                                                                                              |
+| [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipPropertyLevel`                                                                                                                                                         | `$defs/RelationshipPropertyLevel`                                                                                                                                            |
+| [`catalog/type_options.k`](../../catalog/type_options.k) | `TypeOptions`                                                                                                                                                                       | `$defs/*LogicalTypeOptions` (the permissive union of every per-type option branch)                                                                                           |
+| [`catalog/type_options.k`](../../catalog/type_options.k) | `ArrayOptions`, `DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`, `NumberOptions`, `ObjectOptions`, `StringOptions`, `VectorOptions` *(all extend `TypeOptions`)* | `logicalTypeOptions` branches (`array`, `date`, `timestamp`, `time`, `integer`, `number`, `object`, `string`, `vector`)                                                      |
 
 ---
 
@@ -47,8 +48,12 @@ options, and the relationships between them.
 ### Conditional strictness recovered with `check`s
 
 - The JSON encodes `logicalTypeOptions` as per-type conditional branches with `additionalProperties: false`.
-- KCL uses one permissive `TypeOptions` schema plus cross-field `check`s on `SchemaProperty` that reject options that do
-  not belong to the chosen `logicalType` (e.g. `maxItems` only for `array`, `pattern` only for `string`).
+- KCL uses one permissive `TypeOptions` schema plus **one** table-driven `check` on `SchemaProperty` that rejects every
+  option the chosen `logicalType` does not accept (decision D15). The table, `optionLogicalTypes` in
+  `catalog/type_options.k`, maps each option to its logical types; the message names every misplaced option, e.g.
+  `logicalTypeOptions [maxItems, dimensions] not valid for logicalType 'string'`. It replaced 17 hand-written rules,
+  which `vector` alone would have grown to 24. A unit test keeps the table and the `TypeOptions` attributes in step.
+- The message is built inside the check, which KCL evaluates in the right scope only since 0.13 (the 0.13.1 floor).
 - `items` is only valid when `logicalType == "array"`, and `properties` only when `logicalType == "object"`. Neither is
   required: the JSON branches declare them without requiring them, and the official `all-data-types` example has an
   array without `items` and an object without `properties`. Until v3.2.0 the library required both, which rejected
@@ -56,6 +61,21 @@ options, and the relationships between them.
 - `primaryKeyPosition` and `partitionKeyPosition` default to `-1`, meaning unset. A position, when set, is `>= 1`;
   `primaryKey: true` without a position is valid, as in three official examples. The v3.1.0 rule
   `not primaryKey or primaryKeyPosition >= 1` rejected them (D6).
+
+### `map` and `vector` (ODCS v3.2.0)
+
+- **`map`** (RFC 0030) is a KCL keyword, so the attribute is `$map`, exactly as `type` and `schema` are `$type` and
+  `$schema`; YAML keeps the key `map`. `MapDefinition {key, value}` holds two `SchemaItemProperty` descriptors, so a
+  key or value carries every property field and nests freely (a map of maps of objects), with no `name` (see below).
+  `logicalType: map` requires `map`, and `map` is only valid then, an iff pair like the JSON branch.
+- `MapDefinition` is declared in `catalog/property.k`, beside the alias: a separate file would import `property.k` in
+  a cycle. The recursion runs through a different schema, so the RefCell panic that forces the alias is not triggered.
+- **`vector`** (RFC 0042) adds six options. They join the `TypeOptions` superset without defaults, and
+  `VectorOptions(TypeOptions)` requires `dimensions` and carries the spec defaults `elementType = "float32"` and
+  `normalized = False` (D4). `dimensions >= 1` is checked on the superset, so YAML input is covered.
+- `logicalType: vector` requires `logicalTypeOptions.dimensions` whenever it is set, following the prose
+  (`docs/schema.md`: "required whenever `logicalType: vector`"). The JSON requires it only when `logicalTypeOptions` is
+  present, so a vector without options passes the JSON and fails here (decision D9).
 
 ### Semantics of 3.2.0: enum, semanticType, synonyms, deprecated
 
@@ -140,11 +160,6 @@ options, and the relationships between them.
 ---
 
 ## Open Questions
-
-### Per-type option validity
-
-- Is enforced by an explicit list of `check`s on `SchemaProperty` rather than by the type system.
-- If ODCS adds new options or types, those checks must be extended by hand.
 
 ### Remaining divergences from JSON `SchemaItemProperty`
 

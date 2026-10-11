@@ -17,6 +17,16 @@ schema RedshiftServer(server.Server):
         Examples: "us-east-1"
     account: str, default is Undefined, optional.
         The account used by the server.
+
+    Examples
+    --------
+    redshift = RedshiftServer {
+        server = "redshift-sales"
+        host = "acme.abc123.eu-west-1.redshift.amazonaws.com"
+        database = "sales"
+        $schema = "public"
+        region = "eu-west-1"
+    }
     """
     $type = "redshift"
     database: str

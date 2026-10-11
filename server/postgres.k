@@ -8,7 +8,7 @@ schema PostgresServer(server.Server):
     ----------
     host: str, default is Undefined, required.
         The host to the Postgres server.
-    port: int, default is Undefined, required.
+    port: Port, default is Undefined, required.
         The port to the Postgres server.
     database: str, default is Undefined, required.
         The name of the database.
@@ -27,6 +27,6 @@ schema PostgresServer(server.Server):
     """
     $type = "postgres"
     host: str
-    port: int
+    port: server.Port
     database: str
     $schema: str

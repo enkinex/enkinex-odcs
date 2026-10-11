@@ -1,8 +1,25 @@
+import regex
+
+import ..common.variable
 import .base as base_server
+
+# A network port (JSON `Port`): an integer, or a string so that it can hold a variable reference
+# such as ${DB_PORT} resolved at runtime (RFC 0050). A string port must be decimal digits or one
+# whole reference (decision D10): the JSON accepts any string.
+type Port = int | str
+
+portDigitsPattern = r"^[0-9]+$"
+
+# portOk(port): an integer, or a string of decimal digits or one whole variable reference.
+portOk = lambda port: any -> bool {
+    typeof(port) == "int" or regex.match(port, portDigitsPattern) or variable.isVariable(port)
+}
 
 schema CustomServer(base_server.BaseServer):
     """
     Defines the CustomServer source with all properties shared by all types of sources.
+    The permissive superset every typed server extends (through `Server`), so a YAML server of any type parses into it;
+    `Server` then scopes the type-specific fields.
 
     Attributes
     ----------
@@ -16,6 +33,9 @@ schema CustomServer(base_server.BaseServer):
         Name of the dataset.
     delimiter: str, default is Undefined, optional.
         Delimiter.
+    encoding: str, default is Undefined, optional.
+        Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".
+        Examples: "UTF-8", "ISO-8859-1", "UTF-16"
     endpointUrl: str, default is Undefined, optional.
         Server endpoint.
     format: str, default is Undefined, optional.
@@ -26,8 +46,10 @@ schema CustomServer(base_server.BaseServer):
         A URL to a location.
     path: str, default is Undefined, optional.
         Relative or absolute path to the data file(s).
-    port: int, default is Undefined, optional.
-        Port to the server. No default value is assumed for custom servers.
+    port: Port, default is Undefined, optional.
+        Port to the server: an integer, or a string holding decimal digits or a variable reference.
+        No default value is assumed for custom servers.
+        Examples: 5432, "5432", "${DB_PORT}"
     project: str, default is Undefined, optional.
         Project name.
     region: str, default is Undefined, optional.
@@ -44,18 +66,21 @@ schema CustomServer(base_server.BaseServer):
         Name of the data stream.
     warehouse: str, default is Undefined, optional.
         Name of the cluster or warehouse.
+    workgroup: str, default is Undefined, optional.
+        Athena workgroup. Only valid for athena servers.
     """
     account?: str
     catalog?: str
     database?: str
     dataset?: str
     delimiter?: str
+    encoding?: str
     endpointUrl?: str
     format?: str
     host?: str
     location?: str
     path?: str
-    port?: int
+    port?: Port
     project?: str
     region?: str
     regionName?: str
@@ -64,3 +89,7 @@ schema CustomServer(base_server.BaseServer):
     stagingDir?: str
     stream?: str
     warehouse?: str
+    workgroup?: str
+
+    check:
+        port == Undefined or portOk(port), "a string port must be decimal digits or a variable reference"

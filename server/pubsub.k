@@ -8,6 +8,13 @@ schema PubSubServer(server.Server):
     ----------
     project: str, default is Undefined, required.
         The GCP project name.
+
+    Examples
+    --------
+    pubsub = PubSubServer {
+        server = "pubsub-events"
+        project = "acme-events"
+    }
     """
     $type = "pubsub"
     project: str

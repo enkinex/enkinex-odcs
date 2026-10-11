@@ -1,5 +1,8 @@
 import .custom as custom_server
 
+# Re-exported for the typed servers, which import this module only.
+type Port = custom_server.Port
+
 type ServerSourceType = "api" | "athena" | "azure" | "bigquery" | "clickhouse" | "databricks" | "denodo" | "dremio" | "duckdb" | "glue" | "cloudsql" | "db2" | "hive" | "impala" | "informix" | "kafka" | "kinesis" | "local" | "mysql" | "oracle" | "postgresql" | "postgres" | "presto" | "pubsub" | "redshift" | "s3" | "sftp" | "snowflake" | "sqlserver" | "synapse" | "trino" | "vertica" | "zen" | "custom"
 
 schema Server(custom_server.CustomServer):
@@ -8,7 +11,7 @@ schema Server(custom_server.CustomServer):
 
     Attributes
     ----------
-    type: ServerType, default is "custom", required.
+    type: ServerSourceType, default is "custom", required.
         Type of the server.
 
     Examples
@@ -36,7 +39,7 @@ schema Server(custom_server.CustomServer):
 
     check:
         $type != "api" or location != Undefined, "api server requires 'location'"
-        $type != "athena" or ($schema != Undefined and stagingDir != Undefined), "athena server requires 'schema' and 'stagingDir'"
+        $type != "athena" or $schema != Undefined, "athena server requires 'schema'"
         $type != "azure" or (location != Undefined and format != Undefined), "azure server requires 'location' and 'format'"
         $type != "bigquery" or (project != Undefined and dataset != Undefined), "bigquery server requires 'project' and 'dataset'"
         $type != "clickhouse" or (host != Undefined and port != Undefined and database != Undefined), "clickhouse server requires 'host', 'port' and 'database'"
@@ -66,3 +69,5 @@ schema Server(custom_server.CustomServer):
         $type != "trino" or (host != Undefined and port != Undefined and catalog != Undefined and $schema != Undefined), "trino server requires 'host', 'port', 'catalog' and 'schema'"
         $type != "vertica" or (host != Undefined and port != Undefined and database != Undefined and $schema != Undefined), "vertica server requires 'host', 'port', 'database' and 'schema'"
         $type != "zen" or (host != Undefined and database != Undefined), "zen server requires 'host' and 'database'"
+        # Fields the JSON allows on one type only, while the KCL superset declares them for parsing (D12).
+        workgroup == Undefined or $type == "athena", "'workgroup' is only valid for athena servers"

@@ -6,7 +6,7 @@ chain that mirrors the JSON schema's own layering:
 - `BaseServer` carrying the properties common to every server.
 - `CustomServer` superset holding every possible source field.
 - A general `Server` that adds the `type` discriminator plus the `allOf` validation.
-- 30+ thin per-type subschemas for ergonomic authoring.
+- One thin subschema per source type, for ergonomic authoring.
 
 The inheritance chain (each level adds exactly what its JSON counterpart adds):
 
@@ -21,7 +21,7 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 | Module Path                                | KCL schema                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | ODCS JSON Schema entity                                                                                                                                                                |
 |--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`server/base.k`](../../server/base.k)     | `BaseServer`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `$defs/Server` **minus** `type` and the `allOf` block — the common properties (`server`, `description`, `environment`, `roles`, plus `id` / `customProperties` via the `common` chain) |
-| [`server/custom.k`](../../server/custom.k) | `CustomServer`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `$defs/ServerSource` → `CustomServer` — the permissive superset of all 19 source fields, every one optional                                                                            |
+| [`server/custom.k`](../../server/custom.k) | `CustomServer`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `$defs/ServerSource` → `CustomServer`, extended to stay the permissive superset of every source field, every one optional                                                                            |
 | [`server/spec.k`](../../server/spec.k)     | `Server` + `ServerSourceType`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `$defs/Server` — `type` (the 34-value enum) plus the `allOf` of per-`type` `if`/`then` conditionals, recovered as KCL `check` rules                                                    |
 | [`server/*.k`](../../server)               | `ApiServer`, `AthenaServer`, `AzureServer`, `BigQueryServer`, `ClickHouseServer`, `GoogleCloudSqlServer`, `DatabricksServer`, `IBMDB2Server`, `DenodoServer`, `DremioServer`, `DuckdbServer`, `GlueServer`, `HiveServer`, `ImpalaServer`, `InformixServer`, `KafkaServer`, `KinesisServer`, `LocalServer`, `MySqlServer`, `OracleServer`, `PostgresServer`, `PrestoServer`, `PubSubServer`, `RedshiftServer`, `S3Server`, `SftpServer`, `SnowflakeServer`, `SqlserverServer`, `SynapseServer`, `TrinoServer`, `VerticaServer`, `ZenServer` | the named `$defs/ServerSource` subschemas (one KCL schema per source, same names as the JSON)                                                                                          |
 
@@ -38,9 +38,22 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 
 ### `CustomServer(BaseServer)` is the all-optional superset
 
-- Modeled 1:1 on the JSON's own `$defs/ServerSource/CustomServer` (19 fields, none required).
+- Modeled on the JSON's own `$defs/ServerSource/CustomServer`, none of its fields required.
 - Because it is a superset of every source's fields, it is the first guarantee of **two-way parsing**.
 - Any valid ODCS server document — whatever its `type` — has a lossless KCL representation.
+- **ODCS v3.2.0 broke the superset in the JSON**: its `CustomServer` lacks fields that only one type declares
+  (`workgroup` for athena, and `catalogUrl` / `namespace` for iceberg). Mirroring the JSON 1:1 would make valid
+  servers of those types fail to parse. The KCL `CustomServer` declares them anyway, and `Server` adds one rule per
+  field allowing it only for its type, so a `type: custom` server carrying `workgroup` is still rejected, as the JSON
+  rejects it (decision D12).
+
+### `port` is an integer or a string
+
+- The JSON `Port` is `integer | string`, so a port can hold a variable reference such as `${DB_PORT}` resolved at
+  runtime (RFC 0050); it is the one non-string field that accepts a token. `type Port = int | str` lives beside
+  `CustomServer` and is re-exported by `spec.k` for the typed servers.
+- The JSON accepts any string. The library requires a string port to be decimal digits or one whole variable reference
+  (`portOk`), so `port: eighty` is rejected (decision D10).
 
 ### `Server(CustomServer)` is the standard interface
 
@@ -71,7 +84,10 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 ### Defaults follow the JSON schema first, the prose docs second
 
 - JSON-sourced: `athena.catalog = "awsdatacatalog"`, `kafka.format = "json"`, `sqlserver.port = 1433`.
-- Doc-sourced (the JSON declares no default): `hive` 10000, `impala` 21050, `informix` 9088, `zen` 1583.
+- Doc-sourced (the JSON declares no default): `hive` 10000, `impala` 21050, `informix` 9088, `zen` 1583, and
+  `encoding = "UTF-8"` on the seven typed file and stream sources (`azure`, `glue`, `kafka`, `kinesis`, `local`, `s3`,
+  `sftp`; RFC 0043, "Defaults to UTF-8" in the prose). `CustomServer.encoding` has no default, so a YAML server parsed
+  without `encoding` exports none.
 - Backends whose ports the JSON *requires* (`mysql`,`postgres`, …) keep a required `port` with no default.
 
 ---
@@ -85,7 +101,16 @@ StableId → StableIdCustomizable → BaseServer → CustomServer → Server →
 - The subschemas inherit the `check`s, so a typed schema that disagrees with its rule fails at first construction.
 - `spec.k` remains the single validation authority.
 
-### Known divergences from JSON `ServerSource` v3.1.0
+### Rejecting every foreign field per type
+
+- The JSON closes each typed source with `unevaluatedProperties`, so a `postgres` server carrying `location` is
+  invalid. The library scopes only the fields the JSON `CustomServer` lacks (above); a foreign field that the JSON
+  `CustomServer` does declare still parses on any type. Closing every type is a larger behaviour change than ODCS
+  v3.2.0 asks for, and stays open (D12).
+
+### Known divergences from JSON `ServerSource` v3.2.0
 
 - `postgresql` alias has no dedicated authoring subschema (`PostgresServer` freezes `$type = "postgres"`; use the
   general `Server` for the alias spelling).
+- A string `port` must be decimal digits or a whole variable reference; the JSON accepts any string (D10).
+- `CustomServer` declares the single-type fields the JSON `CustomServer` lacks, scoped to their type by `Server` (D12).

@@ -8,12 +8,21 @@ schema SynapseServer(server.Server):
     ----------
     host: str, default is Undefined, required.
         The host of the Synapse server.
-    port: int, default is Undefined, required.
+    port: Port, default is Undefined, required.
         The port of the Synapse server.
     database: str, default is Undefined, required.
         The name of the database.
+
+    Examples
+    --------
+    synapse = SynapseServer {
+        server = "synapse-sales"
+        host = "acme.sql.azuresynapse.net"
+        port = 1433
+        database = "sales"
+    }
     """
     $type = "synapse"
     host: str
-    port: int
+    port: server.Port
     database: str

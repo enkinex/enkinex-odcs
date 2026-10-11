@@ -10,6 +10,14 @@ schema DuckdbServer(server.Server):
         Path to duckdb database file.
     schema: str, default is Undefined, optional.
         The name of the schema.
+
+    Examples
+    --------
+    duckdb = DuckdbServer {
+        server = "duckdb-local"
+        database = "/data/sales.duckdb"
+        $schema = "main"
+    }
     """
     $type = "duckdb"
     database: str

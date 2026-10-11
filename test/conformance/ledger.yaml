@@ -25,8 +25,6 @@
 - example: fundamentals/table-column-description.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
-- example: fundamentals/variables.odcs.yaml
-  reason: ODCS-10
 - example: quality/column-completeness.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
@@ -71,8 +69,6 @@
 - example: server/kafka-server.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
-- example: server/s3-server-encoding.odcs.yaml
-  reason: ODCS-10
 - example: server/teradata-server.odcs.yaml
   reason: ODCS-11
 - example: sla/database-table-sla.odcs.yaml

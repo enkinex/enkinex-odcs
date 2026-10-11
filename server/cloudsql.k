@@ -8,15 +8,25 @@ schema GoogleCloudSqlServer(server.Server):
     ----------
     host: str, default is Undefined, required.
         The host of the Google Cloud Sql server.
-    port: int, default is Undefined, required.
+    port: Port, default is Undefined, required.
         The port of the Google Cloud Sql server.
     database: str, default is Undefined, required.
         The name of the database.
     schema: str, default is Undefined, required.
         The name of the schema.
+
+    Examples
+    --------
+    cloudsql = GoogleCloudSqlServer {
+        server = "cloudsql-sales"
+        host = "10.20.0.5"
+        port = 5432
+        database = "sales"
+        $schema = "public"
+    }
     """
     $type = "cloudsql"
     host: str
-    port: int
+    port: server.Port
     database: str
     $schema: str

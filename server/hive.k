@@ -10,10 +10,18 @@ schema HiveServer(server.Server):
         The host to the Hive server.
     database: str, default is Undefined, required.
         The name of the Hive database.
-    port: int, default is 10000, optional.
+    port: Port, default is 10000, optional.
         The port to the Hive server.
+
+    Examples
+    --------
+    hive = HiveServer {
+        server = "hive-warehouse"
+        host = "hive.acme.internal"
+        database = "sales"
+    }
     """
     $type = "hive"
     host: str
     database: str
-    port?: int = 10000
+    port?: server.Port = 10000

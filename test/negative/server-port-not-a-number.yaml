@@ -1,0 +1,12 @@
+# expect: a string port must be decimal digits or a variable reference
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+servers:
+  - server: warehouse
+    type: postgres
+    host: localhost
+    port: eighty
+    database: dw
+    schema: public

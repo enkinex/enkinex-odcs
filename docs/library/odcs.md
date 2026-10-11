@@ -1533,6 +1533,7 @@ API Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1540,7 +1541,7 @@ API Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|The URL to the API.<br />Examples: "https://api.example.com/v1"||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1552,6 +1553,16 @@ API Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+api = ApiServer {
+    server = "orders-api"
+    location = "https://api.acme.com/v1/orders"
+}
+```
+
 ### AthenaServer
 
 AWS Athena Server.
@@ -1567,6 +1578,7 @@ AWS Athena Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1574,7 +1586,7 @@ AWS Athena Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|The region your AWS account uses.<br />Examples: "eu-west-1"||
@@ -1582,10 +1594,22 @@ AWS Athena Server.
 |**schema**|str|Identify the schema in the data source in which your tables exist.||
 |**server** `required`|str|Identifier of the server.||
 |**serviceName**|str|Name of the service.||
-|**stagingDir**|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Examples: "s3://my_storage_account_name/my_container/path"||
+|**stagingDir**|str|Amazon Athena automatically stores query results and metadata information for each query that runs in a query result location that you can specify in Amazon S3.<br />Optional since ODCS v3.2.0: a workgroup can set the result location instead.<br />Examples: "s3://my_storage_account_name/my_container/path"||
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|The Athena workgroup that runs the queries; it may define the query result location.<br />Examples: "primary", "analytics"||
+#### Examples
+
+```
+athena = AthenaServer {
+    server = "athena-sales"
+    $schema = "sales"
+    workgroup = "analytics"
+    regionName = "eu-west-1"
+}
+```
+
 ### AzureServer
 
 Azure Blob Storage Server.
@@ -1599,8 +1623,9 @@ Azure Blob Storage Server.
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**database**|str|Name of the database.||
 |**dataset**|str|Name of the dataset.||
-|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
+|**delimiter**|str|Only for format = json. How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"<br />||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv".||
@@ -1608,7 +1633,7 @@ Azure Blob Storage Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|Fully qualified path to Azure Blob Storage or Azure Data Lake Storage (ADLS), supports globs.<br />Examples: "az://my_storage_account_name.blob.core.windows.net/my_container/path/*.parquet", "abfss://my_storage_account_name.dfs.core.windows.net/my_container_name/path/*.parquet"||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1620,16 +1645,7 @@ Azure Blob Storage Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
-#### Examples
-
-```
-azure = AzureServer {
-    server = "my-azure"
-    location = "az://my-data-location"
-    format = "parquet"
-}
-```
-
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 ### BaseServer
 
 Base server object carrying the server properties common to every server type.
@@ -1659,6 +1675,7 @@ Google BigQuery Server.
 |**dataset**|str|The GCP dataset name.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1666,7 +1683,7 @@ Google BigQuery Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|The GCP project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1678,6 +1695,17 @@ Google BigQuery Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+bigquery = BigQueryServer {
+    server = "bq-sales"
+    project = "acme-analytics"
+    dataset = "sales"
+}
+```
+
 ### ClickHouseServer
 
 ClickHouse Server.
@@ -1693,6 +1721,7 @@ ClickHouse Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1700,7 +1729,7 @@ ClickHouse Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the ClickHouse server.||
+|**port**|int \| str|The port to the ClickHouse server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1712,9 +1741,21 @@ ClickHouse Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+clickhouse = ClickHouseServer {
+    server = "clickhouse-events"
+    host = "clickhouse.acme.internal"
+    port = 9000
+    database = "events"
+}
+```
+
 ### CustomServer
 
-Defines the CustomServer source with all properties shared by all types of sources.
+Defines the CustomServer source with all properties shared by all types of sources. The permissive superset every typed server extends (through `Server`), so a YAML server of any type parses into it; `Server` then scopes the type-specific fields.
 
 #### Attributes
 
@@ -1727,6 +1768,7 @@ Defines the CustomServer source with all properties shared by all types of sourc
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1734,7 +1776,7 @@ Defines the CustomServer source with all properties shared by all types of sourc
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1745,6 +1787,7 @@ Defines the CustomServer source with all properties shared by all types of sourc
 |**stagingDir**|str|Staging directory.||
 |**stream**|str|Name of the data stream.||
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 ### DatabricksServer
 
 Databricks Server.
@@ -1760,6 +1803,7 @@ Databricks Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1767,7 +1811,7 @@ Databricks Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1779,6 +1823,18 @@ Databricks Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+databricks = DatabricksServer {
+    server = "databricks-lakehouse"
+    host = "adb-1234567890123456.7.azuredatabricks.net"
+    catalog = "main"
+    $schema = "sales"
+}
+```
+
 ### DenodoServer
 
 Denodo Server.
@@ -1794,6 +1850,7 @@ Denodo Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1801,7 +1858,7 @@ Denodo Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the Denodo server.||
+|**port**|int \| str|The port of the Denodo server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1813,6 +1870,18 @@ Denodo Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+denodo = DenodoServer {
+    server = "denodo-vdp"
+    host = "denodo.acme.internal"
+    port = 9999
+    database = "sales"
+}
+```
+
 ### DremioServer
 
 Dremio Server.
@@ -1828,6 +1897,7 @@ Dremio Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1835,7 +1905,7 @@ Dremio Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the Dremio server.||
+|**port**|int \| str|The port of the Dremio server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1847,6 +1917,18 @@ Dremio Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+dremio = DremioServer {
+    server = "dremio-lake"
+    host = "dremio.acme.internal"
+    port = 31010
+    $schema = "sales"
+}
+```
+
 ### DuckdbServer
 
 DuckDB Server.
@@ -1862,6 +1944,7 @@ DuckDB Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1869,7 +1952,7 @@ DuckDB Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1881,6 +1964,17 @@ DuckDB Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+duckdb = DuckdbServer {
+    server = "duckdb-local"
+    database = "/data/sales.duckdb"
+    $schema = "main"
+}
+```
+
 ### GlueServer
 
 AWS Glue Server.
@@ -1896,6 +1990,7 @@ AWS Glue Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the files.<br />Examples: "parquet", "csv", "json", "delta"||
@@ -1903,7 +1998,7 @@ AWS Glue Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|The AWS S3 path. Must be in the form of a URL.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}"||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1915,6 +2010,19 @@ AWS Glue Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+glue = GlueServer {
+    server = "glue-sales"
+    account = "123456789012"
+    database = "sales"
+    location = "s3://acme-lake/sales/"
+    format = "parquet"
+}
+```
+
 ### GoogleCloudSqlServer
 
 Google Cloud Sql Server.
@@ -1930,6 +2038,7 @@ Google Cloud Sql Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1937,7 +2046,7 @@ Google Cloud Sql Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the Google Cloud Sql server.||
+|**port**|int \| str|The port of the Google Cloud Sql server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1949,6 +2058,19 @@ Google Cloud Sql Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+cloudsql = GoogleCloudSqlServer {
+    server = "cloudsql-sales"
+    host = "10.20.0.5"
+    port = 5432
+    database = "sales"
+    $schema = "public"
+}
+```
+
 ### HiveServer
 
 Apache Hive Server.
@@ -1964,6 +2086,7 @@ Apache Hive Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -1971,7 +2094,7 @@ Apache Hive Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the Hive server.|10000|
+|**port**|int \| str|The port to the Hive server.|10000|
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -1983,6 +2106,17 @@ Apache Hive Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+hive = HiveServer {
+    server = "hive-warehouse"
+    host = "hive.acme.internal"
+    database = "sales"
+}
+```
+
 ### IBMDB2Server
 
 IBM DB2 Server.
@@ -1998,6 +2132,7 @@ IBM DB2 Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2005,7 +2140,7 @@ IBM DB2 Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the IBM DB2 server.||
+|**port**|int \| str|The port of the IBM DB2 server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2017,6 +2152,19 @@ IBM DB2 Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+db2 = IBMDB2Server {
+    server = "db2-sales"
+    host = "db2.acme.internal"
+    port = 50000
+    database = "SALES"
+    $schema = "ORDERS"
+}
+```
+
 ### ImpalaServer
 
 Apache Impala Server.
@@ -2032,6 +2180,7 @@ Apache Impala Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2039,7 +2188,7 @@ Apache Impala Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the Impala server.|21050|
+|**port**|int \| str|The port to the Impala server.|21050|
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2051,6 +2200,17 @@ Apache Impala Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+impala = ImpalaServer {
+    server = "impala-warehouse"
+    host = "impala.acme.internal"
+    database = "sales"
+}
+```
+
 ### InformixServer
 
 IBM Informix Server.
@@ -2066,6 +2226,7 @@ IBM Informix Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2073,7 +2234,7 @@ IBM Informix Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the Informix server.|9088|
+|**port**|int \| str|The port to the Informix server.|9088|
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2085,6 +2246,17 @@ IBM Informix Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+informix = InformixServer {
+    server = "informix-sales"
+    host = "informix.acme.internal"
+    database = "sales"
+}
+```
+
 ### KafkaServer
 
 Apache Kafka Server.
@@ -2100,14 +2272,15 @@ Apache Kafka Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
-|**format**|str|The format of the messages.<br />Examples: "json", "avro", "protobuf", "xml"|"json"|
+|**format**|str|The format of the messages.<br />Examples: "json", "avro", "protobuf", "xml"<br />|"json"|
 |**host**|str|The bootstrap server of the kafka cluster.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2119,16 +2292,7 @@ Apache Kafka Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
-#### Examples
-
-```
-kafka = KafkaServer {
-    server = "my-kafka"
-    host = "pkc-7xoy1.eu-central-1.aws.confluent.cloud:9092"
-    format = "avro"
-}
-```
-
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 ### KinesisServer
 
 AWS Kinesis Data Streams Server.
@@ -2144,6 +2308,7 @@ AWS Kinesis Data Streams Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the record.<br />Examples: "json", "avro", "protobuf"||
@@ -2151,7 +2316,7 @@ AWS Kinesis Data Streams Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|AWS region.<br />Examples: "eu-west-1"||
 |**regionName**|str|Region name.||
@@ -2163,6 +2328,18 @@ AWS Kinesis Data Streams Server.
 |**stream**|str|The name of the Kinesis data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+kinesis = KinesisServer {
+    server = "kinesis-orders"
+    stream = "orders-events"
+    region = "eu-west-1"
+    format = "json"
+}
+```
+
 ### LocalServer
 
 Local File Server.
@@ -2178,6 +2355,7 @@ Local File Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|The format of the file(s).<br />Examples: "json", "parquet", "delta", "csv"||
@@ -2185,7 +2363,7 @@ Local File Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|The relative or absolute path to the data file(s).<br />Examples: "./folder/data.parquet", "./folder/*.parquet"||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2197,6 +2375,17 @@ Local File Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+local = LocalServer {
+    server = "local-files"
+    path = "./data/orders.parquet"
+    format = "parquet"
+}
+```
+
 ### MySqlServer
 
 MySQL Server.
@@ -2212,6 +2401,7 @@ MySQL Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2219,7 +2409,7 @@ MySQL Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the MySql server.||
+|**port**|int \| str|The port of the MySql server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2231,6 +2421,18 @@ MySQL Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+mysql = MySqlServer {
+    server = "mysql-sales"
+    host = "mysql.acme.internal"
+    port = "3306"
+    database = "sales"
+}
+```
+
 ### OracleServer
 
 Oracle Database Server.
@@ -2246,6 +2448,7 @@ Oracle Database Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2253,7 +2456,7 @@ Oracle Database Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the oracle server.<br />Examples: "1523"||
+|**port**|int \| str|The port to the oracle server.<br />Examples: "1523"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2265,6 +2468,18 @@ Oracle Database Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+oracle = OracleServer {
+    server = "oracle-sales"
+    host = "oracle.acme.internal"
+    port = 1521
+    serviceName = "SALESPDB"
+}
+```
+
 ### PostgresServer
 
 PostgreSQL Server.
@@ -2280,6 +2495,7 @@ PostgreSQL Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2287,7 +2503,7 @@ PostgreSQL Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the Postgres server.||
+|**port**|int \| str|The port to the Postgres server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2299,6 +2515,7 @@ PostgreSQL Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
 
 ```
@@ -2326,6 +2543,7 @@ Presto Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2333,7 +2551,7 @@ Presto Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2345,6 +2563,18 @@ Presto Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+presto = PrestoServer {
+    server = "presto-lake"
+    host = "presto.acme.internal:8080"
+    catalog = "hive"
+    $schema = "sales"
+}
+```
+
 ### PubSubServer
 
 Google Cloud Pub/Sub Server.
@@ -2360,6 +2590,7 @@ Google Cloud Pub/Sub Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2367,7 +2598,7 @@ Google Cloud Pub/Sub Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|The GCP project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2379,6 +2610,16 @@ Google Cloud Pub/Sub Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+pubsub = PubSubServer {
+    server = "pubsub-events"
+    project = "acme-events"
+}
+```
+
 ### RedshiftServer
 
 Amazon Redshift Server.
@@ -2394,6 +2635,7 @@ Amazon Redshift Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2401,7 +2643,7 @@ Amazon Redshift Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|AWS region of Redshift server.<br />Examples: "us-east-1"||
 |**regionName**|str|Region name.||
@@ -2413,6 +2655,19 @@ Amazon Redshift Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+redshift = RedshiftServer {
+    server = "redshift-sales"
+    host = "acme.abc123.eu-west-1.redshift.amazonaws.com"
+    database = "sales"
+    $schema = "public"
+    region = "eu-west-1"
+}
+```
+
 ### S3Server
 
 Amazon S3 Server.
@@ -2428,6 +2683,7 @@ Amazon S3 Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|The server endpoint for S3-compatible servers.<br />Examples: "https://minio.example.com`"||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
@@ -2435,7 +2691,7 @@ Amazon S3 Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|S3 URL, starting with `s3://`.<br />Examples: "s3://datacontract-example-orders-latest/data/{model}/*.json"||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2447,6 +2703,17 @@ Amazon S3 Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+s3 = S3Server {
+    server = "s3-orders"
+    location = "s3://acme-lake/sales/orders/*.parquet"
+    format = "parquet"
+}
+```
+
 ### Server
 
 The Server schema inherits CustomServer properties and provides the `allOf` JSON schema validation against source type subschemas.
@@ -2462,6 +2729,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2469,7 +2737,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2481,6 +2749,7 @@ The Server schema inherits CustomServer properties and provides the `allOf` JSON
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
 #### Examples
 
 ```
@@ -2519,6 +2788,7 @@ SFTP Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Only for format = json.<br />How multiple json documents are delimited within one file.<br />Examples: "new_line", "array"||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). The default comes from the ODCS prose.<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"|"UTF-8"|
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.<br />Examples: "parquet", "delta", "json", "csv"||
@@ -2526,7 +2796,7 @@ SFTP Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|SFTP URL, starting with `sftp://`.<br />Examples: "sftp://123.123.12.123/{model}/*.json"||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Port to the server. No default value is assumed for custom servers.||
+|**port**|int \| str|Port to the server: an integer, or a string holding decimal digits or a variable reference.<br />No default value is assumed for custom servers.<br />Examples: 5432, "5432", "${DB_PORT}"||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2538,6 +2808,19 @@ SFTP Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+sftp = SftpServer {
+    server = "sftp-exports"
+    location = "sftp://files.acme.com/exports/orders.csv"
+    format = "csv"
+    delimiter = ","
+    encoding = "ISO-8859-1"
+}
+```
+
 ### SnowflakeServer
 
 Snowflake Data Warehouse Server.
@@ -2553,6 +2836,7 @@ Snowflake Data Warehouse Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2560,7 +2844,7 @@ Snowflake Data Warehouse Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the Snowflake server.||
+|**port**|int \| str|The port to the Snowflake server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2572,6 +2856,19 @@ Snowflake Data Warehouse Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|The name of the cluster of resources that is a Snowflake virtual warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+snowflake = SnowflakeServer {
+    server = "snowflake-sales"
+    account = "acme-eu1"
+    database = "SALES"
+    $schema = "ORDERS"
+    warehouse = "ANALYTICS_WH"
+}
+```
+
 ### SqlserverServer
 
 Microsoft SQL Server.
@@ -2587,6 +2884,7 @@ Microsoft SQL Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2594,7 +2892,7 @@ Microsoft SQL Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port to the database server.<br />Examples: "1433"|1433|
+|**port**|int \| str|The port to the database server.<br />Examples: "1433"|1433|
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2606,6 +2904,18 @@ Microsoft SQL Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+sqlserver = SqlserverServer {
+    server = "sqlserver-sales"
+    host = "sqlserver.acme.internal"
+    database = "sales"
+    $schema = "dbo"
+}
+```
+
 ### SynapseServer
 
 Azure Synapse Analytics Server.
@@ -2621,6 +2931,7 @@ Azure Synapse Analytics Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2628,7 +2939,7 @@ Azure Synapse Analytics Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the Synapse server.||
+|**port**|int \| str|The port of the Synapse server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2640,6 +2951,18 @@ Azure Synapse Analytics Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+synapse = SynapseServer {
+    server = "synapse-sales"
+    host = "acme.sql.azuresynapse.net"
+    port = 1433
+    database = "sales"
+}
+```
+
 ### TrinoServer
 
 Trino Server.
@@ -2655,6 +2978,7 @@ Trino Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2662,7 +2986,7 @@ Trino Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The Trino port.||
+|**port**|int \| str|The Trino port.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2674,6 +2998,19 @@ Trino Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+trino = TrinoServer {
+    server = "trino-lakehouse"
+    host = "trino.acme.internal"
+    port = 443
+    catalog = "lakehouse"
+    $schema = "sales"
+}
+```
+
 ### VerticaServer
 
 Vertica Database Server.
@@ -2689,6 +3026,7 @@ Vertica Database Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2696,7 +3034,7 @@ Vertica Database Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|The port of the Vertica server.||
+|**port**|int \| str|The port of the Vertica server.||
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2708,6 +3046,19 @@ Vertica Database Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+vertica = VerticaServer {
+    server = "vertica-sales"
+    host = "vertica.acme.internal"
+    port = 5433
+    database = "sales"
+    $schema = "public"
+}
+```
+
 ### ZenServer
 
 Zen Server.
@@ -2723,6 +3074,7 @@ Zen Server.
 |**dataset**|str|Name of the dataset.||
 |**delimiter**|str|Delimiter.||
 |**description**|str|Description of the server.||
+|**encoding**|str|Character encoding of the data (RFC 0043). Typed file and stream servers default it to "UTF-8".<br />Examples: "UTF-8", "ISO-8859-1", "UTF-16"||
 |**endpointUrl**|str|Server endpoint.||
 |**environment**|str|Environment of the server.<br />Examples: "prod", "preprod", "dev", "uat"||
 |**format**|str|File format.||
@@ -2730,7 +3082,7 @@ Zen Server.
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**location**|str|A URL to a location.||
 |**path**|str|Relative or absolute path to the data file(s).||
-|**port**|int|Zen server SQL connections port.|1583|
+|**port**|int \| str|Zen server SQL connections port.|1583|
 |**project**|str|Project name.||
 |**region**|str|Cloud region.||
 |**regionName**|str|Region name.||
@@ -2742,4 +3094,15 @@ Zen Server.
 |**stream**|str|Name of the data stream.||
 |**type** `required`|"api" \| "athena" \| "azure" \| "bigquery" \| "clickhouse" \| "databricks" \| "denodo" \| "dremio" \| "duckdb" \| "glue" \| "cloudsql" \| "db2" \| "hive" \| "impala" \| "informix" \| "kafka" \| "kinesis" \| "local" \| "mysql" \| "oracle" \| "postgresql" \| "postgres" \| "presto" \| "pubsub" \| "redshift" \| "s3" \| "sftp" \| "snowflake" \| "sqlserver" \| "synapse" \| "trino" \| "vertica" \| "zen" \| "custom"|Type of the server.|"custom"|
 |**warehouse**|str|Name of the cluster or warehouse.||
+|**workgroup**|str|Athena workgroup. Only valid for athena servers.||
+#### Examples
+
+```
+zen = ZenServer {
+    server = "zen-sales"
+    host = "zen.acme.internal"
+    database = "SALES"
+}
+```
+
 <!-- Auto generated by kcl-doc tool, please do not edit. -->

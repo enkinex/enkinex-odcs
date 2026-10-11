@@ -10,10 +10,18 @@ schema ZenServer(server.Server):
         Hostname or IP address of the Zen server.
     database: str, default is Undefined, required.
         Database name to connect to on the Zen server.
-    port: int, default is 1583, optional.
+    port: Port, default is 1583, optional.
         Zen server SQL connections port.
+
+    Examples
+    --------
+    zen = ZenServer {
+        server = "zen-sales"
+        host = "zen.acme.internal"
+        database = "SALES"
+    }
     """
     $type = "zen"
     host: str
     database: str
-    port?: int = 1583
+    port?: server.Port = 1583

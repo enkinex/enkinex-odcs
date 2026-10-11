@@ -14,8 +14,21 @@ schema KinesisServer(server.Server):
     format: str, default is Undefined, optional.
         The format of the record.
         Examples: "json", "avro", "protobuf"
+    encoding: str, default is "UTF-8", optional.
+        Character encoding of the data (RFC 0043). The default comes from the ODCS prose.
+        Examples: "UTF-8", "ISO-8859-1", "UTF-16"
+
+    Examples
+    --------
+    kinesis = KinesisServer {
+        server = "kinesis-orders"
+        stream = "orders-events"
+        region = "eu-west-1"
+        format = "json"
+    }
     """
     $type = "kinesis"
     stream?: str
     region?: str
     format?: str
+    encoding?: str = "UTF-8"

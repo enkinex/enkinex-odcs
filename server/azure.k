@@ -16,6 +16,9 @@ schema AzureServer(server.Server):
         Only for format = json. How multiple json documents are delimited within one file.
         Examples: "new_line", "array"
 
+    encoding: str, default is "UTF-8", optional.
+        Character encoding of the data (RFC 0043). The default comes from the ODCS prose.
+        Examples: "UTF-8", "ISO-8859-1", "UTF-16"
     Examples
     --------
     azure = AzureServer {
@@ -28,3 +31,4 @@ schema AzureServer(server.Server):
     location: str
     format: str
     delimiter?: str
+    encoding?: str = "UTF-8"

@@ -15,6 +15,15 @@ schema PrestoServer(server.Server):
     schema: str, default is Undefined, optional.
         The name of the schema.
         Examples: "public"
+
+    Examples
+    --------
+    presto = PrestoServer {
+        server = "presto-lake"
+        host = "presto.acme.internal:8080"
+        catalog = "hive"
+        $schema = "sales"
+    }
     """
     $type = "presto"
     host: str

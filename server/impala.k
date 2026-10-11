@@ -10,10 +10,18 @@ schema ImpalaServer(server.Server):
         The host to the Impala server.
     database: str, default is Undefined, required.
         The name of the Impala database.
-    port: int, default is 21050, optional.
+    port: Port, default is 21050, optional.
         The port to the Impala server.
+
+    Examples
+    --------
+    impala = ImpalaServer {
+        server = "impala-warehouse"
+        host = "impala.acme.internal"
+        database = "sales"
+    }
     """
     $type = "impala"
     host: str
     database: str
-    port?: int = 21050
+    port?: server.Port = 21050

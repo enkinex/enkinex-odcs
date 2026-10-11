@@ -15,12 +15,21 @@ schema SqlserverServer(server.Server):
     schema: str, default is Undefined, required.
         The name of the schema in the database.
         Examples: "dbo"
-    port: int, default is 1433, optional.
+    port: Port, default is 1433, optional.
         The port to the database server.
         Examples: "1433"
+
+    Examples
+    --------
+    sqlserver = SqlserverServer {
+        server = "sqlserver-sales"
+        host = "sqlserver.acme.internal"
+        database = "sales"
+        $schema = "dbo"
+    }
     """
     $type = "sqlserver"
     host: str
     database: str
     $schema: str
-    port?: int = 1433
+    port?: server.Port = 1433

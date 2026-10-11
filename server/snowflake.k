@@ -14,15 +14,25 @@ schema SnowflakeServer(server.Server):
         The name of the schema.
     host: str, default is Undefined, optional.
         The host to the Snowflake server.
-    port: int, default is Undefined, optional.
+    port: Port, default is Undefined, optional.
         The port to the Snowflake server.
     warehouse: str, default is Undefined, optional.
         The name of the cluster of resources that is a Snowflake virtual warehouse.
+
+    Examples
+    --------
+    snowflake = SnowflakeServer {
+        server = "snowflake-sales"
+        account = "acme-eu1"
+        database = "SALES"
+        $schema = "ORDERS"
+        warehouse = "ANALYTICS_WH"
+    }
     """
     $type = "snowflake"
     account: str
     database: str
     $schema: str
     host?: str
-    port?: int
+    port?: server.Port
     warehouse?: str

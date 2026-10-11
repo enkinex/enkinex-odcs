@@ -8,12 +8,21 @@ schema DenodoServer(server.Server):
     ----------
     host: str, default is Undefined, required.
         The host of the Denodo server.
-    port: int, default is Undefined, required.
+    port: Port, default is Undefined, required.
         The port of the Denodo server.
     database: str, default is Undefined, optional.
         The name of the database.
+
+    Examples
+    --------
+    denodo = DenodoServer {
+        server = "denodo-vdp"
+        host = "denodo.acme.internal"
+        port = 9999
+        database = "sales"
+    }
     """
     $type = "denodo"
     host: str
-    port: int
+    port: server.Port
     database?: str

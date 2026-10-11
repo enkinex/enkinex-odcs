@@ -78,7 +78,6 @@
   expect: every entry of 'properties' requires 'name'
 - test: server-encoding-wrong-type.odcs.yaml
   expect: got int(65001)
-  pending: ODCS-10
 - test: server-invalid-type.odcs.yaml
   expect: got str(mongodb)
 - test: server-missing-conditional-fields.odcs.yaml

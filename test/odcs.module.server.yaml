@@ -14,11 +14,17 @@ servers:
     type: api
     location: https://enkinex.org/api/v1
 
-  # athena: requires schema + stagingDir (catalog defaults to awsdatacatalog)
+  # athena: requires schema (catalog defaults to awsdatacatalog)
   - server: srv-athena
     type: athena
     schema: sales
     stagingDir: s3://enkinex-athena-results/sales
+
+  # athena since ODCS v3.2.0: stagingDir is optional, and a workgroup may set the result location
+  - server: srv-athena-workgroup
+    type: athena
+    schema: sales
+    workgroup: analytics
 
   # azure: requires location + format
   - server: srv-azure
@@ -123,7 +129,8 @@ servers:
   - server: srv-mysql
     type: mysql
     host: mysql.enkinex.org
-    port: 3306
+    # RFC 0050: a port may be a string of digits
+    port: "3306"
     database: sales
 
   # oracle: requires host + port + serviceName
@@ -144,8 +151,9 @@ servers:
   # postgresql alias: validated by the same rule as postgres
   - server: srv-postgresql
     type: postgresql
-    host: postgres.enkinex.org
-    port: 5432
+    host: ${PG_HOST}
+    # RFC 0050: a port may hold a variable reference, with or without a default
+    port: ${PG_PORT:-5432}
     database: sales
     schema: history
 
@@ -169,6 +177,8 @@ servers:
   - server: srv-s3
     type: s3
     location: s3://enkinex-sales/orders/*.json
+    # RFC 0043: character encoding of file and stream sources
+    encoding: ISO-8859-1
 
   # sftp: requires location
   - server: srv-sftp

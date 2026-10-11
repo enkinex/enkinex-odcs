@@ -12,6 +12,9 @@ schema KafkaServer(server.Server):
         The format of the messages.
         Examples: "json", "avro", "protobuf", "xml"
 
+    encoding: str, default is "UTF-8", optional.
+        Character encoding of the data (RFC 0043). The default comes from the ODCS prose.
+        Examples: "UTF-8", "ISO-8859-1", "UTF-16"
     Examples
     --------
     kafka = KafkaServer {
@@ -23,3 +26,4 @@ schema KafkaServer(server.Server):
     $type = "kafka"
     host: str
     format?: str = "json"
+    encoding?: str = "UTF-8"

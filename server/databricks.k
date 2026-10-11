@@ -13,6 +13,15 @@ schema DatabricksServer(server.Server):
     host: str, default is Undefined, optional.
         The Databricks host.
         Examples: "dbc-abcdefgh-1234.cloud.databricks.com"
+
+    Examples
+    --------
+    databricks = DatabricksServer {
+        server = "databricks-lakehouse"
+        host = "adb-1234567890123456.7.azuredatabricks.net"
+        catalog = "main"
+        $schema = "sales"
+    }
     """
     $type = "databricks"
     catalog: str

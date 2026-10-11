@@ -6,6 +6,7 @@
 - catalog
   - [ArrayOptions](#arrayoptions)
   - [DateOptions](#dateoptions)
+  - [EnumValue](#enumvalue)
   - [IntegerOptions](#integeroptions)
   - [NumberOptions](#numberoptions)
   - [ObjectOptions](#objectoptions)
@@ -16,12 +17,15 @@
   - [SchemaObject](#schemaobject)
   - [SchemaProperty](#schemaproperty)
   - [StringOptions](#stringoptions)
+  - [Synonym](#synonym)
   - [TimeOptions](#timeoptions)
   - [TimestampOptions](#timestampoptions)
   - [TypeOptions](#typeoptions)
 - common
   - [AuthoritativeCustomizable](#authoritativecustomizable)
   - [AuthoritativeDefinition](#authoritativedefinition)
+  - [Context](#context)
+  - [ContextConstraint](#contextconstraint)
   - [CustomProperty](#customproperty)
   - [Customizable](#customizable)
   - [StableId](#stableid)
@@ -29,6 +33,7 @@
   - [StableIdCustomizable](#stableidcustomizable)
   - [StableIdDiscoverable](#stableiddiscoverable)
   - [TagsDiscoverable](#tagsdiscoverable)
+  - [VerifiedStatement](#verifiedstatement)
 - contract
   - [Description](#description)
   - [Pricing](#pricing)
@@ -90,6 +95,7 @@ A data contract defines the agreement between a data producer and consumers. Thi
 | --- | --- | --- | --- |
 |**apiVersion** `required` `readOnly`|"v3.2.0"|Version of the standard used to build data contract.<br />Only "v3.2.0" is accepted: install the library release tagged for another version.|"v3.2.0"|
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**context**|str \| [Context](#context)|AI and semantic context for the whole contract (RFC 0038): a string (instructions only) or a `Context` block.||
 |**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.<br />May also be a whole variable reference resolved by downstream tools (RFC 0050), e.g. "${CREATED_AT}".||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|[Description](#description)|Object containing the descriptions.||
@@ -216,6 +222,48 @@ eventDate = SchemaProperty {
         minimum = "2020-01-01"
     }
     examples = ["2024-07-10"]
+}
+```
+
+### EnumValue
+
+An allowed value within a property&#39;s enumeration (RFC 0033). Inherited via StableIdDiscoverable: id, customProperties, authoritativeDefinitions, tags.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|What this enum value represents.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**label**|str|Human-readable label for the value, suitable for UI display.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
+|**value**|str \| int \| float \| bool|The allowed value: a non-collection scalar, or null (matches JSON AnyNonCollectionType).<br />Required but nullable: write `value: null` in YAML (`None` in KCL) for a null member.<br />Must be compatible with the property&#39;s logicalType (checked on `SchemaProperty`).||
+#### Examples
+
+```
+pending = EnumValue {
+    value = "pending"
+    label = "Pending"
+    description = "Order received, awaiting processing."
+    tags = ["initial"]
+}
+
+mexico = EnumValue {
+    value = "MX"
+    label = "Mexico"
+    customProperties = [
+        CustomProperty {
+            property = "languageEs"
+            value = "México"
+        }
+    ]
+}
+
+unknown = EnumValue {
+    value = None
+    label = "Unknown"
 }
 ```
 
@@ -427,12 +475,14 @@ Schema element to be cataloged. Applicable to either Objects or Properties Inher
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**deprecated**|bool|Indicates the element is deprecated and should not be used in new implementations (RFC 0051).<br />Data only: KCL has no warning channel, so a deprecated element still validates.|False|
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**name**|str|Name of the element.<br />Required on schema objects and on every entry of a `properties` list (checked by the container);<br />optional on item descriptors (`items`, `map.key`, `map.value`), as in the JSON `SchemaItemProperty`.||
 |**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
+|**synonyms**|[[Synonym](#synonym)]|Alternative names for the element (RFC 0041).||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### SchemaObject
 
@@ -444,8 +494,10 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**businessName**|str|The business name of the element.||
+|**context**|str \| [Context](#context)|AI and semantic context for the object (RFC 0038): a string (instructions only) or a `Context` block.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**dataGranularityDescription**|str|Granular level of the data in the object.<br />Examples: "Aggregation by country"||
+|**deprecated**|bool|Indicates the element is deprecated and should not be used in new implementations (RFC 0051).<br />Data only: KCL has no warning channel, so a deprecated element still validates.|False|
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**logicalType** `readOnly`|"object"|The logical object data type. Always "object".|"object"|
@@ -455,6 +507,7 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 |**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties for the object.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
 |**relationships**|[[RelationshipSchemaLevel](#relationshipschemalevel)]|A list of relationships to other objects.<br />Each relationship must have &#39;from&#39;, &#39;to&#39; and optionally &#39;type&#39; field.||
+|**synonyms**|[[Synonym](#synonym)]|Alternative names for the element (RFC 0041).||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 #### Examples
 
@@ -538,8 +591,10 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**classification**|str|Can be anything, like confidential, restricted, and public to more advanced categorization.<br />Examples: "confidential", "restricted", "public"||
 |**criticalDataElement**|bool|If element is considered a critical data element (CDE) then true else false.|False|
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**deprecated**|bool|Indicates the element is deprecated and should not be used in new implementations (RFC 0051).<br />Data only: KCL has no warning channel, so a deprecated element still validates.|False|
 |**description**|str|Description of the element.||
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
+|**enum**|[[EnumValue](#enumvalue)]|Enumeration of allowed values for the property (RFC 0033). Must not be empty, values must be unique,<br />and each non-null value must be compatible with logicalType: string → str, integer → int,<br />number → int or float, boolean → bool (other logical types are not checked).||
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Only valid when logicalType is "array"; an array may omit it. Needs no `name`.||
@@ -556,6 +611,8 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
 |**relationships**|[[RelationshipPropertyLevel](#relationshippropertylevel)]|A list of relationships to other properties.<br />When defined at property level, the &#39;from&#39; field is implicit and should not be specified.||
 |**required**|bool|Indicates if the element may contain Null values.|False|
+|**semanticType**|"column" \| "measure" \| "dimension"|The semantic role the property plays in the data model (RFC 0034).<br />"column" is a physical column; "measure" an aggregated value whose expression is held in `transformLogic`;<br />"dimension" a categorical attribute used for grouping and filtering.|"column"|
+|**synonyms**|[[Synonym](#synonym)]|Alternative names for the element (RFC 0041).||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 |**transformDescription**|str|Describes the transform logic in very simple terms.||
 |**transformLogic**|str|Logic used in the column transformation.||
@@ -637,6 +694,37 @@ orderId = SchemaProperty {
         maxLength = 36
     }
     examples = ["c47a1e10-0001-4c00-8000-00000000aaaa"]
+}
+```
+
+### Synonym
+
+An alternative name for a named schema element, helping catalogs, AI/LLM tools and natural language interfaces resolve business vocabulary to the underlying element (RFC 0041). Inherited via StableIdCustomizable: id, customProperties.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**description**|str|Short human-readable note about when or why this synonym is used.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**locale**|str|BCP 47 language tag when the synonym is language-specific (not validated).<br />Examples: "en-US", "fr-FR"||
+|**source**|str|Origin of the synonym.<br />Examples: "glossary", "finance-team", "legacy-system"||
+|**status**|str|Lifecycle status of the synonym (an open vocabulary).<br />Examples: "active", "deprecated"||
+|**synonym** `required`|str|The synonymous term.||
+#### Examples
+
+```
+revenue = Synonym {
+    synonym = "turnover"
+    locale = "en-GB"
+    source = "glossary"
+}
+
+chiffreAffaires = Synonym {
+    synonym = "chiffre d'affaires"
+    locale = "fr-FR"
+    description = "Used by the Paris finance team."
 }
 ```
 
@@ -796,6 +884,50 @@ odcsVersion = AuthoritativeDefinition {
 }
 ```
 
+### Context
+
+AI and semantic context block (RFC 0038): structured guidance for AI agents, LLMs, BI tools and semantic layers. Used by `DataContract.context` and `SchemaObject.context`, both typed `str \| Context`: a plain string is the shorthand for `instructions` only, as in the JSON `oneOf`.
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**constraints**|[[ContextConstraint](#contextconstraint)]|What AI agents must not do with the entity.||
+|**instructions**|str|Natural language guidance on how to use the entity, like a system prompt scoped to this level.||
+|**verifiedStatements**|[[VerifiedStatement](#verifiedstatement)]|Canonical questions (entries without `answer`) and verified question and answer pairs.||
+#### Examples
+
+```
+ordersContext = Context {
+    instructions = "Use for order analytics; amounts are in USD."
+    verifiedStatements = [
+        VerifiedStatement {
+            id = "vs_daily_revenue"
+            question = "What was yesterday's revenue?"
+            answer = "SUM(amount) for orders with order_date = current_date - 1."
+        }
+    ]
+    constraints = [
+        ContextConstraint {
+            constraint = "Never join orders to customers on email."
+        }
+    ]
+}
+```
+
+### ContextConstraint
+
+Negative guidance: something AI agents must not do with the entity. Inherited via StableIdDiscoverable: id, customProperties, authoritativeDefinitions, tags. The JSON types `id` as a plain string; the library applies the StableId denylist (decision D11).
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**constraint** `required`|str|The constraint text.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### CustomProperty
 
 This section covers custom properties you can use to add non-standard properties. This block is available in many sections.
@@ -893,6 +1025,20 @@ Base object carrying the optional properties shared by discoverable elements wit
 | --- | --- | --- | --- |
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
+### VerifiedStatement
+
+A canonical question for AI agents and tools, or a verified question and answer pair when `answer` is set. Inherited via StableIdDiscoverable: id, customProperties, authoritativeDefinitions, tags. The JSON types `id` as a plain string; the library applies the StableId denylist, as for every "stable identifier" (decision D11).
+
+#### Attributes
+
+| name | type | description | default value |
+| --- | --- | --- | --- |
+|**answer**|str|The expected response or result description.||
+|**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
+|**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
+|**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
+|**question** `required`|str|The canonical question.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 ### Description
 

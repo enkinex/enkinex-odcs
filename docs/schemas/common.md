@@ -8,18 +8,19 @@ the schemas in `catalog`, `contract`, `iam`, `quality`, `server`, and the root `
 
 ## Schema Mapping
 
-| Module Path                                              | KCL schema                  | ODCS JSON Schema entity                                                                    |
-|----------------------------------------------------------|-----------------------------|--------------------------------------------------------------------------------------------|
-| [`common/id.k`](../../common/id.k)                       | `StableId`                  | `$defs/StableId`                                                                           |
-| [`common/property.k`](../../common/property.k)           | `CustomProperty`            | `$defs/CustomProperty`                                                                     |
-| [`common/authoritative.k`](../../common/authoritative.k) | `AuthoritativeDefinition`   | `$defs/AuthoritativeDefinitions` (item object)                                             |
-| [`common/custom.k`](../../common/custom.k)               | `Customizable`              | `$defs/CustomProperties` (array wrapper)                                                   |
-| [`common/custom.k`](../../common/custom.k)               | `AuthoritativeCustomizable` | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`                                 |
-| [`common/custom.k`](../../common/custom.k)               | `StableIdCustomizable`      | `$defs/StableId`, `$defs/CustomProperties`                                                 |
-| [`common/custom.k`](../../common/custom.k)               | `StableIdAuthoritativeCustomizable` | `$defs/StableId`, `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`       |
-| [`common/discovery.k`](../../common/discovery.k)         | `StableIdDiscoverable`      | `$defs/StableId`, `$defs/CustomProperties`, `$defs/Tags`, `$defs/AuthoritativeDefinitions` |
-| [`common/discovery.k`](../../common/discovery.k)         | `TagsDiscoverable`          | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`, `$defs/Tags`                   |
-| [`common/variable.k`](../../common/variable.k)           | `variableReferencePattern`, `isVariable`, `hasVariable`, `variable` | no `$defs` entry: RFC 0050 variables, defined in prose (`docs/variables.md`) |
+| Module Path                                              | KCL schema                                                          | ODCS JSON Schema entity                                                                    |
+|----------------------------------------------------------|---------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| [`common/id.k`](../../common/id.k)                       | `StableId`                                                          | `$defs/StableId`                                                                           |
+| [`common/property.k`](../../common/property.k)           | `CustomProperty`                                                    | `$defs/CustomProperty`                                                                     |
+| [`common/authoritative.k`](../../common/authoritative.k) | `AuthoritativeDefinition`                                           | `$defs/AuthoritativeDefinitions` (item object)                                             |
+| [`common/custom.k`](../../common/custom.k)               | `Customizable`                                                      | `$defs/CustomProperties` (array wrapper)                                                   |
+| [`common/custom.k`](../../common/custom.k)               | `AuthoritativeCustomizable`                                         | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`                                 |
+| [`common/custom.k`](../../common/custom.k)               | `StableIdCustomizable`                                              | `$defs/StableId`, `$defs/CustomProperties`                                                 |
+| [`common/custom.k`](../../common/custom.k)               | `StableIdAuthoritativeCustomizable`                                 | `$defs/StableId`, `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`               |
+| [`common/discovery.k`](../../common/discovery.k)         | `StableIdDiscoverable`                                              | `$defs/StableId`, `$defs/CustomProperties`, `$defs/Tags`, `$defs/AuthoritativeDefinitions` |
+| [`common/discovery.k`](../../common/discovery.k)         | `TagsDiscoverable`                                                  | `$defs/CustomProperties`, `$defs/AuthoritativeDefinitions`, `$defs/Tags`                   |
+| [`common/context.k`](../../common/context.k)             | `Context`, `VerifiedStatement`, `ContextConstraint`                 | `$defs/Context` (object branch of its `oneOf`; the string branch is `str`)                 |
+| [`common/variable.k`](../../common/variable.k)           | `variableReferencePattern`, `isVariable`, `hasVariable`, `variable` | no `$defs` entry: RFC 0050 variables, defined in prose (`docs/variables.md`)               |
 
 ---
 
@@ -73,6 +74,15 @@ flowchart TB
 
 - `CustomProperty` / `AuthoritativeDefinition` are the item objects.
 - The `customProperties` / `authoritativeDefinitions` *arrays* live on the base classes above.
+
+### `Context` sits in `common` because two modules use it
+
+- RFC 0038 adds an AI and semantic `context` block to the root `DataContract` and to `SchemaObject`. The field is typed
+  `str | Context`, which mirrors the JSON `oneOf` (a string is shorthand for `instructions` only) with no check.
+- Its entries, `VerifiedStatement` and `ContextConstraint`, extend `StableIdDiscoverable`. The JSON types their `id` as a
+  plain string while calling it a "stable identifier", so the library applies the StableId denylist (decision D11), a
+  deliberate strictness also applied to relationship ids.
+- The module is imported as `semantic_context`, because the attribute it types is itself named `context`.
 
 ### Variables: tokens pass through, KCL source needs a helper
 

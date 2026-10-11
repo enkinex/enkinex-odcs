@@ -1,8 +1,21 @@
 import .element
+import .enum
 import .relationship
 import .type_options
 
 type LogicalType = "string" | "date" | "timestamp" | "time" | "number" | "integer" | "object" | "array" | "boolean"
+type SemanticType = "column" | "measure" | "dimension"
+
+# enumValueFits(value, logicalType): an enum value is compatible with the property's logicalType (D8).
+# null always fits, and logical types without a scalar counterpart are not checked.
+enumValueFits = lambda value: any, logicalType: str -> bool {
+    value == None or logicalType not in ["string", "integer", "number", "boolean"] or typeof(value) in {
+        "string": ["str"]
+        "integer": ["int"]
+        "number": ["int", "float"]
+        "boolean": ["bool"]
+    }[logicalType]
+}
 
 schema SchemaProperty(element.SchemaElement):
     """
@@ -20,6 +33,14 @@ schema SchemaProperty(element.SchemaElement):
     logicalType: LogicalType, default is Undefined, optional.
         The logical property data type.
         One of string, date, timestamp, time, number, integer, object, array or boolean.
+    semanticType: SemanticType, default is "column", optional.
+        The semantic role the property plays in the data model (RFC 0034).
+        "column" is a physical column; "measure" an aggregated value whose expression is held in `transformLogic`;
+        "dimension" a categorical attribute used for grouping and filtering.
+    enum: [enum.EnumValue], default is Undefined, optional.
+        Enumeration of allowed values for the property (RFC 0033). Must not be empty, values must be unique,
+        and each non-null value must be compatible with logicalType: string → str, integer → int,
+        number → int or float, boolean → bool (other logical types are not checked).
     logicalTypeOptions: type_options.TypeOptions, default is Undefined, optional.
         Additional optional metadata to describe the logical type.
         Accepts an inline dict coerced into `TypeOptions` or an instance of the
@@ -101,6 +122,8 @@ schema SchemaProperty(element.SchemaElement):
     primaryKey?: bool = False
     primaryKeyPosition?: int = -1
     logicalType?: LogicalType
+    semanticType?: SemanticType = "column"
+    enum?: [enum.EnumValue]
     logicalTypeOptions?: type_options.TypeOptions
     required?: bool = False
     unique?: bool = False
@@ -124,6 +147,9 @@ schema SchemaProperty(element.SchemaElement):
         properties == Undefined or len(properties) == len({p.name: p for p in properties}), "property names must be unique within the property"
         primaryKeyPosition == -1 or primaryKeyPosition >= 1, "primaryKeyPosition must be >= 1 when set (-1 means unset)"
         partitionKeyPosition == -1 or partitionKeyPosition >= 1, "partitionKeyPosition must be >= 1 when set (-1 means unset)"
+        enum == Undefined or len(enum) >= 1, "enum must not be empty"
+        enum == Undefined or len(enum) == len({str(e.value): e for e in enum}), "enum values must be unique"
+        enum == Undefined or all e in enum {enumValueFits(e.value, logicalType)}, "each enum value must be compatible with the property's logicalType"
         # Per-type option validation: reject logicalTypeOptions keys that do not belong to the chosen logicalType
         # Recovers the JSON additionalProperties:false strictness of each conditional branch).
         logicalTypeOptions == Undefined or logicalTypeOptions.maxItems == Undefined or logicalType == "array", "maxItems is only valid for logicalType 'array'"

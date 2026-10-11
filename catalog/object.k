@@ -1,3 +1,4 @@
+import ..common.context as semantic_context
 import .element
 import .property as schema_property
 import .relationship
@@ -23,6 +24,8 @@ schema SchemaObject(element.SchemaElement):
     relationships: [relationship.RelationshipSchemaLevel], default is Undefined, optional.
         A list of relationships to other objects.
         Each relationship must have 'from', 'to' and optionally 'type' field.
+    context: str | semantic_context.Context, default is Undefined, optional.
+        AI and semantic context for the object (RFC 0038): a string (instructions only) or a `Context` block.
 
 
     Examples
@@ -97,6 +100,7 @@ schema SchemaObject(element.SchemaElement):
     dataGranularityDescription?: str
     properties?: [schema_property.SchemaProperty]
     relationships?: [relationship.RelationshipSchemaLevel]
+    context?: str | semantic_context.Context
 
     check:
         properties == Undefined or all p in properties {p.name != Undefined}, "every entry of 'properties' requires 'name'"

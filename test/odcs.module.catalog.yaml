@@ -19,6 +19,28 @@ schema:
     dataGranularityDescription: Aggregation on column order_id
     tags:
       - sales
+    # RFC 0041: synonyms on any element, with locale and source
+    synonyms:
+      - synonym: sales orders
+        source: glossary
+      - id: syn_commandes
+        synonym: commandes
+        locale: fr-FR
+        description: Used by the Paris finance team.
+        status: active
+    # RFC 0038: the object-form AI context, with a verified statement and a constraint
+    context:
+      instructions: Use for order analytics; amounts are in USD.
+      verifiedStatements:
+        - id: vs_daily_orders
+          question: How many orders were confirmed yesterday?
+          answer: COUNT(order_id) where order_date is yesterday.
+          tags:
+            - kpi
+        - question: Which region sells the most?
+      constraints:
+        - id: no_email_join
+          constraint: Never join orders to customers on email.
 
     # Schema-level relationships: single-column shorthand (with a stable id, RFC 0047), a nested
     # hyphenated shorthand, then composite fully-qualified notation
@@ -80,12 +102,29 @@ schema:
         name: customer_region
         logicalType: string
         physicalType: varchar(2)
+        semanticType: dimension
+        # RFC 0033: enum values with labels, translations and a null member
+        enum:
+          - value: US
+            label: United States
+          - id: region_mx
+            value: MX
+            label: Mexico
+            customProperties:
+              - property: languageEs
+                value: México
+          - value: null
+            label: Unknown region
 
-      # integer + IntegerOptions branch
+      # integer + IntegerOptions branch, with an integer enum
       - id: quantity_prop
         name: quantity
         logicalType: integer
         physicalType: int
+        enum:
+          - value: 1
+          - value: 10
+          - value: 100
         logicalTypeOptions:
           format: i64
           minimum: 1
@@ -98,6 +137,10 @@ schema:
         logicalType: number
         physicalType: decimal(18,2)
         criticalDataElement: true
+        # RFC 0034: a measure holds its aggregation in transformLogic
+        semanticType: measure
+        synonyms:
+          - synonym: revenue
         classification: restricted
         encryptedName: amount_encrypted
         logicalTypeOptions:
@@ -159,6 +202,11 @@ schema:
             name: city
             logicalType: string
             physicalType: varchar(80)
+          # RFC 0051: a deprecated nested property still validates; the flag is data
+          - name: zip
+            logicalType: string
+            deprecated: true
+            description: Replaced by postal_code.
 
       # array of objects: items is a full property descriptor nesting its own fields
       - id: line_items_prop
@@ -202,6 +250,8 @@ schema:
   - id: customers_obj
     name: customers
     physicalType: table
+    # RFC 0038: the string form of context is shorthand for instructions only
+    context: Customer master data; join on id, never on email.
     properties:
       - id: customer_id_pk
         name: id

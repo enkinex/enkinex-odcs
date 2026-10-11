@@ -1,0 +1,9 @@
+# expect: id must match
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+context:
+  constraints:
+    - id: no.email
+      constraint: Never join on email.

@@ -7,12 +7,15 @@ options, and the relationships between them.
 
 ## Schema Mapping
 
-| Module Path                                              | KCL schema                                                                                                                                                         | ODCS JSON Schema entity                                                                                                                                                      | 
+| Module Path                                              | KCL schema                                                                                                                                                         | ODCS JSON Schema entity                                                                                                                                                      |
 |----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`catalog/element.k`](../../catalog/element.k)           | `SchemaElement`                                                                                                                                                    | `$defs/SchemaElement` (shared base of objects & properties; also absorbs the duplicated `physicalName` / `quality` from `$defs/SchemaObject` and `$defs/SchemaBaseProperty`) |
 | [`catalog/object.k`](../../catalog/object.k)             | `SchemaObject`                                                                                                                                                     | `$defs/SchemaObject`                                                                                                                                                         |
 | [`catalog/property.k`](../../catalog/property.k)         | `SchemaProperty`                                                                                                                                                   | `$defs/SchemaProperty`, `$defs/SchemaBaseProperty`                                                                                                                           |
 | [`catalog/property.k`](../../catalog/property.k)         | `SchemaItemProperty` *(type alias of `SchemaProperty`)*                                                                                                            | `$defs/SchemaItemProperty` (the `items` descriptor of an array property — a full property definition)                                                                        |
+| [`catalog/property.k`](../../catalog/property.k)         | `SemanticType`                                                                                                                                                     | `SchemaBaseProperty.semanticType` (enum `column` / `measure` / `dimension`)                                                                                                  |
+| [`catalog/enum.k`](../../catalog/enum.k)                 | `EnumValue`                                                                                                                                                        | `$defs/EnumValue` (items of `SchemaBaseProperty.enum`)                                                                                                                       |
+| [`catalog/synonym.k`](../../catalog/synonym.k)           | `Synonym`                                                                                                                                                          | `$defs/Synonym` (items of `$defs/Synonyms`)                                                                                                                                  |
 | [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipBase`                                                                                                                                                 | `$defs/RelationshipBase`                                                                                                                                                     |
 | [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipSchemaLevel`                                                                                                                                          | `$defs/RelationshipSchemaLevel`                                                                                                                                              |
 | [`catalog/relationship.k`](../../catalog/relationship.k) | `RelationshipPropertyLevel`                                                                                                                                        | `$defs/RelationshipPropertyLevel`                                                                                                                                            |
@@ -53,6 +56,24 @@ options, and the relationships between them.
 - `primaryKeyPosition` and `partitionKeyPosition` default to `-1`, meaning unset. A position, when set, is `>= 1`;
   `primaryKey: true` without a position is valid, as in three official examples. The v3.1.0 rule
   `not primaryKey or primaryKeyPosition >= 1` rejected them (D6).
+
+### Semantics of 3.2.0: enum, semanticType, synonyms, deprecated
+
+- **`enum`** (RFC 0033) is a list of `EnumValue`, each a stable-id discoverable element with a required but nullable
+  `value`, written with the library's SLA idiom (an optional attribute plus a check, since `None` cannot appear in a
+  KCL type). `SchemaProperty` checks three rules (decision D8):
+    - the list is not empty (the JSON `minItems: 1`);
+    - values are unique **by value**, where the JSON `uniqueItems` compares whole entries, so two entries with the same
+      value and different labels pass the JSON and fail here, as the negative test `enum-duplicate-values` intends;
+    - each non-null value is compatible with `logicalType`, as the prose requires: `string` → str, `integer` → int,
+      `number` → int or float, `boolean` → bool. Other logical types are not checked.
+- **`semanticType`** (RFC 0034) is a closed union defaulting to `"column"`; **`deprecated`** (RFC 0051) is a `bool`
+  defaulting to `False`. Both defaults are carried, as every spec default in the library is (D4), so exported YAML
+  gains `semanticType: column` on every property and `deprecated: false` on every element. `deprecated` is data only:
+  KCL has no warning channel.
+- **`synonyms`** (RFC 0041) live on `SchemaElement`, so objects and properties both carry them. `locale` (BCP 47) and
+  `status` stay open strings, as in the standard.
+- **`context`** (RFC 0038) is accepted on `SchemaObject` and the root, never on a property; see `common.md`.
 
 ### `name` is enforced by the container, not the element
 

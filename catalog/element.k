@@ -1,5 +1,6 @@
 import ..common.discovery
 import ..quality.rule as rule
+import .synonym
 
 schema SchemaElement(discovery.StableIdDiscoverable):
     """
@@ -25,6 +26,11 @@ schema SchemaElement(discovery.StableIdDiscoverable):
         The business name of the element.
     quality: [rule.DataQuality], default is Undefined, optional.
         Data quality rules with all the relevant information for rule setup and execution.
+    deprecated: bool, default is False, optional.
+        Indicates the element is deprecated and should not be used in new implementations (RFC 0051).
+        Data only: KCL has no warning channel, so a deprecated element still validates.
+    synonyms: [synonym.Synonym], default is Undefined, optional.
+        Alternative names for the element (RFC 0041).
     """
     name?: str
     physicalName?: str
@@ -32,3 +38,5 @@ schema SchemaElement(discovery.StableIdDiscoverable):
     description?: str
     businessName?: str
     quality?: [rule.DataQuality]
+    deprecated?: bool = False
+    synonyms?: [synonym.Synonym]

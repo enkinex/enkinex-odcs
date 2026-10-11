@@ -5,6 +5,7 @@ import .contract.description
 import .contract.pricing
 import .contract.sla
 import .contract.support
+import .common.context as semantic_context
 import .common.discovery
 import .common.variable
 import .iam.role
@@ -68,6 +69,8 @@ schema DataContract(discovery.TagsDiscoverable):
     slaProperties: [sla.ServiceLevelAgreement], default is Undefined, optional.
         A list of key/value pairs for SLA specific properties.
         There is no limit on the type of properties.
+    context: str | semantic_context.Context, default is Undefined, optional.
+        AI and semantic context for the whole contract (RFC 0038): a string (instructions only) or a `Context` block.
     contractCreatedTs: str, default is Undefined, optional.
         Timestamp in UTC of when the data contract was created, using ISO 8601.
         May also be a whole variable reference resolved by downstream tools (RFC 0050), e.g. "${CREATED_AT}".
@@ -116,6 +119,7 @@ schema DataContract(discovery.TagsDiscoverable):
     roles?: [role.Role]
     slaProperties?: [sla.ServiceLevelAgreement]
     contractCreatedTs?: str
+    context?: str | semantic_context.Context
 
     check:
         len(version) > 0, "version must not be empty"

@@ -8,12 +8,12 @@ final ODCS contract definition. It is the schema you instantiate to author a con
 
 ## Schema Mapping
 
-| Module Path              | KCL schema / type | ODCS JSON Schema entity                                                        |
-|--------------------------|-------------------|--------------------------------------------------------------------------------|
-| [`odcs.k`](../../odcs.k) | `DataContract`    | the JSON Schema **root object**                                                |
-| [`odcs.k`](../../odcs.k) | `ApiVersionType`  | root `apiVersion` (enum, pinned to `"v3.2.0"`)                                 |
-| [`odcs.k`](../../odcs.k) | `KindType`        | root `kind` (`const` `"DataContract"`)                                         |
-| [`odcs.k`](../../odcs.k) | `StatusType`      | the `status` examples, offered for narrowing; root `status` itself is a `str`  |
+| Module Path              | KCL schema / type | ODCS JSON Schema entity                                                       |
+|--------------------------|-------------------|-------------------------------------------------------------------------------|
+| [`odcs.k`](../../odcs.k) | `DataContract`    | the JSON Schema **root object**                                               |
+| [`odcs.k`](../../odcs.k) | `ApiVersionType`  | root `apiVersion` (enum, pinned to `"v3.2.0"`)                                |
+| [`odcs.k`](../../odcs.k) | `KindType`        | root `kind` (`const` `"DataContract"`)                                        |
+| [`odcs.k`](../../odcs.k) | `StatusType`      | the `status` examples, offered for narrowing; root `status` itself is a `str` |
 
 The root **composes the module schemas** through its typed fields:
 
@@ -27,6 +27,7 @@ The root **composes the module schemas** through its typed fields:
 | `slaProperties`                                        | `[sla.ServiceLevelAgreement]`               | contract |
 | `team`                                                 | `team.Team`                                 | iam      |
 | `roles`                                                | `[role.Role]`                               | iam      |
+| `context`                                              | `str \| semantic_context.Context`           | common   |
 | `tags`, `authoritativeDefinitions`, `customProperties` | inherited from `discovery.TagsDiscoverable` | common   |
 
 ---

@@ -17,16 +17,12 @@
   pending: ODCS-11
 - test: deprecated-wrong-type.odcs.yaml
   expect: got str(maybe)
-  pending: ODCS-08
 - test: enum-duplicate-values.odcs.yaml
   expect: enum values must be unique
-  pending: ODCS-08
 - test: enum-empty.odcs.yaml
   expect: enum must not be empty
-  pending: ODCS-08
 - test: enum-missing-value.odcs.yaml
   expect: enum value is required
-  pending: ODCS-08
 - test: exasol-missing-host.odcs.yaml
   expect: exasol server requires 'host'
   pending: ODCS-11
@@ -100,7 +96,6 @@
   expect: id must match
 - test: synonym-missing-term.odcs.yaml
   expect: attribute 'synonym' of Synonym is required
-  pending: ODCS-08
 - test: teradata-missing-host.odcs.yaml
   expect: teradata server requires 'host'
   pending: ODCS-11

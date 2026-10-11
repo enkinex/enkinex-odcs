@@ -1,0 +1,12 @@
+# expect: each enum value must be compatible with the property's logicalType
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+schema:
+  - name: orders
+    properties:
+      - name: status
+        logicalType: string
+        enum:
+          - value: 1

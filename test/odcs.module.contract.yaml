@@ -13,6 +13,13 @@ domain: sales
 # RFC 0050: a whole variable reference passes the timestamp check, resolved downstream
 contractCreatedTs: ${CONTRACT_CREATED_AT}
 
+# RFC 0038: contract-level AI context in object form
+context:
+  instructions: Curated orders for analytics; prefer the orders object over raw sources.
+  verifiedStatements:
+    - question: What is the grain of this contract?
+      answer: One row per confirmed sales order.
+
 # Description with every direct field set
 description:
   purpose: Curated sales orders for downstream analytics in ${ENVIRONMENT:-production}.

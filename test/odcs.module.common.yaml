@@ -8,6 +8,9 @@ name: Common Module Test
 version: 1.0.0
 # No status: optional since ODCS v3.2.0
 
+# RFC 0038: contract-level context in its string form
+context: Exercise the common module bases; not for analytics.
+
 # Root-level tags (TagsDiscoverable tail on DataContract)
 tags:
   - common

@@ -14,7 +14,7 @@
 # criterion caps what may remain: D2 and D5 entries and upstream-kcl defects.
 
 - example: all/full-example.odcs.yaml
-  reason: ODCS-08
+  reason: ODCS-09
 - example: all/postgresql-adventureworks-contract.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
@@ -38,10 +38,6 @@
 - example: schema/all-schema-types.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
-- example: schema/deprecated.odcs.yaml
-  reason: ODCS-08
-- example: schema/enum.odcs.yaml
-  reason: ODCS-08
 - example: schema/kafka-schema.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
@@ -50,8 +46,6 @@
   normalize: [apiVersion]
 - example: schema/map.odcs.yaml
   reason: ODCS-09
-- example: schema/measures-and-dimensions.odcs.yaml
-  reason: ODCS-08
 - example: schema/relationships.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
@@ -90,5 +84,3 @@
 - example: stakeholders/basic-four-dpo.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]
-- example: tags/tags.odcs.yaml
-  reason: ODCS-08

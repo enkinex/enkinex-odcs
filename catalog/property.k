@@ -14,7 +14,8 @@ schema SchemaProperty(element.SchemaElement):
     primaryKey: bool, default is False, optional.
         Boolean value specifying whether the field is primary or not.
     primaryKeyPosition: int, default is -1, optional.
-        If field is a primary key, the position of the primary key element. Starts from 1.
+        If field is a primary key, the position of the primary key element. Starts from 1; -1 means unset.
+        A primary key may omit its position.
         Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.
     logicalType: LogicalType, default is Undefined, optional.
         The logical property data type.
@@ -32,7 +33,7 @@ schema SchemaProperty(element.SchemaElement):
     partitioned: bool, default is False, optional.
         Indicates if the element is partitioned.
     partitionKeyPosition: int, default is -1, optional.
-        If element is used for partitioning, the position of the partition element. Starts from 1.
+        If element is used for partitioning, the position of the partition element. Starts from 1; -1 means unset.
         Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.
     classification: str, default is Undefined, optional.
         Can be anything, like confidential, restricted, and public to more advanced categorization.
@@ -56,10 +57,10 @@ schema SchemaProperty(element.SchemaElement):
     items: SchemaItemProperty, default is Undefined, optional.
         Descriptor for the items of an array property: a full property definition
         (scalar items set their own logicalType; object items nest their own properties).
-        Required when logicalType is "array", forbidden otherwise.
+        Only valid when logicalType is "array"; an array may omit it. Needs no `name`.
     properties: [SchemaProperty], default is Undefined, optional.
         A list of nested properties describing the fields of an object property.
-        Required when logicalType is "object", forbidden otherwise.
+        Only valid when logicalType is "object"; an object may omit it. Every entry requires a `name`.
 
     Examples
     --------
@@ -92,7 +93,6 @@ schema SchemaProperty(element.SchemaElement):
         name = "delivery_notes"
         logicalType = "array"
         items = SchemaItemProperty {
-            name = "note"
             logicalType = "string"
             physicalType = "VARCHAR(200)"
         }
@@ -118,12 +118,12 @@ schema SchemaProperty(element.SchemaElement):
     properties?: [SchemaProperty]
 
     check:
-        logicalType != "array" or items != Undefined, "array properties require 'items'"
         logicalType == "array" or items == Undefined, "'items' is only valid when logicalType is 'array'"
-        logicalType != "object" or properties != Undefined, "object properties require 'properties'"
         logicalType == "object" or properties == Undefined, "'properties' is only valid when logicalType is 'object'"
-        not primaryKey or primaryKeyPosition >= 1, "primaryKeyPosition must be >= 1 when primaryKey is true"
-        not partitioned or partitionKeyPosition >= 1, "partitionKeyPosition must be >= 1 when partitioned is true"
+        properties == Undefined or all p in properties {p.name != Undefined}, "every entry of 'properties' requires 'name'"
+        properties == Undefined or len(properties) == len({p.name: p for p in properties}), "property names must be unique within the property"
+        primaryKeyPosition == -1 or primaryKeyPosition >= 1, "primaryKeyPosition must be >= 1 when set (-1 means unset)"
+        partitionKeyPosition == -1 or partitionKeyPosition >= 1, "partitionKeyPosition must be >= 1 when set (-1 means unset)"
         # Per-type option validation: reject logicalTypeOptions keys that do not belong to the chosen logicalType
         # Recovers the JSON additionalProperties:false strictness of each conditional branch).
         logicalTypeOptions == Undefined or logicalTypeOptions.maxItems == Undefined or logicalType == "array", "maxItems is only valid for logicalType 'array'"

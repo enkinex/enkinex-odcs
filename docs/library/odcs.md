@@ -429,7 +429,7 @@ Schema element to be cataloged. Applicable to either Objects or Properties Inher
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
-|**name** `required`|str|Name of the element.||
+|**name**|str|Name of the element.<br />Required on schema objects and on every entry of a `properties` list (checked by the container);<br />optional on item descriptors (`items`, `map.key`, `map.value`), as in the JSON `SchemaItemProperty`.||
 |**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
@@ -449,7 +449,7 @@ Schema object to be cataloged. Objects are a structure of data: a table in a RDB
 |**description**|str|Description of the element.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**logicalType** `readOnly`|"object"|The logical object data type. Always "object".|"object"|
-|**name** `required`|str|Name of the element.||
+|**name**|str|Name of the object. Optional on `SchemaElement`, required again here.||
 |**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**properties**|[[SchemaProperty](#schemaproperty)]|A list of properties for the object.||
@@ -542,17 +542,17 @@ Schema property to be cataloged. Properties are attributes of an object: a colum
 |**encryptedName**|str|The element name within the dataset that contains the encrypted element value.<br />Examples: unencrypted element email_address might have an encryptedName of email_address_encrypt.||
 |**examples**|[]|List of `any` sample element values.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
-|**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Required when logicalType is "array", forbidden otherwise.||
+|**items**|[SchemaProperty](#schemaproperty)|Descriptor for the items of an array property: a full property definition<br />(scalar items set their own logicalType; object items nest their own properties).<br />Only valid when logicalType is "array"; an array may omit it. Needs no `name`.||
 |**logicalType**|"string" \| "date" \| "timestamp" \| "time" \| "number" \| "integer" \| "object" \| "array" \| "boolean"|The logical property data type.<br />One of string, date, timestamp, time, number, integer, object, array or boolean.||
 |**logicalTypeOptions**|[TypeOptions](#typeoptions)|Additional optional metadata to describe the logical type.<br />Accepts an inline dict coerced into `TypeOptions` or an instance of the<br />per-type option schema matching the `logicalType` (`StringOptions`,<br />`DateOptions`, `TimestampOptions`, `TimeOptions`, `IntegerOptions`,<br />`NumberOptions`, `ObjectOptions`, `ArrayOptions`).||
-|**name** `required`|str|Name of the element.||
-|**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1.<br />Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
+|**name**|str|Name of the element.<br />Required on schema objects and on every entry of a `properties` list (checked by the container);<br />optional on item descriptors (`items`, `map.key`, `map.value`), as in the JSON `SchemaItemProperty`.||
+|**partitionKeyPosition**|int|If element is used for partitioning, the position of the partition element. Starts from 1; -1 means unset.<br />Examples: country, year being partition columns, country has partitionKeyPosition 1 and year partitionKeyPosition 2.|-1|
 |**partitioned**|bool|Indicates if the element is partitioned.|False|
 |**physicalName**|str|Physical name.<br />Examples: "table_1_2_0" for objects. "col_str_a" for properties.||
 |**physicalType**|str|The physical element data type in the data source.<br />Examples: "table", "view", "topic", "file" for objects. "VARCHAR(2)", "DOUBLE", "INT", for properties.||
 |**primaryKey**|bool|Boolean value specifying whether the field is primary or not.|False|
-|**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1.<br />Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
-|**properties**|[[SchemaProperty](#schemaproperty)]|A list of nested properties describing the fields of an object property.<br />Required when logicalType is "object", forbidden otherwise.||
+|**primaryKeyPosition**|int|If field is a primary key, the position of the primary key element. Starts from 1; -1 means unset.<br />A primary key may omit its position.<br />Examples: account_id, name being primary key columns, account_id has primaryKeyPosition 1 and name primaryKeyPosition 2.|-1|
+|**properties**|[[SchemaProperty](#schemaproperty)]|A list of nested properties describing the fields of an object property.<br />Only valid when logicalType is "object"; an object may omit it. Every entry requires a `name`.||
 |**quality**|[[DataQuality](#dataquality)]|Data quality rules with all the relevant information for rule setup and execution.||
 |**relationships**|[[RelationshipPropertyLevel](#relationshippropertylevel)]|A list of relationships to other properties.<br />When defined at property level, the &#39;from&#39; field is implicit and should not be specified.||
 |**required**|bool|Indicates if the element may contain Null values.|False|
@@ -593,7 +593,6 @@ arrayOfScalars = SchemaProperty {
     name = "delivery_notes"
     logicalType = "array"
     items = SchemaItemProperty {
-        name = "note"
         logicalType = "string"
         physicalType = "VARCHAR(200)"
     }

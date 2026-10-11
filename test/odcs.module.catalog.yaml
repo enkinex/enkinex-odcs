@@ -182,14 +182,21 @@ schema:
               logicalType: integer
               physicalType: int
 
-      # array of scalars: items declares its own logicalType directly
+      # array of scalars: items declares its own logicalType directly; an item descriptor needs no name
       - id: delivery_notes_prop
         name: delivery_notes
         logicalType: array
         items:
-          name: note
           logicalType: string
           physicalType: varchar(200)
+
+      # an array may omit items, and an object may omit properties (neither is required by ODCS)
+      - name: raw_payloads
+        logicalType: array
+        physicalType: jsonb
+      - name: raw_attributes
+        logicalType: object
+        physicalType: jsonb
 
   # Referenced object backing the relationship targets
   - id: customers_obj
@@ -206,6 +213,10 @@ schema:
         name: region
         logicalType: string
         physicalType: varchar(2)
+      # a primary key may omit its position (primaryKeyPosition defaults to -1, unset)
+      - name: email
+        logicalType: string
+        primaryKey: true
 
   # Minimal object: only the mandatory name
   - name: audit_log

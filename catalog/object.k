@@ -11,6 +11,8 @@ schema SchemaObject(element.SchemaElement):
 
     Attributes
     ----------
+    name: str, default is Undefined, required.
+        Name of the object. Optional on `SchemaElement`, required again here.
     logicalType: ObjectLogicalType, default is "object", optional.
         The logical object data type. Always "object".
     dataGranularityDescription: str, default is Undefined, optional.
@@ -90,10 +92,12 @@ schema SchemaObject(element.SchemaElement):
         ]
     }
     """
+    name: str
     logicalType?: ObjectLogicalType = "object"
     dataGranularityDescription?: str
     properties?: [schema_property.SchemaProperty]
     relationships?: [relationship.RelationshipSchemaLevel]
 
     check:
+        properties == Undefined or all p in properties {p.name != Undefined}, "every entry of 'properties' requires 'name'"
         properties == Undefined or len(properties) == len({p.name: p for p in properties}), "property names must be unique within the object"

@@ -16,26 +16,28 @@
 - example: all/full-example.odcs.yaml
   reason: ODCS-08
 - example: all/postgresql-adventureworks-contract.odcs.yaml
-  reason: ODCS-07
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: data-types/all-data-types.odcs.yaml
-  reason: ODCS-07
+  reason: D2, D5, an older apiVersion and the deprecated dataProduct
+  normalize: [apiVersion, dataProduct]
 - example: fundamentals/table-column-description.odcs.yaml
   reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
   normalize: [apiVersion]
 - example: fundamentals/variables.odcs.yaml
   reason: ODCS-10
 - example: quality/column-completeness.odcs.yaml
-  reason: ODCS-07
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: quality/column-custom.odcs.yaml
   reason: upstream-kcl, kcl vet cannot load a YAML float with a zero fraction (1.0)
   expect: Failed to Load YAML
-- example: quality/column-validity.odcs.yaml
-  reason: ODCS-07
 - example: roles/service-and-operational-roles.odcs.yaml
   reason: D2, D5, an older apiVersion and the deprecated dataProduct
   normalize: [apiVersion, dataProduct]
 - example: schema/all-schema-types.odcs.yaml
-  reason: ODCS-07
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: schema/deprecated.odcs.yaml
   reason: ODCS-08
 - example: schema/enum.odcs.yaml

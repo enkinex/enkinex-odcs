@@ -9,8 +9,10 @@ schema SchemaElement(discovery.StableIdDiscoverable):
 
     Attributes
     ----------
-    name: str, default is Undefined, required.
+    name: str, default is Undefined, optional.
         Name of the element.
+        Required on schema objects and on every entry of a `properties` list (checked by the container);
+        optional on item descriptors (`items`, `map.key`, `map.value`), as in the JSON `SchemaItemProperty`.
     physicalName: str, default is Undefined, optional.
         Physical name.
         Examples: "table_1_2_0" for objects. "col_str_a" for properties.
@@ -24,7 +26,7 @@ schema SchemaElement(discovery.StableIdDiscoverable):
     quality: [rule.DataQuality], default is Undefined, optional.
         Data quality rules with all the relevant information for rule setup and execution.
     """
-    name: str
+    name?: str
     physicalName?: str
     physicalType?: str
     description?: str

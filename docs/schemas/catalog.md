@@ -46,9 +46,23 @@ options, and the relationships between them.
 - The JSON encodes `logicalTypeOptions` as per-type conditional branches with `additionalProperties: false`.
 - KCL uses one permissive `TypeOptions` schema plus cross-field `check`s on `SchemaProperty` that reject options that do
   not belong to the chosen `logicalType` (e.g. `maxItems` only for `array`, `pattern` only for `string`).
-- `items` is required iff `logicalType == "array"`.
-- `properties` (nested object fields) is required iff `logicalType == "object"` — stricter than the JSON, where the
-  `object` branch merely allows them, mirroring the items-iff-array rule.
+- `items` is only valid when `logicalType == "array"`, and `properties` only when `logicalType == "object"`. Neither is
+  required: the JSON branches declare them without requiring them, and the official `all-data-types` example has an
+  array without `items` and an object without `properties`. Until v3.2.0 the library required both, which rejected
+  valid documents (decision D6).
+- `primaryKeyPosition` and `partitionKeyPosition` default to `-1`, meaning unset. A position, when set, is `>= 1`;
+  `primaryKey: true` without a position is valid, as in three official examples. The v3.1.0 rule
+  `not primaryKey or primaryKeyPosition >= 1` rejected them (D6).
+
+### `name` is enforced by the container, not the element
+
+- `SchemaElement.name` is optional. `SchemaObject` re-declares it as required, and every list of properties
+  (`SchemaObject.properties`, `SchemaProperty.properties`) checks that each entry names itself and that the names are
+  unique.
+- Item descriptors (`items`, and the `map.key` / `map.value` descriptors of ODCS v3.2.0) need no name. That matches the
+  JSON exactly: `SchemaProperty` requires `name`, `SchemaItemProperty` does not.
+- The requirement cannot sit on a subschema: `SchemaItemProperty` must stay an alias of `SchemaProperty` (below), so a
+  property and an item descriptor are one schema, and only the container knows which role an instance plays (D7).
 
 ### `SchemaItemProperty` is a type alias, not a subschema
 
@@ -113,11 +127,10 @@ options, and the relationships between them.
 
 ### Remaining divergences from JSON `SchemaItemProperty`
 
-- `name` is required on `items` (inherited from `SchemaElement`); the JSON leaves every `SchemaItemProperty` field
-  optional. Authors must name the item descriptor (e.g. `line_item`, `note`).
-- Nested `properties` on `items` require an explicit `logicalType: object` (and nested `items` require
-  `logicalType: array`) per the iff-rules above; the JSON allows them without a declared `logicalType`.
-- Both are deliberate strictness, consistent with the library's closed-enum/required-discriminant posture.
+- `properties` and `items` require an explicit `logicalType: object` / `logicalType: array` ("only valid when"
+  above); the JSON allows them on a property without a declared `logicalType`, because its conditional branches are
+  unguarded (upstream #322).
+- A deliberate strictness, consistent with the library's required-discriminant posture.
 
 ### Relationship id uniqueness
 

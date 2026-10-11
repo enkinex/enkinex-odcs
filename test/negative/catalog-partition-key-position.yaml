@@ -1,0 +1,12 @@
+# expect: partitionKeyPosition must be >= 1 when set
+apiVersion: v3.2.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+schema:
+  - name: orders
+    properties:
+      - name: day
+        logicalType: date
+        partitioned: true
+        partitionKeyPosition: 0

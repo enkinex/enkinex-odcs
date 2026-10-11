@@ -83,7 +83,6 @@
   expect: got str(binary)
 - test: schema-property-missing-name.odcs.yaml
   expect: every entry of 'properties' requires 'name'
-  pending: ODCS-07
 - test: server-encoding-wrong-type.odcs.yaml
   expect: got int(65001)
   pending: ODCS-10

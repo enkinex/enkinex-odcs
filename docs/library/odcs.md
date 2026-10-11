@@ -1071,7 +1071,7 @@ This section covers custom properties you can use to add non-standard properties
 |**description**|str|Description for humans.||
 |**id**|str|Stable technical identifier for references.<br />Must be unique within its containing array.<br />Per RFC-0026a it cannot contain &#39;.&#39;, &#39;#&#39;, &#39;/&#39;, a backslash, &#39;@&#39;, &#39;!&#39;, &#39;%&#39;, &#39;&amp;&#39;, &#39;^&#39; or whitespace;<br />anything else is allowed, so namespaced ids such as "fdir:ISU:TAD" or "urn:uuid:..." are valid.||
 |**property** `required`|str|The name of the key.||
-|**value** `required`|any|The value of the key. It can be an array.||
+|**value**|any|The value of the key: any JSON value (JSON AnyType), an array, an object, or null.<br />Required but nullable: write `value: null` in YAML (`None` in KCL) for a null value.||
 |**vendor**|str|The vendor, provider, or external system associated with this custom property (RFC 0035).<br />SHOULD be a stable lowercase identifier matching ^[a-z0-9][a-z0-9-]*$; not enforced,<br />because tools MUST preserve unknown vendor values.<br />Examples: "confluent", "zeenea", "atlan", "soda".||
 #### Examples
 

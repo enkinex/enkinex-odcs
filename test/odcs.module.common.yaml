@@ -43,6 +43,10 @@ customProperties:
     value:
       nested: true
       depth: 1
+  - property: nullValue
+    value: null
+  - property: emptyValue
+    value:
   - id: documented_custom_property
     property: documentedValue
     value: carries an id and a description

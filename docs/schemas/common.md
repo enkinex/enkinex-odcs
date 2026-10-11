@@ -108,6 +108,13 @@ port = option("db_port", type="int") or variable("DB_PORT", "5432")
 The library never resolves variables itself. Every name in `common/variable.k` is unprefixed, so it stays importable
 under KCL 0.13's rule that `_`-prefixed names are private to their module.
 
+### `CustomProperty.value` is required but nullable
+
+- The JSON requires the `value` key and types it `AnyType`, which includes `null`; upstream's full example carries
+  `value:` (null) entries. A required KCL attribute rejects `None`, so `value` is optional and a check restores the
+  requirement, the idiom `ServiceLevelAgreement.value` and `EnumValue.value` already use. Until v3.2.0 the library
+  rejected a null value.
+
 ### `CustomProperty.vendor` is free text
 
 - RFC 0035 adds `vendor`, which SHOULD match `^[a-z0-9][a-z0-9-]*$` but MUST be preserved when unknown. The library

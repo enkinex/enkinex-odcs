@@ -10,7 +10,8 @@ schema CustomProperty(id.StableId):
     property: str, default is Undefined, required.
         The name of the key.
     value: any, default is Undefined, required.
-        The value of the key. It can be an array.
+        The value of the key: any JSON value (JSON AnyType), an array, an object, or null.
+        Required but nullable: write `value: null` in YAML (`None` in KCL) for a null value.
     description: str, default is Undefined, optional.
         Description for humans.
     vendor: str, default is Undefined, optional.
@@ -41,6 +42,9 @@ schema CustomProperty(id.StableId):
     }
     """
     property: str
-    value: any
+    value?: any
     description?: str
     vendor?: str
+
+    check:
+        not (value == Undefined and value != None), "custom property value is required (use null for a null value)"

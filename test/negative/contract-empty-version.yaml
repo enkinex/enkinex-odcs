@@ -1,0 +1,6 @@
+# expect: version must not be empty
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: ""
+status: active

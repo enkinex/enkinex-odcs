@@ -1,0 +1,10 @@
+# expect: dateOut must be an ISO-8601 date
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+team:
+  members:
+    - username: ana
+      dateOut: 01-01-2024

@@ -1,0 +1,14 @@
+# expect: minLength must be <= maxLength
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    properties:
+      - name: code
+        logicalType: string
+        logicalTypeOptions:
+          minLength: 5
+          maxLength: 2

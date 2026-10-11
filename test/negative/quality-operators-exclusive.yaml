@@ -1,0 +1,13 @@
+# expect: at most one comparison operator may be set per rule
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    quality:
+      - type: library
+        metric: rowCount
+        mustBeGreaterThan: 1
+        mustBeLessThan: 10

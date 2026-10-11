@@ -1,0 +1,13 @@
+# expect: each 'to' reference must use shorthand or fully-qualified notation
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    properties:
+      - name: customer_id
+        logicalType: string
+        relationships:
+          - to: not a reference

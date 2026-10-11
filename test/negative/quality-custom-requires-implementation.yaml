@@ -1,0 +1,11 @@
+# expect: custom rules require 'engine' and 'implementation'
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    quality:
+      - type: custom
+        engine: soda

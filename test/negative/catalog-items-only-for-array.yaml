@@ -1,0 +1,13 @@
+# expect: 'items' is only valid when logicalType is 'array'
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    properties:
+      - name: note
+        logicalType: string
+        items:
+          logicalType: string

@@ -1,0 +1,133 @@
+# Negative map: each official ODCS v3.2.0 negative test, and the message fragment
+# its rejection must contain (kcl's output, colour codes stripped).
+#
+#   test     the file under odcs-v3.2.0/negative/
+#   expect   the fragment naming the rule the test targets, not merely any error
+#   pending  optional task (ODCS-<n>) that implements the rule; until it lands, any
+#            rejection is tolerated, and once the fragment matches the gate fails
+#            until this key is removed
+#
+# An exit code alone cannot tell "rejected by the rule" from "rejected because the
+# feature is unknown", which is why every entry names its fragment.
+
+- test: additional-unknown-property.odcs.yaml
+  expect: Cannot add member 'unknownRootField'
+- test: btrieve-missing-host.odcs.yaml
+  expect: zen server requires 'host' and 'database'
+  pending: ODCS-11
+- test: deprecated-wrong-type.odcs.yaml
+  expect: got str(maybe)
+  pending: ODCS-08
+- test: enum-duplicate-values.odcs.yaml
+  expect: enum values must be unique
+  pending: ODCS-08
+- test: enum-empty.odcs.yaml
+  expect: enum must not be empty
+  pending: ODCS-08
+- test: enum-missing-value.odcs.yaml
+  expect: enum value is required
+  pending: ODCS-08
+- test: exasol-missing-host.odcs.yaml
+  expect: exasol server requires 'host'
+  pending: ODCS-11
+- test: fastobjects-missing-database.odcs.yaml
+  expect: poet server requires 'database'
+  pending: ODCS-11
+- test: hana-missing-host.odcs.yaml
+  expect: hana server requires 'host'
+  pending: ODCS-11
+- test: iceberg-missing-catalogurl.odcs.yaml
+  expect: iceberg server requires 'catalog' and 'catalogUrl'
+  pending: ODCS-11
+- test: ingres-missing-host.odcs.yaml
+  expect: ingres server requires 'host' and 'database'
+  pending: ODCS-11
+- test: invalid-api-version.odcs.yaml
+  expect: got str(v4.0.0)
+- test: invalid-kind.odcs.yaml
+  expect: got str(DataModel)
+- test: invalid-quality-dimension.odcs.yaml
+  expect: got str(validity)
+- test: invalid-quality-metric.odcs.yaml
+  expect: got str(invalidMetric)
+- test: invalid-quality-type.odcs.yaml
+  expect: got str(unknown)
+- test: map-missing-block.odcs.yaml
+  expect: logicalType 'map' requires 'map'
+  pending: ODCS-09
+- test: map-missing-key.odcs.yaml
+  expect: attribute 'key' of MapDefinition is required
+  pending: ODCS-09
+- test: map-missing-value.odcs.yaml
+  expect: attribute 'value' of MapDefinition is required
+  pending: ODCS-09
+- test: missing-required-fields.odcs.yaml
+  expect: attribute 'id' of DataContract is required
+  pending: ODCS-03
+- test: quality-custom-missing-implementation.odcs.yaml
+  expect: custom rules require 'engine' and 'implementation'
+  pending: ODCS-03
+- test: quality-element-field.odcs.yaml
+  expect: Cannot add member 'element'
+- test: quality-library-missing-metric.odcs.yaml
+  expect: library rules require 'metric'
+  pending: ODCS-03
+- test: quality-multiple-operators.odcs.yaml
+  expect: at most one comparison operator may be set per rule
+  pending: ODCS-03
+- test: quality-mustbebetween-wrong-size.odcs.yaml
+  expect: mustBeBetween must have exactly two distinct numbers
+  pending: ODCS-03
+- test: quality-sql-missing-query.odcs.yaml
+  expect: sql rules require 'query'
+  pending: ODCS-03
+- test: relationship-property-level-with-from.odcs.yaml
+  expect: Cannot add member 'from'
+- test: relationship-schema-level-missing-from-to.odcs.yaml
+  expect: of RelationshipSchemaLevel is required
+  pending: ODCS-03
+- test: schema-property-invalid-logicaltype.odcs.yaml
+  expect: got str(binary)
+- test: schema-property-missing-name.odcs.yaml
+  expect: every entry of 'properties' requires 'name'
+  pending: ODCS-07
+- test: server-encoding-wrong-type.odcs.yaml
+  expect: got int(65001)
+  pending: ODCS-10
+- test: server-invalid-type.odcs.yaml
+  expect: got str(mongodb)
+- test: server-missing-conditional-fields.odcs.yaml
+  expect: athena server requires 'schema'
+  pending: ODCS-03
+- test: server-missing-required-fields.odcs.yaml
+  expect: attribute 'server' of Server is required
+  pending: ODCS-03
+- test: sla-authoritativedefinition-missing-type.odcs.yaml
+  expect: of AuthoritativeDefinition is required
+  pending: ODCS-05
+- test: sla-missing-required-value.odcs.yaml
+  expect: value cannot be Undefined
+  pending: ODCS-03
+- test: stable-id-denied-characters.odcs.yaml
+  expect: id must match
+  pending: ODCS-03
+- test: synonym-missing-term.odcs.yaml
+  expect: attribute 'synonym' of Synonym is required
+  pending: ODCS-08
+- test: teradata-missing-host.odcs.yaml
+  expect: teradata server requires 'host'
+  pending: ODCS-11
+- test: variables-in-integer-field.odcs.yaml
+  expect: got str(${KEY_POS})
+- test: vector-missing-dimensions.odcs.yaml
+  expect: logicalType 'vector' requires logicalTypeOptions.dimensions
+  pending: ODCS-09
+- test: vectorwise-missing-database.odcs.yaml
+  expect: vectorwise server requires 'host' and 'database'
+  pending: ODCS-11
+- test: vendor-wrong-type.odcs.yaml
+  expect: got int(12345)
+  pending: ODCS-05
+- test: versant-missing-database.odcs.yaml
+  expect: versant server requires 'database'
+  pending: ODCS-11

@@ -1,0 +1,16 @@
+# expect: required entries must be unique
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    properties:
+      - name: address
+        logicalType: object
+        logicalTypeOptions:
+          required: [street, street]
+        properties:
+          - name: street
+            logicalType: string

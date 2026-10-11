@@ -1,0 +1,13 @@
+# expect: property names must be unique within the object
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    properties:
+      - name: id
+        logicalType: string
+      - name: id
+        logicalType: integer

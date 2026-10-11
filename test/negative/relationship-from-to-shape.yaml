@@ -1,0 +1,11 @@
+# expect: 'from' and 'to' must both be strings or both be arrays
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    relationships:
+      - from: orders.customer_id
+        to: [customers.id, customers.region]

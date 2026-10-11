@@ -1,0 +1,7 @@
+# expect: contractCreatedTs must be an ISO-8601 timestamp
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+contractCreatedTs: yesterday

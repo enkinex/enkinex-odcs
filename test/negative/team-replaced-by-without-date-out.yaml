@@ -1,0 +1,10 @@
+# expect: dateOut should be set when replacedByUsername is provided
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+team:
+  members:
+    - username: ana
+      replacedByUsername: bob

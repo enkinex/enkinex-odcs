@@ -22,7 +22,7 @@ just --version
 git clone git@github.com:enkinex/enkinex-odcs.git
 cd enkinex-odcs
 just init      # kcl mod update
-just check     # fmt + lint + test, the same gate CI/reviewers expect
+just check     # fmt + lint + test + conformance, the same gate CI and reviewers expect
 ```
 
 Run `just` with no arguments at any point to list every available task.
@@ -36,9 +36,10 @@ All day-to-day tasks are `just` recipes defined in the [`Justfile`](Justfile):
 | `just init`  | Syncs module dependencies (`kcl mod update`).                                                                                                  |
 | `just fmt`   | Formats every `.k` file in the project (`kcl fmt ./...`).                                                                                      |
 | `just lint`  | Runs `kcl lint ./...`: the root package and every module directory in one invocation (needs KCL >= 0.13).                                      |
-| `just test`  | Validates every fixture under [`test/`](test) against `odcs.k` with `kcl vet`, failing loudly on the first error.                              |
-| `just docs`  | Regenerates the auto-generated schema reference from schema docstrings.                                                                        |
-| `just check` | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint` and `test`. Run this before opening a PR. |
+| `just test`  | Validates every fixture under [`test/`](test) against `odcs.k`, then proves every [`test/negative/`](test/negative) file is rejected for its reason. |
+| `just conformance` | Measures the library against the official ODCS corpus in [`test/conformance/`](test/conformance) (see below).                                    |
+| `just docs`  | Regenerates the auto-generated schema reference from schema docstrings.                                                                          |
+| `just check` | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint`, `test` and `conformance`. Run it before a PR. |
 
 Before pushing, always run:
 
@@ -96,6 +97,26 @@ full rationale behind each module):
 
 Add a fixture under [`test/`](test) that exercises any new or changed field (either extend `odcs.full.example.yaml` or
 the relevant `odcs.module.<module>.yaml` file), and run `just test` to confirm it validates.
+
+Every new `check` rule also gets a negative fixture: a minimal contract under [`test/negative/`](test/negative) that
+breaks only that rule, headed by `# expect: <fragment of the check message>`. `just test` fails if the file is
+accepted, or rejected for any other reason.
+
+## Conformance with the standard's own corpus
+
+[`test/conformance/`](test/conformance) vendors the official ODCS examples and negative tests from the upstream release
+tag, byte for byte (`test/conformance/sync.sh <odcs-checkout> <tag>`; `--check` proves the copy is unmodified).
+`just conformance` validates all of them:
+
+- **Positive examples** must validate. One that does not is listed in
+  [`ledger.yaml`](test/conformance/ledger.yaml) with the decision or task that explains it, and optionally `normalize`
+  steps that rewrite a copy so the rest of the document is still validated.
+- **Negative tests** must be rejected with the message fragment [`negative.yaml`](test/conformance/negative.yaml)
+  names. An exit code alone cannot tell a rule firing from a feature being unknown.
+
+Ledger entries only ever leave, **in the PR that fixes them**: the gate fails when an example validates while still
+listed, or when a `pending` negative test starts matching its fragment. Run `test/conformance/run.sh --report` to see
+every file's outcome.
 
 ## Docstrings and generated docs
 

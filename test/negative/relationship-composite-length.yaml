@@ -1,0 +1,11 @@
+# expect: composite keys must have matching lengths
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    relationships:
+      - from: [orders.customer_id, orders.region]
+        to: [customers.id]

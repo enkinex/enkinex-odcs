@@ -1,0 +1,9 @@
+# expect: priceAmount must be non-negative
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+price:
+  priceAmount: -1
+  priceCurrency: USD

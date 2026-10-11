@@ -1,0 +1,10 @@
+# expect: dateIn must be an ISO-8601 date
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+team:
+  members:
+    - username: ana
+      dateIn: 2024/01/01

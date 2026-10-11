@@ -66,6 +66,15 @@ The root **composes the module schemas** through its typed fields:
 
 ---
 
+### Conformance is measured, not asserted
+
+The library is validated against the standard's own corpus: every official
+example and negative test from the upstream release tag, vendored under
+[`test/conformance/`](../../test/conformance). An example the library
+rejects is listed in the ledger with the decision or task that explains it.
+A negative test passes only when its rejection contains the message of the
+rule it targets. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md#conformance-with-the-standards-own-corpus).
+
 ## Open Questions
 
 ### KCL `kcl vet` quirk

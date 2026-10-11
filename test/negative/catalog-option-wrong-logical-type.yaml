@@ -1,0 +1,13 @@
+# expect: maxLength is only valid for logicalType 'string'
+apiVersion: v3.1.0
+kind: DataContract
+id: negative-fixture
+version: 1.0.0
+status: active
+schema:
+  - name: orders
+    properties:
+      - name: qty
+        logicalType: integer
+        logicalTypeOptions:
+          maxLength: 10

@@ -22,7 +22,7 @@ just --version
 git clone git@github.com:enkinex/enkinex-odcs.git
 cd enkinex-odcs
 just init      # kcl mod update
-just check     # fmt + lint + test + conformance, the same gate CI and reviewers expect
+just check     # fmt + lint + test + unit + conformance, the same gate CI and reviewers expect
 ```
 
 Run `just` with no arguments at any point to list every available task.
@@ -37,9 +37,10 @@ All day-to-day tasks are `just` recipes defined in the [`Justfile`](Justfile):
 | `just fmt`   | Formats every `.k` file in the project (`kcl fmt ./...`).                                                                                      |
 | `just lint`  | Runs `kcl lint ./...`: the root package and every module directory in one invocation (needs KCL >= 0.13).                                      |
 | `just test`  | Validates every fixture under [`test/`](test) against `odcs.k`, then proves every [`test/negative/`](test/negative) file is rejected for its reason. |
+| `just unit`  | Runs the KCL unit tests (`kcl test ./...`): every `*_test.k`, including [`test/unit/`](test/unit), which imports the root `odcs.k`.              |
 | `just conformance` | Measures the library against the official ODCS corpus in [`test/conformance/`](test/conformance) (see below).                                    |
 | `just docs`  | Regenerates the auto-generated schema reference from schema docstrings.                                                                          |
-| `just check` | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint`, `test` and `conformance`. Run it before a PR. |
+| `just check` | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint`, `test`, `unit` and `conformance`.          |
 
 Before pushing, always run:
 

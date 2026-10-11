@@ -1,5 +1,5 @@
 # expect: each 'to' reference must use shorthand or fully-qualified notation
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: negative-fixture
 version: 1.0.0

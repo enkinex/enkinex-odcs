@@ -63,29 +63,23 @@
   pending: ODCS-09
 - test: missing-required-fields.odcs.yaml
   expect: attribute 'id' of DataContract is required
-  pending: ODCS-03
 - test: quality-custom-missing-implementation.odcs.yaml
   expect: custom rules require 'engine' and 'implementation'
-  pending: ODCS-03
 - test: quality-element-field.odcs.yaml
   expect: Cannot add member 'element'
 - test: quality-library-missing-metric.odcs.yaml
   expect: library rules require 'metric'
-  pending: ODCS-03
 - test: quality-multiple-operators.odcs.yaml
   expect: at most one comparison operator may be set per rule
-  pending: ODCS-03
 - test: quality-mustbebetween-wrong-size.odcs.yaml
   expect: mustBeBetween must have exactly two distinct numbers
-  pending: ODCS-03
 - test: quality-sql-missing-query.odcs.yaml
   expect: sql rules require 'query'
-  pending: ODCS-03
 - test: relationship-property-level-with-from.odcs.yaml
   expect: Cannot add member 'from'
 - test: relationship-schema-level-missing-from-to.odcs.yaml
   expect: of RelationshipSchemaLevel is required
-  pending: ODCS-03
+  pending: ODCS-04
 - test: schema-property-invalid-logicaltype.odcs.yaml
   expect: got str(binary)
 - test: schema-property-missing-name.odcs.yaml
@@ -98,19 +92,15 @@
   expect: got str(mongodb)
 - test: server-missing-conditional-fields.odcs.yaml
   expect: athena server requires 'schema'
-  pending: ODCS-03
 - test: server-missing-required-fields.odcs.yaml
   expect: attribute 'server' of Server is required
-  pending: ODCS-03
 - test: sla-authoritativedefinition-missing-type.odcs.yaml
   expect: of AuthoritativeDefinition is required
   pending: ODCS-05
 - test: sla-missing-required-value.odcs.yaml
   expect: value cannot be Undefined
-  pending: ODCS-03
 - test: stable-id-denied-characters.odcs.yaml
   expect: id must match
-  pending: ODCS-03
 - test: synonym-missing-term.odcs.yaml
   expect: attribute 'synonym' of Synonym is required
   pending: ODCS-08

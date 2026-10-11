@@ -1,7 +1,7 @@
 # Test for the `server` module: one server entry per ServerSource
 # subschema (mandatory fields only), the postgresql alias, one fully populated
 # server, and one CustomServer showcasing the optional superset.
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: c47a1e10-0006-4c00-8000-0000000000c6
 name: Server Module Test

@@ -11,8 +11,16 @@ import .iam.team
 import .server.spec as server
 
 type KindType = "DataContract"
-type ApiVersionType = "v3.1.0"
+
+# One release implements one ODCS version: a contract for another version
+# installs the library release tagged for it.
+type ApiVersionType = "v3.2.0"
+
+# The status values the standard lists as examples. `status` itself is an
+# open string; narrow it to this set in a subschema to enforce it.
 type StatusType = "proposed" | "draft" | "active" | "deprecated" | "retired"
+
+timestampPattern = r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$"
 
 schema DataContract(discovery.TagsDiscoverable):
     """
@@ -21,8 +29,9 @@ schema DataContract(discovery.TagsDiscoverable):
 
     Attributes
     ----------
-    apiVersion: ApiVersionType, default is "v3.1.0", required.
+    apiVersion: ApiVersionType, default is "v3.2.0", required.
         Version of the standard used to build data contract.
+        Only "v3.2.0" is accepted: install the library release tagged for another version.
     kind: KindType, default is "DataContract", required.
         The kind of file this is.
     id: str, default is Undefined, required.
@@ -31,9 +40,10 @@ schema DataContract(discovery.TagsDiscoverable):
         Name of the data contract.
     version: str, default is Undefined, required.
         Current version of the data contract.
-    status: StatusType, default is Undefined, required.
-        Current status of the data contract.
-        One of "proposed", "draft", "active", "deprecated", "retired".
+    status: str, default is Undefined, optional.
+        Current status of the data contract. Open since ODCS v3.2.0.
+        Examples: "proposed", "draft", "active", "deprecated", "retired" (the `StatusType` values).
+        To enforce a closed set, narrow it in a subschema: `schema OrgContract(DataContract): status?: StatusType`.
     tenant: str, default is Undefined, optional.
         Indicates the property the data is primarily associated with.
         Value is case insensitive.
@@ -87,12 +97,12 @@ schema DataContract(discovery.TagsDiscoverable):
         tags = ["finance"]
     }
     """
-    apiVersion: ApiVersionType = "v3.1.0"
+    apiVersion: ApiVersionType = "v3.2.0"
     kind: KindType = "DataContract"
     id: str
     name?: str
     version: str
-    status: StatusType
+    status?: str
     tenant?: str
     domain?: str
     servers?: [server.Server]
@@ -108,4 +118,4 @@ schema DataContract(discovery.TagsDiscoverable):
     check:
         len(version) > 0, "version must not be empty"
         len(id) > 0, "id must not be empty"
-        regex.match(contractCreatedTs, r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})?$") if contractCreatedTs, "contractCreatedTs must be an ISO-8601 timestamp"
+        regex.match(contractCreatedTs, timestampPattern) if contractCreatedTs, "contractCreatedTs must be an ISO-8601 timestamp"

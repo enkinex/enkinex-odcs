@@ -1,6 +1,6 @@
 # Test for the `catalog` module: SchemaObject, SchemaProperty,
 # per-logicalType options and schema/property-level relationships.
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: c47a1e10-0001-4c00-8000-0000000000c1
 name: Catalog Module Test

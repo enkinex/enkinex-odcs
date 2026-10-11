@@ -1,8 +1,8 @@
 # enkinex-odcs
 
 KCL library implementing the **Open Data Contract Standard (ODCS)
-v3.1.0** as Governance-as-Code. Published; tracks the standard's JSON
-schema (`odcs-json-schema-v3.1.0.json`).
+v3.2.0** as Governance-as-Code. Published; tracks the standard's JSON
+schema (`odcs-json-schema-v3.2.0.json`).
 
 ## Repo map
 

@@ -1,6 +1,6 @@
 # Test for the `iam` module: Role, Team and TeamMember,
 # including the StableIdDiscoverable tail (tags, authoritativeDefinitions, customProperties).
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: c47a1e10-0004-4c00-8000-0000000000c4
 name: IAM Module Test

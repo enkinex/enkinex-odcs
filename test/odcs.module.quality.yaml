@@ -1,6 +1,6 @@
 # Test for the `quality` module: one library rule per comparison
 # operator on a single table, then one rule per type (text, sql, custom engines).
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: c47a1e10-0005-4c00-8000-0000000000c5
 name: Quality Module Test

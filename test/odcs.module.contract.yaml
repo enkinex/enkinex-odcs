@@ -1,11 +1,11 @@
 # Test for the `contract` module: Description, Pricing,
 # ServiceLevelAgreement and Support, plus the root contract fundamentals.
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: c47a1e10-0003-4c00-8000-0000000000c3
 name: Contract Module Test
 version: 1.0.0
-status: active
+status: in development # open since ODCS v3.2.0: any string
 
 # Root fundamentals owned by odcs.k (optional metadata + ISO-8601 timestamp check)
 tenant: EnkinexOrg

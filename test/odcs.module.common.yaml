@@ -1,12 +1,12 @@
 # Test for the `common` module: StableId, CustomProperty,
 # AuthoritativeDefinition and the four reuse bases (Customizable,
 # AuthoritativeCustomizable, StableIdCustomizable, StableIdDiscoverable).
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: c47a1e10-0002-4c00-8000-0000000000c2
 name: Common Module Test
 version: 1.0.0
-status: active
+# No status: optional since ODCS v3.2.0
 
 # Root-level tags (TagsDiscoverable tail on DataContract)
 tags:

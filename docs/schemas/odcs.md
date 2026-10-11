@@ -11,9 +11,9 @@ final ODCS contract definition. It is the schema you instantiate to author a con
 | Module Path              | KCL schema / type | ODCS JSON Schema entity                                                        |
 |--------------------------|-------------------|--------------------------------------------------------------------------------|
 | [`odcs.k`](../../odcs.k) | `DataContract`    | the JSON Schema **root object**                                                |
-| [`odcs.k`](../../odcs.k) | `ApiVersionType`  | root `apiVersion` (`const`/enum, pinned to `"v3.1.0"`)                         |
+| [`odcs.k`](../../odcs.k) | `ApiVersionType`  | root `apiVersion` (enum, pinned to `"v3.2.0"`)                                 |
 | [`odcs.k`](../../odcs.k) | `KindType`        | root `kind` (`const` `"DataContract"`)                                         |
-| [`odcs.k`](../../odcs.k) | `StatusType`      | root `status` (closed set: `proposed`/`draft`/`active`/`deprecated`/`retired`) |
+| [`odcs.k`](../../odcs.k) | `StatusType`      | the `status` examples, offered for narrowing; root `status` itself is a `str`  |
 
 The root **composes the module schemas** through its typed fields:
 
@@ -33,10 +33,14 @@ The root **composes the module schemas** through its typed fields:
 
 ## Architecture Decisions
 
-### Version pinned by single-value types
+### One release, one ODCS version
 
-- `apiVersion` defaults to `"v3.1.0"` (type `ApiVersionType`)
-- `kind` to `"DataContract"` (type `KindType`), fixing this first implementation to ODCS v3.1.0.
+- `apiVersion` defaults to `"v3.2.0"` and accepts nothing else (type `ApiVersionType`); `kind` is `"DataContract"`
+  (type `KindType`).
+- The library carries **no backward compatibility** across ODCS versions. The JSON schema still lists every published
+  version in its `apiVersion` enum; the library does not. A contract written for ODCS v3.1.0 uses the library release
+  tagged `v3.1.0`, and moves to this one by changing its `apiVersion` line.
+- The release tag is the version selector: `kcl mod add --git https://github.com/enkinex/enkinex-odcs --tag v3.2.0`.
 
 ### Root `id` is a free string
 
@@ -45,15 +49,23 @@ The root **composes the module schemas** through its typed fields:
 - It therefore extends the **no-id** `TagsDiscoverable` tail (inheriting `tags`, `authoritativeDefinitions`,
   `customProperties`) and declares its own `id: str`. This is the *only* shared field inlined anywhere in the library.
 
-### Closed `status`
+### Open `status`, closed by narrowing
 
-- `StatusType` is a literal union rather than a runtime`check`.
-- Consistent with the `KindType`/`ApiVersionType` idiom.
+- ODCS v3.2.0 dropped `status` from the required fields, and the standard never closed its values: official examples
+  use `development`, `production` and `in development`. So `status` is an optional `str`.
+- **This reverses the v3.1.0 decision** ("Closed `status`"), which rejected those valid documents.
+- `StatusType` keeps the five values the standard lists as examples. An organization that wants a closed set narrows
+  it, which moves the opinion from the library (which mirrors the standard) to the consumer (which governs it):
+
+```
+schema OrgContract(DataContract):
+    status?: StatusType
+```
 
 ### Root invariants as `check`s
 
 - `version` and `id` must be non-empty.
-- `contractCreatedTs`, when present, must match an ISO-8601 timestamp.
+- `contractCreatedTs`, when present, must match an ISO-8601 timestamp (`timestampPattern`).
 
 ### Deprecated fields dropped
 
@@ -64,8 +76,6 @@ The root **composes the module schemas** through its typed fields:
 
 - Every nested structure is a typed reference to a module schema, so the root stays a thin assembly of the six modules.
 
----
-
 ### Conformance is measured, not asserted
 
 The library is validated against the standard's own corpus: every official
@@ -75,17 +85,10 @@ rejects is listed in the ledger with the decision or task that explains it.
 A negative test passes only when its rejection contains the message of the
 rule it targets. See [`CONTRIBUTING.md`](../../CONTRIBUTING.md#conformance-with-the-standards-own-corpus).
 
+---
+
 ## Open Questions
 
-### KCL `kcl vet` quirk
-
-- Module-level value bindings in the *directly-vetted* file are not evaluated (they read back as `Undefined` inside
-  `check:`), while bindings in *imported* files are fine.
-- Because `odcs.k` is the file passed to `kcl vet`, the `status` set and the timestamp pattern are expressed as a `type`
-  union and an inline regex literal rather than module-level constants.
-- This is a workaround for a tool limitation, not a modeling preference.
-
-### Pinning `apiVersion`/`kind` to a single value
-
-- Keeps the v3.1.0 simple.
-- Multi-version support will be defined as closed enum on future releases.
+- None for the root. The `kcl vet` quirk that kept module-level bindings of the vetted file `Undefined` inside `check:`
+  is fixed since KCL 0.12.8, so `timestampPattern` is a named constant like every other pattern in the library. The
+  root still holds `odcs.k` alone: `kcl vet` also loads sibling `.k` files of the vetted one.

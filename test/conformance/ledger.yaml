@@ -17,22 +17,15 @@
   reason: ODCS-08
 - example: all/postgresql-adventureworks-contract.odcs.yaml
   reason: ODCS-07
-- example: authoritative-definitions/authoritative-definitions.odcs.yaml
-  reason: ODCS-03
-- example: custom-other-properties/custom-properties.odcs.yaml
-  reason: ODCS-03
 - example: custom-other-properties/vendor.odcs.yaml
   reason: ODCS-05
 - example: data-types/all-data-types.odcs.yaml
   reason: ODCS-07
 - example: fundamentals/table-column-description.odcs.yaml
-  reason: ODCS-03
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: fundamentals/variables.odcs.yaml
   reason: ODCS-10
-- example: pricing/basic-pricing.odcs.yaml
-  reason: ODCS-03
-- example: quality/column-accuracy.odcs.yaml
-  reason: ODCS-03
 - example: quality/column-completeness.odcs.yaml
   reason: ODCS-07
 - example: quality/column-custom.odcs.yaml
@@ -43,7 +36,8 @@
 - example: references/relationships.odcs.yaml
   reason: ODCS-04
 - example: roles/service-and-operational-roles.odcs.yaml
-  reason: ODCS-03
+  reason: D2, D5, an older apiVersion and the deprecated dataProduct
+  normalize: [apiVersion, dataProduct]
 - example: schema/all-schema-types.odcs.yaml
   reason: ODCS-07
 - example: schema/deprecated.odcs.yaml
@@ -51,29 +45,32 @@
 - example: schema/enum.odcs.yaml
   reason: ODCS-08
 - example: schema/kafka-schema.odcs.yaml
-  reason: ODCS-03
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: schema/kafka-schemaregistry.odcs.yaml
-  reason: ODCS-03
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: schema/map.odcs.yaml
   reason: ODCS-09
 - example: schema/measures-and-dimensions.odcs.yaml
   reason: ODCS-08
-- example: schema/property-without-logicaltype.odcs.yaml
-  reason: ODCS-03
 - example: schema/relationships.odcs.yaml
   reason: ODCS-04
 - example: schema/stable-id-special-characters.odcs.yaml
   reason: ODCS-04
 - example: schema/table-column.odcs.yaml
-  reason: ODCS-03
+  reason: D2, D5, an older apiVersion and the deprecated dataProduct
+  normalize: [apiVersion, dataProduct]
 - example: schema/table-columns-with-partition.odcs.yaml
-  reason: ODCS-03
+  reason: D2, D5, an older apiVersion and the deprecated dataProduct
+  normalize: [apiVersion, dataProduct]
 - example: schema/vector.odcs.yaml
   reason: ODCS-09
 - example: server/actian-servers.odcs.yaml
   reason: ODCS-11
 - example: server/azure-server.odcs.yaml
-  reason: ODCS-03
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: server/exasol-server.odcs.yaml
   reason: ODCS-11
 - example: server/hana-server.odcs.yaml
@@ -81,20 +78,19 @@
 - example: server/iceberg-server.odcs.yaml
   reason: ODCS-11
 - example: server/kafka-server.odcs.yaml
-  reason: ODCS-03
+  reason: D2, declares an older apiVersion; the library accepts v3.2.0 only
+  normalize: [apiVersion]
 - example: server/s3-server-encoding.odcs.yaml
   reason: ODCS-10
 - example: server/teradata-server.odcs.yaml
   reason: ODCS-11
 - example: sla/database-table-sla.odcs.yaml
-  reason: ODCS-03
+  reason: D5, the deprecated dataProduct is omitted
+  normalize: [dataProduct]
 - example: sla/sla-extensions.odcs.yaml
   reason: ODCS-05
 - example: stakeholders/basic-four-dpo.odcs.yaml
-  reason: ODCS-03
-- example: support/support-channels.odcs.yaml
-  reason: ODCS-03
+  reason: D2, D5, an older apiVersion and the deprecated dataProduct
+  normalize: [apiVersion, dataProduct]
 - example: tags/tags.odcs.yaml
   reason: ODCS-08
-- example: team/team.odcs.yaml
-  reason: ODCS-03

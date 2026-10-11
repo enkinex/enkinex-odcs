@@ -145,7 +145,7 @@ just docs      # regenerate docs/library/odcs.md from the schema docstrings
 
 - **Open Data Contract Standard (ODCS) v3.1.0**: the
   standard [GitHub project](https://github.com/bitol-io/open-data-contract-standard/tree/v3.1.0).
-    - Standard JSON Schema: [`odcs-json-schema-v3.1.0.json`](odcs-json-schema-v3.1.0.json)
+    - Standard JSON Schema: [`odcs-json-schema-v3.2.0.json`](odcs-json-schema-v3.2.0.json)
 - **[KCL Language](https://www.kcl-lang.io/)**: the configuration & policy DSL used for the implementation.
 - **[Data Contract CLI](https://cli.datacontract.com/)**: open-source command-line tool for working with data contracts.
 

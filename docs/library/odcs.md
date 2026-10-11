@@ -87,7 +87,7 @@ A data contract defines the agreement between a data producer and consumers. Thi
 
 | name | type | description | default value |
 | --- | --- | --- | --- |
-|**apiVersion** `required` `readOnly`|"v3.1.0"|Version of the standard used to build data contract.|"v3.1.0"|
+|**apiVersion** `required` `readOnly`|"v3.2.0"|Version of the standard used to build data contract.<br />Only "v3.2.0" is accepted: install the library release tagged for another version.|"v3.2.0"|
 |**authoritativeDefinitions**|[[AuthoritativeDefinition](#authoritativedefinition)]|List of links to sources that provide more details on the element.<br />Examples: Link to privacy statement, terms and conditions, license agreements, data catalog, or another tool.||
 |**contractCreatedTs**|str|Timestamp in UTC of when the data contract was created, using ISO 8601.||
 |**customProperties**|[[CustomProperty](#customproperty)]|A list of key/value pairs for custom properties.||
@@ -101,7 +101,7 @@ A data contract defines the agreement between a data producer and consumers. Thi
 |**schema**|[[SchemaObject](#schemaobject)]|A list of objects within the schema to be cataloged.||
 |**servers**|[[Server](#server)]|List of servers where the datasets reside.||
 |**slaProperties**|[[ServiceLevelAgreement](#servicelevelagreement)]|A list of key/value pairs for SLA specific properties.<br />There is no limit on the type of properties.||
-|**status** `required`|"proposed" \| "draft" \| "active" \| "deprecated" \| "retired"|Current status of the data contract.<br />One of "proposed", "draft", "active", "deprecated", "retired".||
+|**status**|str|Current status of the data contract. Open since ODCS v3.2.0.<br />Examples: "proposed", "draft", "active", "deprecated", "retired" (the `StatusType` values).<br />To enforce a closed set, narrow it in a subschema: `schema OrgContract(DataContract): status?: StatusType`.||
 |**support**|[[Support](#support)]|Top level for support channels.||
 |**tags**|[str]|A list of tags that may be assigned to the elements (object or property).<br />The tags keyword may appear at any level.<br />Examples: "finance", "sensitive", "employee_record"||
 |**team**|[Team](#team)|Team information object with members array.||

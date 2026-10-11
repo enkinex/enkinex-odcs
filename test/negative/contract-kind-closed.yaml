@@ -1,0 +1,5 @@
+# expect: got str(DataProduct)
+apiVersion: v3.2.0
+kind: DataProduct
+id: negative-fixture
+version: 1.0.0

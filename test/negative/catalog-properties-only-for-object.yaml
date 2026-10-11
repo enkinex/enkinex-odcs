@@ -1,5 +1,5 @@
 # expect: 'properties' is only valid when logicalType is 'object'
-apiVersion: v3.1.0
+apiVersion: v3.2.0
 kind: DataContract
 id: negative-fixture
 version: 1.0.0

@@ -31,16 +31,16 @@ Run `just` with no arguments at any point to list every available task.
 
 All day-to-day tasks are `just` recipes defined in the [`Justfile`](Justfile):
 
-| Command      | What it does                                                                                                                                   |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| `just init`  | Syncs module dependencies (`kcl mod update`).                                                                                                  |
-| `just fmt`   | Formats every `.k` file in the project (`kcl fmt ./...`).                                                                                      |
-| `just lint`  | Runs `kcl lint ./...`: the root package and every module directory in one invocation (needs KCL >= 0.13).                                      |
-| `just test`  | Validates every fixture under [`test/`](test) against `odcs.k`, then proves every [`test/negative/`](test/negative) file is rejected for its reason. |
-| `just unit`  | Runs the KCL unit tests (`kcl test ./...`): every `*_test.k`, including [`test/unit/`](test/unit), which imports the root `odcs.k`.              |
-| `just conformance` | Measures the library against the official ODCS corpus in [`test/conformance/`](test/conformance) (see below).                                    |
-| `just docs`  | Regenerates the auto-generated schema reference from schema docstrings.                                                                          |
-| `just check` | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint`, `test`, `unit` and `conformance`.          |
+| Command            | What it does                                                                                                                                         |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `just init`        | Syncs module dependencies (`kcl mod update`).                                                                                                        |
+| `just fmt`         | Formats every `.k` file in the project (`kcl fmt ./...`).                                                                                            |
+| `just lint`        | Runs `kcl lint ./...`: the root package and every module directory in one invocation (needs KCL >= 0.13).                                            |
+| `just test`        | Validates every fixture under [`test/`](test) against `odcs.k`, then proves every [`test/negative/`](test/negative) file is rejected for its reason. |
+| `just unit`        | Runs the KCL unit tests (`kcl test ./...`): every `*_test.k`, including [`test/unit/`](test/unit), which imports the root `odcs.k`.                  |
+| `just conformance` | Measures the library against the official ODCS corpus in [`test/conformance/`](test/conformance) (see below).                                        |
+| `just docs`        | Regenerates the auto-generated schema reference from schema docstrings.                                                                              |
+| `just check`       | Aggregate gate: formats, verifies the tree is still clean (`git diff --exit-code`), then runs `lint`, `test`, `unit` and `conformance`.              |
 
 Before pushing, always run:
 
@@ -86,15 +86,15 @@ The library is organized as one KCL module per section of related ODCS definitio
 `$defs` section. If you're adding a new field or schema, find its home in this table (see the root `README.md` for the
 full rationale behind each module):
 
-| Module                | Owns                                                                                                                     |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------|
-| **`common`**          | `AuthoritativeDefinition`, `CustomProperty`, `StableId`, `tags`                                                          |
-| **`catalog`**         | `SchemaElement`, `SchemaObject`, `SchemaProperty`, `RelationshipSchemaLevel`, `RelationshipPropertyLevel`, `TypeOptions` |
-| **`contract`**        | `Description`, `Pricing`, `ServiceLevelAgreement`, `Support`                                                             |
-| **`iam`**             | `Role`, `Team`, `TeamMember`                                                                                             |
-| **`quality`**         | `DataQuality`, `DataQualityOperators`                                                                                    |
-| **`server`**          | `BaseServer`, `CustomServer`,  `Server`, and subschemas (`BigQueryServer`, `PostgresServer`, …)                          |
-| **`odcs.k`** *(root)* | The root **`DataContract`** schema that composes every module above                                                      |
+| Module                | Owns                                                                                                                                                                                          |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **`common`**          | `AuthoritativeDefinition`, `CustomProperty`, `StableId`, `tags`, the reuse chains, `Context`, the variables helper (`variable.k`)                                                             |
+| **`catalog`**         | `SchemaElement`, `SchemaObject`, `SchemaProperty`, `MapDefinition`, `EnumValue`, `Synonym`, `RelationshipSchemaLevel`, `RelationshipPropertyLevel`, `TypeOptions` and its per-type subschemas |
+| **`contract`**        | `Description`, `Pricing`, `ServiceLevelAgreement`, `Support`                                                                                                                                  |
+| **`iam`**             | `Role`, `Team`, `TeamMember`                                                                                                                                                                  |
+| **`quality`**         | `DataQuality`, `DataQualityOperators`                                                                                                                                                         |
+| **`server`**          | `BaseServer`, `CustomServer`, `Server`, and one subschema per source type (`BigQueryServer`, `PostgresServer`, …)                                                                             |
+| **`odcs.k`** *(root)* | The root **`DataContract`** schema that composes every module above                                                                                                                           |
 
 Add a fixture under [`test/`](test) that exercises any new or changed field (either extend `odcs.full.example.yaml` or
 the relevant `odcs.module.<module>.yaml` file), and run `just test` to confirm it validates.

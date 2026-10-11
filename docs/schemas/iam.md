@@ -30,7 +30,8 @@ contract.
 
 ### Date validation as guarded `check`s
 
-- `TeamMember.dateIn` / `dateOut` are validated against an ISO-8601 date pattern only when present.
+- `TeamMember.dateIn` / `dateOut` are validated against an ISO-8601 date pattern only when present, and accept a whole
+  variable reference such as `${JOIN_DATE}` (RFC 0050; see `common.md`).
 - `replacedByUsername` requires `dateOut` to be set — recovering the standard's intent without hard-failing on absent
   optional fields.
 
@@ -52,5 +53,5 @@ contract.
 ### Approver fields on `Role`
 
 - `firstLevelApprovers` / `secondLevelApprovers` are free strings.
-- Modeling them as references into `Team`/`TeamMember` could enable richer governance but is out of scope for the
-  v3.1.0.
+- Modeling them as references into `Team`/`TeamMember` could enable richer governance; ODCS v3.2.0 does not ask for it,
+  so it stays out of scope.

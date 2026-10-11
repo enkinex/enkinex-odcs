@@ -27,7 +27,7 @@ servers:
   - server: my-postgres
     type: postgres
     host: localhost
-    port: 5432
+    port: ${PG_PORT:-5432} # Variable reference resolved at runtime (RFC 0050, ODCS v3.2.0+)
     database: pypl-edw
     schema: pp_access_views
 
@@ -48,7 +48,8 @@ schema:
     dataGranularityDescription: Aggregation on columns txn_ref_dt, pmt_txn_id
     # Schema-level relationships (for composite keys)
     relationships:
-      - type: foreignKey
+      - id: fk_tbl_receivers # Stable relationship id (RFC 0047, ODCS v3.2.0+)
+        type: foreignKey
         from:
           - tbl.rcvr_id
           - tbl.rcvr_cntry_code
@@ -123,6 +124,23 @@ schema:
         criticalDataElement: false
         tags: [ ]
         classification: public
+        # Enumeration of allowed values (RFC 0033, ODCS v3.2.0+)
+        enum:
+          - value: US
+            label: United States
+            description: ISO 3166-1 alpha-2 code for the United States.
+          - value: CA
+            label: Canada
+          - value: MX
+            label: Mexico
+            customProperties:
+              - property: languageEs
+                value: México
+        semanticType: dimension # Semantic role (RFC 0034, ODCS v3.2.0+)
+        synonyms: # Alternative names (RFC 0041, ODCS v3.2.0+)
+          - synonym: country
+          - synonym: pays
+            locale: fr-FR
         authoritativeDefinitions:
           - url: https://collibra.com/asset/742b358f-71a5-4ab1-bda4-dcdba9418c25
             type: businessDefinition
@@ -217,6 +235,33 @@ schema:
             customProperties:
               - property: description
                 value: "Links to receiver type definitions"
+      # Map-typed property (RFC 0030, ODCS v3.2.0+)
+      - id: receiver_attributes_prop
+        name: receiver_attributes
+        businessName: receiver attributes
+        logicalType: map
+        physicalType: "MAP<STRING, STRING>"
+        required: false
+        description: Free-form attributes attached to a receiver, keyed by attribute name.
+        classification: restricted
+        map:
+          key:
+            logicalType: string
+            description: Attribute name.
+          value:
+            logicalType: string
+            description: Attribute value.
+      # Vector-typed property (RFC 0042, ODCS v3.2.0+)
+      - id: receiver_name_embedding_prop
+        name: receiver_name_embedding
+        logicalType: vector
+        physicalType: VECTOR(768)
+        description: Embedding of the receiver name, for fuzzy matching.
+        deprecated: true # Deprecation flag (RFC 0051, ODCS v3.2.0+)
+        logicalTypeOptions:
+          dimensions: 768
+          distanceMetric: cosine
+          embeddingModel: cohere/embed-english-v3.0
 
 
 # Pricing
@@ -272,6 +317,13 @@ slaProperties:
     element: tab1.txn_ref_dt # This would not be needed as it is the same table.column as the default one
   - property: generalAvailability
     value: "2022-05-12T09:30:10-08:00"
+    # SLA extensions (RFC 0046, ODCS v3.2.0+)
+    authoritativeDefinitions:
+      - url: https://wiki.example.com/sla/general-availability
+        type: businessDefinition
+    customProperties:
+      - property: alertPolicyId
+        value: pol-123
   - property: endOfSupport
     value: "2032-05-12T09:30:10-08:00"
   - property: endOfLife
@@ -326,5 +378,17 @@ customProperties:
     value: property.value
   - property: dataprocClusterName # Used for specific applications like Elevate
     value: [ cluster name ]
+  - property: schemaRegistrySubject
+    value: seller-payments-value
+    vendor: confluent # Vendor of the custom property (RFC 0035, ODCS v3.2.0+)
+
+# AI and semantic context (RFC 0038, ODCS v3.2.0+)
+context:
+  instructions: Use for seller-side payment analytics; amounts are in USD.
+  verifiedStatements:
+    - question: What was the total payment amount yesterday?
+      answer: SUM of the payment amount for transaction_reference_date equal to yesterday.
+  constraints:
+    - constraint: Never infer buyer information from this contract.
 
 contractCreatedTs: "2022-11-15T02:59:43+00:00"

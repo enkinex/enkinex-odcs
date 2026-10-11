@@ -11,14 +11,19 @@ schema (`odcs-json-schema-v3.2.0.json`).
 | `odcs.k` | Root `DataContract` schema composing all modules |
 | `common/` `catalog/` `contract/` `iam/` `quality/` `server/` | One KCL module per ODCS section |
 | `test/*.yaml` | `kcl vet` fixtures validated against the schemas |
+| `test/negative/` | one contract per invariant, each rejected for the reason its `# expect:` header names |
+| `test/conformance/` | the official ODCS v3.2.0 examples and negative tests, vendored, with the ledger and negative map |
+| `test/unit/`, `*_test.k` | `kcl test` unit tests; `test/unit/` imports the root `odcs.k` |
 | `docs/library/odcs.md` | Generated schema reference (`just docs`) — regenerate on docstring change |
 | `docs/schemas/` | Per-module design rationale |
 
 ## Commands
 
 `just init` (kcl mod update) · `just fmt` · `just lint` · `just test` ·
-`just docs` · **`just check` — the gate every change must pass** (fmt +
-clean-tree + lint + test). Run `just fmt` and commit before `just check`.
+`just unit` · `just conformance` · `just docs` · **`just check` — the gate
+every change must pass** (fmt + clean-tree + lint + test + unit +
+conformance). Run `just fmt` and commit before `just check`. One release
+implements one ODCS version: no compatibility code for older versions.
 
 ## Standards
 
